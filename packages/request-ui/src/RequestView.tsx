@@ -103,7 +103,7 @@ export const RequestView = ({
   return (
     <Box className={classes.container}>
       <Box className={classes.header} color="">
-        <Typography variant="body2">Request for payment from</Typography>
+        <Typography variant="h5">Request for payment from</Typography>
         <Spacer />
         <Typography variant="caption">{payee}</Typography>
       </Box>

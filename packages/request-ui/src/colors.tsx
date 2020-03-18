@@ -1,8 +1,6 @@
 import { RequestStatus } from 'request-shared';
 
 export const colors = {
-  primary: '#00CC8E',
-  black: '#050B20',
   statusText: '#456078',
   background: '#FAFAFA',
   subtext: '#656565',
@@ -16,4 +14,11 @@ export const statusColors: Record<RequestStatus, string> = {
   paid: '#D6F3E2',
   pending: '#CBBEFF',
   canceled: '#FFBEBE',
+};
+
+export const alertColors = {
+  success: '#D6F3E2',
+  info: '#D7E1FE',
+  warning: '#FFE1BE',
+  error: '#F9D3D4',
 };

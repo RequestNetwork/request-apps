@@ -5,25 +5,19 @@ import ErrorRoundedIcon from '@material-ui/icons/ErrorRounded';
 import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
 import InfoRoundedIcon from '@material-ui/icons/InfoRounded';
 import { makeStyles, Theme } from '@material-ui/core';
+import { alertColors } from './colors';
 
 export type Severity = 'success' | 'info' | 'warning' | 'error';
 
 const useStyles = makeStyles<Theme, { severity: Severity }>({
   alert: {
-    backgroundColor: ({ severity }) => backgroundColors[severity],
+    backgroundColor: ({ severity }) => alertColors[severity],
     top: 0,
     left: 0,
     borderRadius: 0,
     width: '100%',
   },
 });
-
-const backgroundColors = {
-  success: '#D6F3E2',
-  info: '#D7E1FE',
-  warning: '#FFE1BE',
-  error: '#F9D3D4',
-};
 
 const iconMapping = {
   warning: <WarningRoundedIcon />,

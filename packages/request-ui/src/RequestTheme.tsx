@@ -6,6 +6,15 @@ export const theme = createMuiTheme({
       disabled: '#656565',
       disabledBackground: '#E4E4E4',
     },
+    common: {
+      black: '#050B20',
+    },
+    primary: {
+      main: '#00CC8E',
+    },
+    secondary: {
+      main: '#001E26',
+    },
   },
   typography: {
     fontFamily: "'Inter', sans-serif",

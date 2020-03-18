@@ -6,16 +6,16 @@ export default {
 };
 
 const styles: any[] = [
-  'body1',
-  'body2',
-  'caption',
-  'subtitle1',
   'h1',
   'h2',
   'h3',
   'h4',
   'h5',
   'h6',
+  'subtitle1',
+  'caption',
+  'body2',
+  'body1',
 ];
 
 export const TextStory = () => {

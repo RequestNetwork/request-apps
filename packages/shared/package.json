@@ -1,0 +1,12 @@
+{
+  "name": "request-shared",
+  "version": "0.1.0",
+  "author": "Benjamin LEVESQUE",
+  "license": "MIT",
+  "private": true,
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ]
+}

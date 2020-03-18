@@ -34,7 +34,7 @@ const PayAction = ({
       variant="payment"
       size="large"
       fullWidth
-      startIcon={<RIcon disabled={disabled} />}
+      startIcon={<RIcon dark={disabled} />}
       sticky
       loading={paying}
       direction={broadcasting ? "right" : "left"}

@@ -1,7 +1,7 @@
 import { Web3Provider } from "ethers/providers";
 import * as React from "react";
 
-import { Box } from "@material-ui/core";
+import { Box, makeStyles } from "@material-ui/core";
 import { Web3ReactProvider, useWeb3React } from "@web3-react/core";
 
 import {
@@ -37,6 +37,30 @@ export const RequestNotFound = () => {
   );
 };
 
+const useStyles = makeStyles(theme => ({
+  wrapper: {
+    display: "flex",
+    justifyContent: "center",
+    width: "100%",
+    position: "sticky",
+    bottom: 0,
+    background: "white",
+    [theme.breakpoints.up("sm")]: {
+      position: "relative",
+      background: "unset"
+    }
+  }
+}));
+
+const WrappedSpinner = () => {
+  const classes = useStyles();
+  return (
+    <Box className={classes.wrapper}>
+      <RSpinner />
+    </Box>
+  );
+};
+
 export const ErrorContainer = () => {
   const mobile = useMobile();
   const { error } = usePayment();
@@ -68,13 +92,7 @@ export const PaymentPage = () => {
     counterCurrency,
     counterValue
   } = useRequest();
-  const {
-    paying,
-    approving,
-    error,
-    broadcasting,
-    ready: paymentReady
-  } = usePayment();
+  const { paying, approving, error, ready: paymentReady } = usePayment();
   const prevStatus = usePrevious(request?.status);
   const mobile = useMobile();
   const { active } = useWeb3React();
@@ -161,17 +179,7 @@ export const PaymentPage = () => {
       )}
       {stickToBottom && <Box flex={1} />}
       {!showSpinner && <PaymentActions />}
-      {showSpinner && (
-        <Box
-          display="flex"
-          justifyContent="center"
-          position="sticky"
-          bottom={0}
-          width="100%"
-        >
-          <RSpinner />
-        </Box>
-      )}
+      {showSpinner && <WrappedSpinner />}
       {showFooter && (
         <>
           <Spacer size={15} />

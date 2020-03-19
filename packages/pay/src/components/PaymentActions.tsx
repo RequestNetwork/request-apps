@@ -20,7 +20,7 @@ const PayAction = ({
   disabled,
   pay,
   broadcasting,
-  paying
+  paying,
 }: {
   broadcasting: boolean;
   paying: boolean;
@@ -31,7 +31,7 @@ const PayAction = ({
     <RButton
       disabled={disabled}
       onClick={pay}
-      variant="payment"
+      color="primary"
       size="large"
       fullWidth
       startIcon={<RIcon dark={disabled} />}
@@ -47,9 +47,9 @@ const PayAction = ({
 const useStyles = makeStyles(theme => ({
   approval: {
     [theme.breakpoints.up("sm")]: {
-      width: 235
-    }
-  }
+      width: 235,
+    },
+  },
 }));
 const ApproveAction = ({ approve }: { approve: () => void }) => {
   const classes = useStyles();
@@ -58,7 +58,7 @@ const ApproveAction = ({ approve }: { approve: () => void }) => {
       sticky
       size="medium"
       onClick={approve}
-      variant="primary"
+      color="secondary"
       fullWidth
       className={classes.approval}
     >
@@ -70,7 +70,7 @@ const ApproveAction = ({ approve }: { approve: () => void }) => {
 const ConnectAction = ({
   activate,
   redirectMetamask,
-  installMetamask
+  installMetamask,
 }: {
   activate: () => void;
   redirectMetamask: () => void;
@@ -87,7 +87,7 @@ const ConnectAction = ({
           height={32}
         />
       }
-      variant="secondary"
+      color="default"
       onClick={web3 ? activate : mobile ? redirectMetamask : installMetamask}
     >
       {/* TODO color body2 */}
@@ -112,7 +112,7 @@ const ReceiptLink = (props: {
       // onClick={() => downloadPdf(props)}
       onClick={() => console.log("download")}
       startIcon={<ArrowDownward />}
-      variant="secondary"
+      color="default"
     >
       {/* TODO color="body2" */}
       <Typography variant="h5">Download PDF receipt</Typography>
@@ -125,7 +125,7 @@ const BtcPay = ({ url }: { url: string }) => {
   if (mobile)
     return (
       <RButton
-        variant="secondary"
+        color="default"
         onClick={() => window.open(url, "_blank")?.focus()}
         startIcon={<img src={BtcIcon} width={16} height={16} />}
       >
@@ -144,7 +144,7 @@ const BtcPay = ({ url }: { url: string }) => {
           src: RequestIconDark,
           width: 24,
           height: 24,
-          excavate: true
+          excavate: true,
         }}
       />
     </>
@@ -160,7 +160,7 @@ export default () => {
     ready: paymentReady,
     approve,
     paying,
-    broadcasting
+    broadcasting,
   } = usePayment();
   const { activateConnector } = useConnector();
 

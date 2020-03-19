@@ -8,7 +8,7 @@ import {
   makeStyles,
   Snackbar,
   SnackbarContent,
-  TextField
+  TextField,
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import SendIcon from "@material-ui/icons/Send";
@@ -19,41 +19,41 @@ import { useHubspotFeedback } from "../hooks/useHubspotFeedback";
 
 const useStyles = makeStyles(theme => ({
   snackContent: {
-    backgroundColor: "#050B20",
+    backgroundColor: theme.palette.common.black,
     flexDirection: "column",
     fontSize: 14,
     justifyContent: "center",
     padding: 0,
-    color: "rgba(255, 255, 255, 0.72)"
+    color: "rgba(255, 255, 255, 0.72)",
   },
   snackAction: {
     borderTop: "1px solid #E4E4E4",
     margin: "0",
     padding: "6px 16px",
     width: "100%",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   snackInnerContent: {
     display: "flex",
     alignItems: "flex-start",
-    padding: "6px 16px"
+    padding: "6px 16px",
   },
   title: {
     color: "#FFFFFF",
     fontWeight: 600,
-    marginBottom: "8px"
+    marginBottom: "8px",
   },
   textField: {
-    flex: 1
+    flex: 1,
   },
   input: {
     borderBottom: "1px solid rgba(255, 255, 255, 0.7)",
     color: "#ffffff",
-    fontSize: 14
+    fontSize: 14,
   },
   emoji: {
-    color: "#ffffff"
-  }
+    color: "#ffffff",
+  },
 }));
 
 export default ({ open, onClose }: { open: boolean; onClose: () => void }) => {
@@ -79,7 +79,7 @@ export default ({ open, onClose }: { open: boolean; onClose: () => void }) => {
   const { opacity, ...dissmissableProps } = useDissmissable(ref, close);
 
   const CloseButton = ({
-    onClose = close
+    onClose = close,
   }: {
     onClose?: () => Promise<void>;
   }) => (
@@ -156,18 +156,18 @@ export default ({ open, onClose }: { open: boolean; onClose: () => void }) => {
         ref={ref}
         open={open}
         style={{
-          opacity
+          opacity,
         }}
         anchorOrigin={{
           vertical: "top",
-          horizontal: "right"
+          horizontal: "right",
         }}
       >
         {!mood ? (
           <SnackbarContent
             classes={{
               root: classes.snackContent,
-              action: classes.snackAction
+              action: classes.snackAction,
             }}
             message={
               <div className={classes.snackInnerContent}>
@@ -211,7 +211,7 @@ export default ({ open, onClose }: { open: boolean; onClose: () => void }) => {
                       size="small"
                       InputProps={{
                         className: classes.input,
-                        disableUnderline: true
+                        disableUnderline: true,
                       }}
                       placeholder="Enter your comments"
                     />
@@ -247,7 +247,7 @@ export default ({ open, onClose }: { open: boolean; onClose: () => void }) => {
                       className={classes.textField}
                       InputProps={{
                         className: classes.input,
-                        disableUnderline: true
+                        disableUnderline: true,
                       }}
                       size="small"
                       error={invalidEmail}

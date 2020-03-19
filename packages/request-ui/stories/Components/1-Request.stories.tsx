@@ -18,7 +18,7 @@ export const RequestStory = () => {
       <Box width={532}>
         <RequestView
           payee="brice.eth"
-          createdDate={Date.now()}
+          createdDate={new Date()}
           status="open"
           amount="0.01"
           currency="ETH"

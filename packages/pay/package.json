@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.9.7",
+    "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.46",
     "@requestnetwork/payment-processor": "^0.13.0",
     "@requestnetwork/request-client.js": "^0.13.0",
     "@web3-react/core": "^6.0.7",

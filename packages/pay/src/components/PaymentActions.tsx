@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { IParsedRequest, useRequest } from "../contexts/RequestContext";
+import { useRequest } from "../contexts/RequestContext";
 import { usePayment, RequiresApprovalError } from "../contexts/PaymentContext";
 import { useWeb3React } from "@web3-react/core";
 
@@ -13,8 +13,10 @@ import { useMobile } from "../hooks/useMobile";
 import QRCode from "qrcode.react";
 import RequestIconDark from "../assets/img/Request_icon_dark.svg";
 import BtcIcon from "../assets/img/btc.png";
+import MetamaskIcon from "../assets/img/metamask.png";
 
 import { Spacer, RButton, RIcon } from "request-ui";
+import { IParsedRequest } from "request-shared";
 
 const PayAction = ({
   disabled,
@@ -34,7 +36,7 @@ const PayAction = ({
       color="primary"
       size="large"
       fullWidth
-      startIcon={<RIcon dark={disabled} />}
+      startIcon={<RIcon variant={disabled ? "dark" : "light"} />}
       sticky
       loading={paying}
       direction={broadcasting ? "right" : "left"}
@@ -80,13 +82,7 @@ const ConnectAction = ({
   const mobile = useMobile();
   return (
     <RButton
-      startIcon={
-        <img
-          src={require("../assets/img/metamask.png")}
-          width={32}
-          height={32}
-        />
-      }
+      startIcon={<img src={MetamaskIcon} width={32} height={32} />}
       color="default"
       onClick={web3 ? activate : mobile ? redirectMetamask : installMetamask}
     >

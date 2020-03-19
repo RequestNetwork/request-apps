@@ -1,5 +1,5 @@
 import { IRequestData } from "@requestnetwork/request-client.js/dist/types";
-import { IParsedRequest } from "./contexts/RequestContext";
+import { IParsedRequest } from "request-shared";
 
 const etherscanDomain: Record<string, string> = {
   rinkeby: "https://rinkeby.etherscan.io",

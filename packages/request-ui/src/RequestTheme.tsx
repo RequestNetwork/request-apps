@@ -43,8 +43,8 @@ export const theme = createMuiTheme({
     },
     h1: {
       fontWeight: 600,
-      fontSize: 40,
-      lineHeight: '60px',
+      fontSize: 56,
+      lineHeight: '84px',
     },
     h2: {
       fontWeight: 600,
@@ -98,6 +98,7 @@ export const theme = createMuiTheme({
         minWidth: 158,
         minHeight: 56,
         overflow: 'hidden',
+        border: 0,
       },
       label: {
         fontWeight: 600,
@@ -145,6 +146,11 @@ export const theme = createMuiTheme({
         '& > *': {
           fontSize: 14,
         },
+      },
+    },
+    MuiInputLabel: {
+      asterisk: {
+        display: 'none',
       },
     },
     MuiInput: {

@@ -61,7 +61,7 @@
     "classnames": "^2.2.6",
     "moment": "^2.24.0",
     "react-moment": "^0.9.7",
-    "url-loader": "^4.0.0",
-    "stackdriver-errors-js": "^0.8.0"
+    "stackdriver-errors-js": "^0.8.0",
+    "url-loader": "^4.0.0"
   }
 }

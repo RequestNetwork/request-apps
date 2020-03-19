@@ -8,9 +8,9 @@ import {
   FiatRequestNotSupportedError,
   NotEnoughForGasError,
   NotEnoughForRequestError,
-  RequiresApprovalError
+  RequiresApprovalError,
 } from "../contexts/PaymentContext";
-import { IParsedRequest } from "../contexts/RequestContext";
+import { IParsedRequest } from "request-shared";
 
 const getErrorMessage = (error: Error, request: IParsedRequest) => {
   if (error instanceof NoEthereumProviderError) {
@@ -46,14 +46,14 @@ const getErrorMessage = (error: Error, request: IParsedRequest) => {
 
 export const ErrorMessage = ({
   error,
-  request
+  request,
 }: {
   error: Error;
   request: IParsedRequest;
 }) => {
   const severities: Record<string, Severity> = {
     FiatRequestNotSupportedError: "error",
-    RequiresApprovalError: "info"
+    RequiresApprovalError: "info",
   };
 
   return (

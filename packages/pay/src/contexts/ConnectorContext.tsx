@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { InjectedConnector } from "@web3-react/injected-connector";
-import { useRequest, IParsedRequest } from "./RequestContext";
+import { useRequest } from "./RequestContext";
 import {
   WalletConnectConnector,
   URI_AVAILABLE,
-  UserRejectedRequestError as UserRejectedRequestErrorWalletConnect
+  UserRejectedRequestError as UserRejectedRequestErrorWalletConnect,
 } from "@web3-react/walletconnect-connector";
 import { AbstractConnector } from "@web3-react/abstract-connector";
 import { useWeb3React } from "@web3-react/core";
 import { UserRejectedRequestError as UserRejectedRequestErrorInjected } from "@web3-react/injected-connector";
 import { usePrevious } from "../hooks/usePrevious";
 import { RequestLogicTypes } from "@requestnetwork/types";
+import { IParsedRequest } from "request-shared";
 
 interface IContext {
   /** name of the active connector */
@@ -61,8 +62,8 @@ const getConnectors = (
         rpc,
         bridge: "https://bridge.walletconnect.org",
         qrcode: false,
-        pollingInterval: 8000
-      })
+        pollingInterval: 8000,
+      }),
   };
 };
 
@@ -188,7 +189,7 @@ export const ConnectorProvider: React.FC = ({ children }) => {
         activateConnector: setConnectorName,
         walletConnectUrl,
         ready,
-        providerName: getProviderName(connectorName)
+        providerName: getProviderName(connectorName),
       }}
     >
       {children}

@@ -8,32 +8,12 @@ import {
   RequestNetwork,
   Request,
   Utils,
-  Types
+  Types,
 } from "@requestnetwork/request-client.js";
 
+import { IParsedRequest } from "request-shared";
+
 import { useRate } from "../hooks/useRate";
-
-export type RequestStatus = "paid" | "open" | "pending" | "canceled";
-
-/** Formatted request */
-export interface IParsedRequest {
-  requestId: string;
-  amount: number;
-  currency: string;
-  status: RequestStatus;
-  timestamp: Date;
-  paidDate?: Date;
-  paymentAddress: string;
-  paymentFrom?: string;
-  invoiceNumber?: string;
-  reason?: string;
-  currencyType: Types.RequestLogic.CURRENCY;
-  currencyNetwork?: string;
-  txHash?: string;
-  payee: string;
-  payeeName?: string;
-  raw: Types.IRequestData;
-}
 
 interface IContext {
   /** true if first fetch is ongoing */
@@ -75,8 +55,8 @@ const loadRequest = async (
         baseURL:
           network === "rinkeby"
             ? "https://gateway-rinkeby.request.network"
-            : "https://gateway.request.network"
-      }
+            : "https://gateway.request.network",
+      },
     });
     return await rn.fromRequestId(requestId);
   } catch (error) {
@@ -121,7 +101,7 @@ const parseRequest = async (
     data.balance?.events?.length &&
     [
       Types.RequestLogic.CURRENCY.ERC20,
-      Types.RequestLogic.CURRENCY.ETH
+      Types.RequestLogic.CURRENCY.ETH,
     ].includes(data.currencyInfo.type)
   ) {
     const tx = await provider.getTransaction(
@@ -157,7 +137,7 @@ const parseRequest = async (
     txHash: data.balance?.events[0]?.parameters?.txHash,
     payee: data.payee?.value || "",
     payeeName: ens,
-    raw: data
+    raw: data,
   };
 };
 
@@ -204,7 +184,7 @@ export const RequestProvider: React.FC = ({ children }) => {
         request: parsedRequest,
         counterCurrency,
         counterValue,
-        setPending
+        setPending,
       }}
     >
       {children}

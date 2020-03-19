@@ -10,10 +10,13 @@ export const theme = createMuiTheme({
       black: '#050B20',
     },
     primary: {
-      main: '#00CC8E',
+      main: '#001E26',
     },
     secondary: {
-      main: '#001E26',
+      main: '#00CC8E',
+    },
+    grey: {
+      '700': '#656565',
     },
   },
   typography: {
@@ -69,6 +72,11 @@ export const theme = createMuiTheme({
       lineHeight: '16px',
     },
   },
+  props: {
+    MuiButton: {
+      disableElevation: true,
+    },
+  },
   overrides: {
     MuiCssBaseline: {
       '@global': {
@@ -87,6 +95,39 @@ export const theme = createMuiTheme({
       root: {
         textTransform: 'none',
         fontSize: '16px',
+        minWidth: 158,
+        minHeight: 56,
+        overflow: 'hidden',
+      },
+      label: {
+        fontWeight: 600,
+        fontSize: 16,
+        lineHeight: '24px',
+      },
+      contained: {
+        padding: '16px 24px',
+        backgroundColor: '#fff',
+        color: '#050B20',
+        border: '1px solid #E4E4E4',
+        boxSizing: 'border-box',
+        borderRadius: 4,
+        '&:hover': {
+          backgroundColor: '#F7F7F7',
+        },
+      },
+      containedPrimary: {
+        minWidth: 280,
+        height: 80,
+        '&:hover': {
+          boxShadow: '0px 5px 5px rgba(0, 30, 38, 0.3)',
+        },
+      },
+      containedSecondary: {
+        padding: '20px 32px',
+        height: 64,
+        '&:hover': {
+          boxShadow: '0px 5px 5px rgba(0, 30, 38, 0.3)',
+        },
       },
     },
     MuiTypography: {},
@@ -98,6 +139,21 @@ export const theme = createMuiTheme({
     },
     MuiDialogTitle: {
       root: {},
+    },
+    MuiTextField: {
+      root: {
+        '& > *': {
+          fontSize: 14,
+        },
+      },
+    },
+    MuiInput: {
+      root: {
+        fontSize: 14,
+        '&:before': {
+          borderBottom: '1px solid #E4E4E4 !important',
+        },
+      },
     },
   },
 });

@@ -20,7 +20,6 @@ interface IProps
   > {
   children?: React.ReactNode;
   className?: string;
-  variant: 'primary' | 'secondary' | 'payment';
   size?: 'large' | 'medium';
   fullWidth?: boolean;
   loading?: boolean;
@@ -83,47 +82,6 @@ const ButtonAnimation = ({ direction }: IAnimationProps) => {
 };
 
 const useStyles = makeStyles<Theme, IProps>(theme => ({
-  root: {
-    //padding: 0,
-    minWidth: 158,
-    minHeight: 56,
-    borderRadius: 0,
-    [theme.breakpoints.up('sm')]: {
-      borderRadius: 4,
-    },
-    overflow: 'hidden',
-  },
-  payment: {
-    minWidth: 280,
-    height: 80,
-    backgroundColor: theme.palette.secondary.main,
-    color: theme.palette.common.white,
-    '&:hover': {
-      backgroundColor: theme.palette.secondary.main,
-      boxShadow: '0px 5px 5px rgba(0, 30, 38, 0.3)',
-    },
-  },
-  primary: {
-    padding: '20px 32px',
-    backgroundColor: theme.palette.primary.main,
-    color: theme.palette.common.black,
-    height: 64,
-    '&:hover': {
-      backgroundColor: theme.palette.primary.main,
-      boxShadow: '0px 5px 5px rgba(0, 30, 38, 0.3)',
-    },
-  },
-  secondary: {
-    padding: '16px 24px',
-    backgroundColor: theme.palette.common.white,
-    color: theme.palette.common.black,
-    border: '1px solid #E4E4E4',
-    boxSizing: 'border-box',
-    borderRadius: 4,
-    '&:hover': {
-      backgroundColor: '#F7F7F7',
-    },
-  },
   sticky: {
     position: 'sticky',
     bottom: 0,
@@ -144,7 +102,7 @@ export const RButton = (props: IProps) => {
     size,
     sticky,
     loading,
-    variant,
+    color,
     startIcon,
     fullWidth,
     className,
@@ -160,18 +118,19 @@ export const RButton = (props: IProps) => {
       startIcon={!loading && startIcon}
       disableElevation
       fullWidth={fullWidth}
-      className={classnames(classes[variant], classes.root, className, {
+      className={classnames(classes.root, className, {
         [classes.sticky]: sticky,
       })}
       classes={{
         root: classes.buttonRoot,
       }}
       variant="contained"
+      color={color}
     >
-      {loading && direction && variant === 'payment' && (
+      {loading && direction && color === 'primary' && (
         <ButtonAnimation direction={direction} />
       )}
-      {loading && variant !== 'payment' && <CircularProgress />}
+      {loading && color !== 'primary' && <CircularProgress />}
       {!loading && children}
     </Button>
   );

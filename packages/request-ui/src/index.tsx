@@ -4,6 +4,7 @@ export * from './RAlert';
 export * from './RButton';
 export * from './RContainer';
 export * from './RIcon';
+export * from './RLogo';
 export * from './RSpinner';
 export * from './RStatusBadge';
 export * from './RFooter';

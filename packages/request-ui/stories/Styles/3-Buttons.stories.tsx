@@ -2,7 +2,7 @@ import React from 'react';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 
 import { RButton, RIcon } from '../../';
-import { Typography } from '@material-ui/core';
+import { Typography, Button } from '@material-ui/core';
 
 export default {
   title: 'Styles/Buttons',
@@ -12,27 +12,25 @@ export const NormalButtonStory = () => {
   return (
     <table>
       <tr>
-        <th>Payment</th>
+        <th>Primary</th>
         <td style={{ width: 532 }}>
-          <RButton variant="payment" startIcon={<RIcon />} fullWidth>
+          <RButton color="primary" startIcon={<RIcon />} fullWidth>
             Pay now
           </RButton>
         </td>
       </tr>
 
       <tr>
-        <th>Primary</th>
+        <th>Secondary</th>
         <td>
-          <RButton variant="primary">
-            <Typography variant="caption">Create a request</Typography>
-          </RButton>
+          <RButton color="secondary">Create a request</RButton>
         </td>
       </tr>
       <tr>
-        <th>Secondary</th>
+        <th>Default</th>
         <td>
-          <RButton variant="secondary" startIcon={<ArrowDownward />}>
-            <Typography variant="h4">Download PDF receipt</Typography>
+          <RButton color="default" startIcon={<ArrowDownward />}>
+            Download PDF receipt
           </RButton>
         </td>
       </tr>
@@ -47,10 +45,10 @@ NormalButtonStory.story = {
 export const LoadingButtonStory = () => (
   <table>
     <tr>
-      <th>Payment, Waiting for Metamask</th>
+      <th>Primary, Left</th>
       <td style={{ width: 532 }}>
         <RButton
-          variant="payment"
+          color="primary"
           startIcon={<RIcon />}
           loading
           fullWidth
@@ -61,10 +59,10 @@ export const LoadingButtonStory = () => (
       </td>
     </tr>
     <tr>
-      <th>Payment, Broadcasting</th>
+      <th>Primary, Right</th>
       <td style={{ width: 532 }}>
         <RButton
-          variant="payment"
+          color="primary"
           startIcon={<RIcon />}
           loading
           fullWidth
@@ -75,17 +73,17 @@ export const LoadingButtonStory = () => (
       </td>
     </tr>
     <tr>
-      <th>Primary</th>
+      <th>Secondary</th>
       <td>
-        <RButton variant="primary" loading>
+        <RButton color="secondary" loading>
           <Typography variant="caption">Create a request</Typography>
         </RButton>
       </td>
     </tr>
     <tr>
-      <th>Secondary</th>
+      <th>Default</th>
       <td>
-        <RButton variant="secondary" startIcon={<ArrowDownward />} loading>
+        <RButton color="default" startIcon={<ArrowDownward />} loading>
           <Typography variant="h4">Download PDF receipt</Typography>
         </RButton>
       </td>
@@ -100,10 +98,10 @@ LoadingButtonStory.story = {
 export const DisabledButtonStory = () => (
   <table>
     <tr>
-      <th>Payment</th>
+      <th>Primary</th>
       <td style={{ width: 532 }}>
         <RButton
-          variant="payment"
+          color="primary"
           startIcon={<RIcon />}
           disabled
           fullWidth
@@ -114,17 +112,17 @@ export const DisabledButtonStory = () => (
       </td>
     </tr>
     <tr>
-      <th>Primary</th>
+      <th>Secondary</th>
       <td>
-        <RButton variant="primary" disabled>
+        <RButton color="secondary" disabled>
           <Typography variant="caption">Create a request</Typography>
         </RButton>
       </td>
     </tr>
     <tr>
-      <th>Secondary</th>
+      <th>Default</th>
       <td>
-        <RButton variant="secondary" startIcon={<ArrowDownward />} disabled>
+        <RButton color="default" startIcon={<ArrowDownward />} disabled>
           <Typography variant="h4">Download PDF receipt</Typography>
         </RButton>
       </td>

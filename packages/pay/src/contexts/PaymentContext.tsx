@@ -2,13 +2,13 @@ import {
   payRequest,
   getErc20Balance,
   hasErc20Approval,
-  approveErc20
+  approveErc20,
 } from "@requestnetwork/payment-processor";
 import { useCallback, useEffect, useState } from "react";
 
 import { useWeb3React } from "@web3-react/core";
 
-import { useRequest } from "./RequestContext";
+import { useRequest } from "request-shared";
 import { Web3Provider, TransactionResponse } from "ethers/providers";
 import { Types } from "@requestnetwork/request-client.js";
 import React from "react";
@@ -187,7 +187,7 @@ export const PaymentProvider: React.FC = ({ children }) => {
     pay: () => setPaying(true),
     approving,
     approve: () => setApproving(true),
-    broadcasting
+    broadcasting,
   };
   return (
     <PaymentContext.Provider value={value}>{children}</PaymentContext.Provider>

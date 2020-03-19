@@ -1,6 +1,5 @@
 import * as React from "react";
 
-import { useRequest } from "../contexts/RequestContext";
 import { usePayment, RequiresApprovalError } from "../contexts/PaymentContext";
 import { useWeb3React } from "@web3-react/core";
 
@@ -9,14 +8,14 @@ import { useConnector } from "../contexts/ConnectorContext";
 import { makeStyles, Typography } from "@material-ui/core";
 import { Types } from "@requestnetwork/request-client.js";
 import { getBtcPaymentUrl } from "@requestnetwork/payment-processor";
-import { useMobile } from "../hooks/useMobile";
+import { useMobile } from "request-ui";
 import QRCode from "qrcode.react";
 import RequestIconDark from "../assets/img/Request_icon_dark.svg";
 import BtcIcon from "../assets/img/btc.png";
 import MetamaskIcon from "../assets/img/metamask.png";
 
 import { Spacer, RButton, RIcon } from "request-ui";
-import { IParsedRequest } from "request-shared";
+import { IParsedRequest, useRequest } from "request-shared";
 
 const PayAction = ({
   disabled,

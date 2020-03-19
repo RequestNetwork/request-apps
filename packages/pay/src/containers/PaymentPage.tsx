@@ -10,7 +10,7 @@ import {
   Spacer,
   RequestView,
   RSpinner,
-  RContainer
+  RContainer,
 } from "request-ui";
 
 import Feedback from "../components/Feedback";
@@ -20,11 +20,11 @@ import { ConnectorProvider, useConnector } from "../contexts/ConnectorContext";
 import {
   PaymentProvider,
   usePayment,
-  RequiresApprovalError
+  RequiresApprovalError,
 } from "../contexts/PaymentContext";
-import { RequestProvider, useRequest } from "../contexts/RequestContext";
+import { RequestProvider, useRequest } from "request-shared";
 import { usePrevious } from "../hooks/usePrevious";
-import { useMobile } from "../hooks/useMobile";
+import { useMobile } from "request-ui";
 import ErrorPage from "./ErrorPage";
 import { ErrorMessage } from "../components/ErrorMessage";
 
@@ -47,9 +47,9 @@ const useStyles = makeStyles(theme => ({
     background: "white",
     [theme.breakpoints.up("sm")]: {
       position: "relative",
-      background: "unset"
-    }
-  }
+      background: "unset",
+    },
+  },
 }));
 
 const WrappedSpinner = () => {
@@ -90,7 +90,7 @@ export const PaymentPage = () => {
     loading: requestLoading,
     request,
     counterCurrency,
-    counterValue
+    counterValue,
   } = useRequest();
   const { paying, approving, error, ready: paymentReady } = usePayment();
   const prevStatus = usePrevious(request?.status);
@@ -153,7 +153,7 @@ export const PaymentPage = () => {
       <RequestView
         amount={request.amount.toLocaleString("en-US", {
           minimumFractionDigits: 0,
-          maximumFractionDigits: 5
+          maximumFractionDigits: 5,
         })}
         createdDate={request.timestamp}
         currency={request.currency}

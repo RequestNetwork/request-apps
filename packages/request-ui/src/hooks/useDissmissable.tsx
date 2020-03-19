@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { DraggableEventHandler, DraggableProps } from "react-draggable";
+import { useState } from 'react';
+import { DraggableEventHandler, DraggableProps } from 'react-draggable';
 
 /** Hook to handle drag gesture, and dismiss an element based on its position */
 export function useDissmissable<T extends HTMLElement | undefined>(
@@ -8,7 +8,7 @@ export function useDissmissable<T extends HTMLElement | undefined>(
 ): Partial<DraggableProps> & { opacity?: number } {
   const [x, setX] = useState(0);
   const [opacity, setOpacity] = useState(1);
-  const onStop: DraggableEventHandler = ev => {
+  const onStop: DraggableEventHandler = () => {
     if (!ref?.current || !x) return;
     if (Math.abs(x) < ref.current.offsetWidth / 2) {
       setX(0);
@@ -17,7 +17,7 @@ export function useDissmissable<T extends HTMLElement | undefined>(
       onDismiss();
     }
   };
-  const onDrag: DraggableEventHandler = (ev, data) => {
+  const onDrag: DraggableEventHandler = (_ev, data) => {
     if (!ref?.current) return;
     setX(data.x || 0);
     setOpacity(1 - Math.abs(data.x) / ref.current.offsetWidth);
@@ -31,6 +31,6 @@ export function useDissmissable<T extends HTMLElement | undefined>(
     opacity,
     onDrag,
     onStop,
-    axis: "x",
+    axis: 'x',
   };
 }

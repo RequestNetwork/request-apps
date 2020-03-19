@@ -14,7 +14,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import SendIcon from "@material-ui/icons/Send";
 
 import { useConnector } from "../contexts/ConnectorContext";
-import { useDissmissable } from "../hooks/useDissmissable";
+import { useDissmissable } from "request-ui";
 import { useHubspotFeedback } from "../hooks/useHubspotFeedback";
 
 const useStyles = makeStyles(theme => ({

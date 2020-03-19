@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { InjectedConnector } from "@web3-react/injected-connector";
-import { useRequest } from "./RequestContext";
+
 import {
   WalletConnectConnector,
   URI_AVAILABLE,
@@ -11,7 +11,7 @@ import { useWeb3React } from "@web3-react/core";
 import { UserRejectedRequestError as UserRejectedRequestErrorInjected } from "@web3-react/injected-connector";
 import { usePrevious } from "../hooks/usePrevious";
 import { RequestLogicTypes } from "@requestnetwork/types";
-import { IParsedRequest } from "request-shared";
+import { IParsedRequest, useRequest } from "request-shared";
 
 interface IContext {
   /** name of the active connector */

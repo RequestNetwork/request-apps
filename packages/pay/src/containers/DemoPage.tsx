@@ -12,18 +12,14 @@ import {
   Fab,
   TextField,
   Slider,
-  ButtonGroup
+  ButtonGroup,
 } from "@material-ui/core";
 import SettingsIcon from "@material-ui/icons/Settings";
 import { PaymentPage, ErrorContainer } from "./PaymentPage";
 import { UnsupportedChainIdError, getWeb3ReactContext } from "@web3-react/core";
 import { NoEthereumProviderError } from "@web3-react/injected-connector";
 
-import {
-  RequestContext,
-  RequestStatus,
-  IParsedRequest
-} from "../contexts/RequestContext";
+import { RequestContext, RequestStatus, IParsedRequest } from "request-shared";
 import { Types } from "@requestnetwork/request-client.js";
 import { ConnectorContext } from "../contexts/ConnectorContext";
 import {
@@ -31,7 +27,7 @@ import {
   RequiresApprovalError,
   NotEnoughForGasError,
   NotEnoughForRequestError,
-  FiatRequestNotSupportedError
+  FiatRequestNotSupportedError,
 } from "../contexts/PaymentContext";
 import Draggable from "react-draggable";
 import Axios from "axios";
@@ -41,21 +37,21 @@ const useStyles = makeStyles(theme => ({
     position: "absolute",
     top: theme.spacing(2),
     right: theme.spacing(2),
-    zIndex: 10000
+    zIndex: 10000,
   },
   field: {
     display: "flex",
     marginBottom: "10px",
     marginTop: "20px",
-    justifyContent: "space-between"
-  }
+    justifyContent: "space-between",
+  },
 }));
 
 const currencies = {
   [Types.RequestLogic.CURRENCY.ERC20]: "DAI",
   [Types.RequestLogic.CURRENCY.BTC]: "BTC",
   [Types.RequestLogic.CURRENCY.ETH]: "ETH",
-  [Types.RequestLogic.CURRENCY.ISO4217]: "EUR"
+  [Types.RequestLogic.CURRENCY.ISO4217]: "EUR",
 };
 
 const paymentNetwork = {
@@ -64,22 +60,22 @@ const paymentNetwork = {
   [Types.RequestLogic.CURRENCY.ETH]:
     Types.Payment.PAYMENT_NETWORK_ID.ETH_INPUT_DATA,
   [Types.RequestLogic.CURRENCY.BTC]: "",
-  [Types.RequestLogic.CURRENCY.ISO4217]: ""
+  [Types.RequestLogic.CURRENCY.ISO4217]: "",
 };
 
 const extensionValues = {
   [Types.RequestLogic.CURRENCY.ERC20]: {
     paymentAddress: "0x000000000000000000000000000000000000000",
-    salt: "abcd"
+    salt: "abcd",
   },
   [Types.RequestLogic.CURRENCY.BTC]: {
-    paymentAddress: "1234"
+    paymentAddress: "1234",
   },
   [Types.RequestLogic.CURRENCY.ETH]: {
     paymentAddress: "0x000000000000000000000000000000000000000",
-    salt: "abcd"
+    salt: "abcd",
   },
-  [Types.RequestLogic.CURRENCY.ISO4217]: {}
+  [Types.RequestLogic.CURRENCY.ISO4217]: {},
 };
 
 const errors: Record<string, Error> = {
@@ -88,7 +84,7 @@ const errors: Record<string, Error> = {
   NotEnoughForGasError: new NotEnoughForGasError(),
   FiatRequestNotSupportedError: new FiatRequestNotSupportedError(),
   UnsupportedChainIdError: new UnsupportedChainIdError(4, [1]),
-  NoEthereumProviderError: new NoEthereumProviderError()
+  NoEthereumProviderError: new NoEthereumProviderError(),
 };
 const errorsDescriptions: Record<string, string> = {
   "": "None",
@@ -97,7 +93,7 @@ const errorsDescriptions: Record<string, string> = {
   RequiresApprovalError: "Approval",
   NotEnoughForRequestError: "Low Funds",
   NotEnoughForGasError: "Low Gas",
-  FiatRequestNotSupportedError: "Fiat (EUR ⬆)"
+  FiatRequestNotSupportedError: "Fiat (EUR ⬆)",
 };
 
 let reasons: Record<number, string> = {};
@@ -108,8 +104,8 @@ const getReason = async (length: number) => {
       params: {
         type: "meat-and-filler",
         sentences: length,
-        format: "text"
-      }
+        format: "text",
+      },
     });
     reasons[length] = res.data;
   }
@@ -136,17 +132,17 @@ const getRequest = async (state: IState) => {
           state.currencyType === Types.RequestLogic.CURRENCY.ERC20
             ? "0x995d6a8c21f24be1dd04e105dd0d83758343e258"
             : "",
-        network: "rinkeby"
+        network: "rinkeby",
       },
       expectedAmount: "100000",
       extensions: {
         ["anything"]: {
           type: "payment-network",
           id: paymentNetwork[state.currencyType] || "",
-          values: extensionValues[state.currencyType]
-        }
-      }
-    } as any
+          values: extensionValues[state.currencyType],
+        },
+      },
+    } as any,
   };
 };
 
@@ -182,12 +178,12 @@ const defaultState: IState = {
   currencyType: Types.RequestLogic.CURRENCY.ERC20,
   debug: false,
   broadcasting: false,
-  ens: true
+  ens: true,
 };
 
 const DemoSettings = ({
   state,
-  setState: set
+  setState: set,
 }: {
   state?: IState;
   setState: (state: Partial<IState>) => void;
@@ -216,7 +212,7 @@ const DemoSettings = ({
       const { error, ...loadedState } = JSON.parse(storedState);
       set({
         ...loadedState,
-        error: error && errors[error.name]
+        error: error && errors[error.name],
       });
     } else {
       set(defaultState);
@@ -327,12 +323,12 @@ const DemoSettings = ({
               marks={[
                 {
                   value: 0,
-                  label: "0"
+                  label: "0",
                 },
                 {
                   value: 20,
-                  label: "20"
-                }
+                  label: "20",
+                },
               ]}
               onChangeCommitted={(e, v) => set({ reasonLength: v as number })}
             />
@@ -350,12 +346,12 @@ const DemoSettings = ({
               marks={[
                 {
                   value: 0,
-                  label: "0"
+                  label: "0",
                 },
                 {
                   value: 5000,
-                  label: "5s"
-                }
+                  label: "5s",
+                },
               ]}
               valueLabelDisplay="auto"
               onChangeCommitted={(e, v) => set({ loadingTime: v as number })}
@@ -423,7 +419,7 @@ export default () => {
     if (state) {
       setState({
         ...state,
-        ...x
+        ...x,
       });
     } else {
       setState(x as IState);
@@ -495,7 +491,7 @@ export default () => {
             counterValue: "1.00",
             request,
             loading: !request,
-            setPending: () => {}
+            setPending: () => {},
           }}
         >
           <web3context.Provider
@@ -506,7 +502,7 @@ export default () => {
               active: state.active,
               deactivate: () => Promise.resolve(),
               account: "",
-              chainId: 1
+              chainId: 1,
             }}
           >
             <ConnectorContext.Provider
@@ -514,7 +510,7 @@ export default () => {
                 ready: true,
                 activateConnector: c => set({ connector: c }),
                 connectorName: state.connector,
-                providerName: ""
+                providerName: "",
               }}
             >
               <PaymentContext.Provider
@@ -525,7 +521,7 @@ export default () => {
                   pay: () => set({ paying: true }),
                   ready: true,
                   error: state.error,
-                  broadcasting: state.broadcasting
+                  broadcasting: state.broadcasting,
                 }}
               >
                 <ErrorContainer />

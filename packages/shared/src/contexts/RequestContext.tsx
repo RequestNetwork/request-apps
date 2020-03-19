@@ -11,9 +11,8 @@ import {
   Types,
 } from "@requestnetwork/request-client.js";
 
-import { IParsedRequest } from "request-shared";
-
 import { useRate } from "../hooks/useRate";
+import { IParsedRequest } from "..";
 
 interface IContext {
   /** true if first fetch is ongoing */

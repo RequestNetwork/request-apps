@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - master
-    paths:
-      - packages/app
+    # paths:
+    #   - packages/app
 
 jobs:
   build-deploy-staging:

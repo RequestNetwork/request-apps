@@ -23,7 +23,7 @@ jobs:
       - uses: benjlevesque/s3-sync-action@master
         env:
           CI: false
-          SOURCE_DIR: "./build"
+          SOURCE_DIR: "packages/app/build"
           AWS_REGION: eu-west-1
           AWS_S3_BUCKET: baguette-v2.request.network
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}

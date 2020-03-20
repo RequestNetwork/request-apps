@@ -1,5 +1,5 @@
-import React from "react";
-import { makeStyles, Container } from "@material-ui/core";
+import React, { useState } from "react";
+import { makeStyles } from "@material-ui/core";
 import { RButton } from "request-ui";
 import classnames from "classnames";
 
@@ -42,13 +42,21 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default () => {
+export default ({ connect }: { connect: () => Promise<void> }) => {
   const classes = useStyles();
-
+  const [connecting, setConnecting] = useState(false);
+  const click = () => {
+    setConnecting(true);
+    connect().finally(() => setConnecting(false));
+  };
   return (
     <RButton
       color="secondary"
-      className={classnames(classes.button, classes.animated)}
+      onClick={click}
+      loading={connecting}
+      className={classnames(classes.button, {
+        [classes.animated]: !connecting,
+      })}
     >
       Connect a wallet
     </RButton>

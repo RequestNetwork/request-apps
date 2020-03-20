@@ -16,9 +16,13 @@
     "@types/react-copy-to-clipboard": "^4.2.6",
     "@types/react-dom": "^16.9.0",
     "@types/yup": "^0.26.3",
+    "@web3-react/core": "^6.0.7",
+    "@web3-react/injected-connector": "^6.0.7",
+    "ethers": "^4.0.46",
     "formik": "^2.1.4",
     "react": "^16.13.0",
     "react-copy-to-clipboard": "^5.0.1",
+    "react-csv": "^2.0.1",
     "react-dom": "^16.13.0",
     "react-scripts": "3.4.0",
     "request-ui": "0.1.0",
@@ -46,5 +50,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/react-csv": "^1.1.1"
   }
 }

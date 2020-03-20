@@ -22,11 +22,13 @@ export interface IFormData {
 }
 
 export interface IProps {
-  error: string;
+  error?: string;
   onSubmit: (
     values: IFormData,
     formikActions: FormikHelpers<IFormData>
   ) => void;
+  account: string;
+  isPending?: boolean;
 }
 
 const useHeaderStyles = makeStyles(() => ({
@@ -41,9 +43,14 @@ const useHeaderStyles = makeStyles(() => ({
     display: "flex",
   },
 }));
-const Header = () => {
+
+const Header = ({ account }: { account: string }) => {
   const classes = useHeaderStyles();
   const theme = useTheme();
+  const displayName =
+    account.length <= 20
+      ? account
+      : `${account.slice(0, 10)}...${account.slice(-10)}`;
   return (
     <Box className={classes.container}>
       <RIcon width={56} height={60} />
@@ -74,7 +81,7 @@ const Header = () => {
             }}
           />
           <Box width={8} />
-          <Typography variant="body2">juliendevoir.eth</Typography>
+          <Typography variant="body2">{displayName}</Typography>
         </Box>
       </Box>
     </Box>
@@ -193,8 +200,10 @@ const Body = () => {
   );
 };
 
-const Footer = () => {
-  const { submitForm, isValid, values } = useFormikContext<IFormData>();
+const Footer = ({ isPending }: { isPending: boolean }) => {
+  const { submitForm, isValid, values, isSubmitting } = useFormikContext<
+    IFormData
+  >();
   return (
     <>
       <Spacer size={12} />
@@ -203,6 +212,8 @@ const Footer = () => {
         color="primary"
         fullWidth
         onClick={submitForm}
+        loading={isSubmitting || isPending}
+        direction={isPending ? "right" : "left"}
       >
         <Typography variant="caption">Create a request</Typography>
       </RButton>
@@ -230,7 +241,12 @@ export const schema = Yup.object().shape<IFormData>({
   currency: Yup.mixed().required("Required"),
 });
 
-export const CreateRequestForm = ({ error, onSubmit }: IProps) => {
+export const CreateRequestForm = ({
+  error,
+  onSubmit,
+  account,
+  isPending = false,
+}: IProps) => {
   return (
     <RContainer>
       <Spacer size={15} />
@@ -247,9 +263,9 @@ export const CreateRequestForm = ({ error, onSubmit }: IProps) => {
         }}
       >
         <>
-          <Header />
+          <Header account={account} />
           <Body />
-          <Footer />
+          <Footer isPending={isPending} />
         </>
       </Formik>
     </RContainer>

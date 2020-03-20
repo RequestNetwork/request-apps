@@ -1,11 +1,7 @@
 import React from "react";
-import { makeStyles, Box } from "@material-ui/core";
+import Box from "@material-ui/core/Box";
 import { RButton } from "request-ui";
 import MetamaskIcon from "../assets/img/metamask.png";
-
-const useStyles = makeStyles(theme => ({
-  container: {},
-}));
 
 const CombinedIcon = () => {
   return (
@@ -26,11 +22,12 @@ const CombinedIcon = () => {
 };
 
 export default ({ name }: { name: string }) => {
-  const classes = useStyles();
+  const displayName =
+    name.length <= 20 ? name : `${name.slice(0, 10)}...${name.slice(-10)}`;
 
   return (
     <RButton color="default" startIcon={<CombinedIcon />}>
-      {name}
+      {displayName}
     </RButton>
   );
 };

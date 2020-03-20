@@ -35,6 +35,10 @@ const useStyles = makeStyles(theme => ({
       },
     },
   },
+  notchedOutline: {
+    borderColor: "#E4E4E4 !important",
+    borderWidth: "1px !important",
+  },
   button: {
     borderTopLeftRadius: 0,
     borderBottomLeftRadius: 0,
@@ -68,6 +72,9 @@ export default ({ requestId }: { requestId: string }) => {
           value={`https://pay.request.network/${requestId}`}
           InputProps={{
             className: classes.inputBase,
+            classes: {
+              notchedOutline: classes.notchedOutline,
+            },
           }}
         />
         <CopyToClipboard

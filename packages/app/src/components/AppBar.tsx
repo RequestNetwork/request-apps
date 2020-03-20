@@ -48,7 +48,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export const RequestAppBar = () => {
+export const RequestAppBar = ({
+  account,
+  connect,
+}: {
+  account?: string | null;
+  connect: () => Promise<void>;
+}) => {
   const classes = useStyles();
 
   return (
@@ -85,8 +91,11 @@ export const RequestAppBar = () => {
             </NavLink>
           </Box>
           <Box>
-            {/* <ConnectButton /> */}
-            {<UserInfo name={"juliendevoir.eth"} />}
+            {account ? (
+              <UserInfo name={account} />
+            ) : (
+              <ConnectButton connect={connect} />
+            )}
           </Box>
         </Box>
       </Toolbar>

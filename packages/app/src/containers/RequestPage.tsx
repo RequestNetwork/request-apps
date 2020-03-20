@@ -1,8 +1,12 @@
 import React from "react";
 import { makeStyles, Typography } from "@material-ui/core";
+import { useWeb3React } from "@web3-react/core";
 import { RContainer, RequestView, Spacer, RButton } from "request-ui";
-import { IParsedRequest } from "request-shared";
+import { IParsedRequest, RequestProvider, useRequest } from "request-shared";
+
 import ShareRequest from "../components/ShareRequest";
+import Loading from "../components/Loading";
+import NotFoundPage from "./NotFoundPage";
 
 const useStyles = makeStyles(theme => ({
   cancel: {
@@ -16,40 +20,36 @@ const RequestActions = ({
   account,
 }: {
   request: IParsedRequest;
-  account: string;
+  account?: string | null;
 }) => {
   const classes = useStyles();
-  if (account === request.payee) {
+  if (account && account === request.payee) {
     return (
       <RButton color="default" className={classes.cancel}>
         <Typography variant="h4">Cancel request</Typography>
       </RButton>
     );
   }
-  if (account === request.payer) {
+  if (account && account === request.payer) {
     return (
       <RButton color="default" className={classes.cancel}>
-        <Typography variant="h4">>Decline request</Typography>
+        <Typography variant="h4">Decline request</Typography>
       </RButton>
     );
   }
   return <></>;
 };
 
-export default () => {
-  const request: IParsedRequest = {
-    payee: "brice.eth",
-    timestamp: new Date(),
-    status: "open",
-    amount: 0.01,
-    currency: "ETH",
-    reason: "Morning croissants",
-    requestId: "0xabcd",
-    paymentAddress: "",
-    raw: {} as any,
-    currencyType: "ERC20" as any,
-  };
+export const RequestPage = () => {
+  const { account } = useWeb3React();
 
+  const { request, loading } = useRequest();
+  if (loading) {
+    return <Loading />;
+  }
+  if (!request) {
+    return <NotFoundPage />;
+  }
   return (
     <RContainer>
       <Spacer size={15} />
@@ -69,7 +69,15 @@ export default () => {
       <Spacer size={12} />
       <ShareRequest requestId={request.requestId} />
       <Spacer size={11} />
-      <RequestActions request={request} account={request.payee} />
+      <RequestActions request={request} account={account} />
     </RContainer>
+  );
+};
+
+export default () => {
+  return (
+    <RequestProvider>
+      <RequestPage />
+    </RequestProvider>
   );
 };

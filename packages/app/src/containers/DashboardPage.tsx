@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React from "react";
 import Loading from "../components/Loading";
 import NotLoggedPage from "./NotLoggedPage";
 import { useWeb3React } from "@web3-react/core";
@@ -8,12 +8,9 @@ import { Spacer } from "request-ui";
 import { CSVLink } from "react-csv";
 import { makeStyles, Box } from "@material-ui/core";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
-import {
-  RequestListProvider,
-  useRequestList,
-} from "../contexts/RequestListContext";
+import { useRequestList } from "../contexts/RequestListContext";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   csv: {
     fontWeight: 600,
     fontSize: 14,

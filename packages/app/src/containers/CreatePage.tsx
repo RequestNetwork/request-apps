@@ -8,7 +8,6 @@ import { useWeb3React } from "@web3-react/core";
 
 import { CreateRequestForm, IFormData } from "../components/CreateRequest";
 import Loading from "../components/Loading";
-import NotLoggedPage from "./NotLoggedPage";
 import { useConnectedUser } from "../contexts/UserContext";
 
 export default () => {
@@ -66,12 +65,9 @@ export default () => {
   if (web3Loading) {
     return <Loading />;
   }
-  if (!account || !chainId) {
-    return <NotLoggedPage />;
-  }
   return (
     <CreateRequestForm
-      account={account}
+      account={account || undefined}
       error={error}
       onSubmit={submit}
       isPending={!!requestId}

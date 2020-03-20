@@ -1,6 +1,6 @@
 import { Web3Provider } from "ethers/providers";
-import React, { useEffect } from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import React from "react";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { ErrorBoundary, theme } from "request-ui";
 
 import { CssBaseline, makeStyles, ThemeProvider } from "@material-ui/core";
@@ -71,6 +71,9 @@ const App: React.FC = () => {
                 <AutoConnect />
                 <div className={classes.paper}>
                   <Switch>
+                    <Route path="/" exact>
+                      <Redirect to="/create" />
+                    </Route>
                     <Route path="/dashboard" component={DashboardPage} />
                     <Route path="/create" component={CreatePage} />
                     <Route path="/:id([0-9a-fA-F]+)" component={RequestPage} />

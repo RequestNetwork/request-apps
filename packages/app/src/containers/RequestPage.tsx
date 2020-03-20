@@ -54,7 +54,7 @@ export const RequestPage = () => {
     <RContainer>
       <Spacer size={15} />
       <RequestView
-        payee={request.payee}
+        payee={request.payeeName || request.payee}
         createdDate={request.timestamp}
         status={request.status}
         amount={request.amount.toLocaleString("en-US", {
@@ -70,6 +70,7 @@ export const RequestPage = () => {
       <ShareRequest requestId={request.requestId} />
       <Spacer size={11} />
       <RequestActions request={request} account={account} />
+      <Spacer size={12} />
     </RContainer>
   );
 };

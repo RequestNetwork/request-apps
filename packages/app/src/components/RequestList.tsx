@@ -23,12 +23,12 @@ const Amount = ({
 }: {
   amount: number;
   currency: string;
-  role: "payee" | "payer";
+  role?: "payee" | "payer";
 }) => {
   return (
     <Box
       display="flex"
-      color={role === "payee" ? "#00cc8e" : "#ce2e2e"}
+      color={role === "payee" ? "#00cc8e" : role === "payer" ? "#ce2e2e" : ""}
       flex={1}
       textAlign="right"
     >
@@ -44,7 +44,10 @@ const Amount = ({
 
 const Row = React.memo(
   ({ request, account }: { request: IParsedRequest; account: string }) => {
-    const isPayee = account && account === request.payee;
+    const isPayee =
+      account && account.toLowerCase() === request.payee?.toLowerCase();
+    const isPayer =
+      account && account.toLowerCase() === request.payer?.toLowerCase();
     return (
       <Box
         display="flex"
@@ -61,7 +64,7 @@ const Row = React.memo(
           <Amount
             amount={request.amount}
             currency={request.currency}
-            role={isPayee ? "payee" : "payer"}
+            role={isPayee ? "payee" : isPayer ? "payer" : undefined}
           />
         </Box>
         <Box flex={2 / 10}>

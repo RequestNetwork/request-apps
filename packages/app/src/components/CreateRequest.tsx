@@ -27,7 +27,7 @@ export interface IProps {
     values: IFormData,
     formikActions: FormikHelpers<IFormData>
   ) => void;
-  account: string;
+  account?: string;
   isPending?: boolean;
 }
 
@@ -42,15 +42,24 @@ const useHeaderStyles = makeStyles(() => ({
     justifyContent: "space-between",
     display: "flex",
   },
+  dot: {
+    height: 18,
+    width: 18,
+    backgroundColor: ({ account }: { account?: string }) =>
+      account ? "#00CC8E" : "#DE1C22",
+    borderRadius: "50%",
+    display: "inline-block",
+  },
 }));
 
-const Header = ({ account }: { account: string }) => {
-  const classes = useHeaderStyles();
+const Header = ({ account }: { account?: string }) => {
+  const classes = useHeaderStyles({ account });
   const theme = useTheme();
-  const displayName =
-    account.length <= 20
+  const displayName = account
+    ? account.length <= 20
       ? account
-      : `${account.slice(0, 10)}...${account.slice(-10)}`;
+      : `${account.slice(0, 10)}...${account.slice(-10)}`
+    : undefined;
   return (
     <Box className={classes.container}>
       <RIcon width={56} height={60} />
@@ -71,17 +80,11 @@ const Header = ({ account }: { account: string }) => {
         </Box>
         <Box height={8} />
         <Box color="#656565" display="flex" alignItems="center">
-          <div
-            style={{
-              height: 18,
-              width: 18,
-              backgroundColor: "#00CC8E",
-              borderRadius: "50%",
-              display: "inline-block",
-            }}
-          />
+          <Box className={classes.dot} />
           <Box width={8} />
-          <Typography variant="body2">{displayName}</Typography>
+          <Typography variant="body2">
+            {displayName ? displayName : "no wallet connected"}
+          </Typography>
         </Box>
       </Box>
     </Box>
@@ -200,7 +203,13 @@ const Body = () => {
   );
 };
 
-const Footer = ({ isPending }: { isPending: boolean }) => {
+const Footer = ({
+  isPending,
+  account,
+}: {
+  isPending: boolean;
+  account?: string;
+}) => {
   const { submitForm, isValid, values, isSubmitting } = useFormikContext<
     IFormData
   >();
@@ -208,7 +217,7 @@ const Footer = ({ isPending }: { isPending: boolean }) => {
     <>
       <Spacer size={12} />
       <RButton
-        disabled={!values.amount || !isValid}
+        disabled={!values.amount || !isValid || !account}
         color="primary"
         fullWidth
         onClick={submitForm}
@@ -265,7 +274,7 @@ export const CreateRequestForm = ({
         <>
           <Header account={account} />
           <Body />
-          <Footer isPending={isPending} />
+          <Footer account={account} isPending={isPending} />
         </>
       </Formik>
     </RContainer>

@@ -4,10 +4,10 @@ on:
   push:
     branches:
       - master
-    paths:
-      - packages/pay
-      - packages/shared
-      - packages/request-ui
+    # paths:
+    #   - packages/pay
+    #   - packages/shared
+    #   - packages/request-ui
 
 jobs:
   build-deploy-staging:

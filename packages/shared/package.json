@@ -14,6 +14,8 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@requestnetwork/types": "0.12.0"
+    "@requestnetwork/request-client.js": "^0.13.0",
+    "@requestnetwork/types": "0.12.0",
+    "@requestnetwork/web3-signature": "^0.4.9"
   }
 }

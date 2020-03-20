@@ -98,7 +98,6 @@ export const theme = createMuiTheme({
         minWidth: 158,
         minHeight: 56,
         overflow: 'hidden',
-        border: 0,
       },
       label: {
         fontWeight: 600,
@@ -122,6 +121,7 @@ export const theme = createMuiTheme({
         '&:hover': {
           boxShadow: '0px 5px 5px rgba(0, 30, 38, 0.3)',
         },
+        border: 0,
       },
       containedSecondary: {
         padding: '20px 32px',
@@ -129,6 +129,7 @@ export const theme = createMuiTheme({
         '&:hover': {
           boxShadow: '0px 5px 5px rgba(0, 30, 38, 0.3)',
         },
+        border: 0,
       },
     },
     MuiTypography: {},

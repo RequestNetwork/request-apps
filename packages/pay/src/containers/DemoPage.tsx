@@ -438,8 +438,8 @@ export default () => {
   const simulateApprove = async () => {
     await sleep(2500);
     set({ broadcasting: true, approving: true });
-    // await sleep(3000);
-    // set({ broadcasting: false, approving: false, error: undefined });
+    await sleep(3000);
+    set({ broadcasting: false, approving: false, error: undefined });
   };
 
   useEffect(() => {

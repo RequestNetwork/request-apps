@@ -63,7 +63,7 @@ const ApproveAction = ({ approve }: { approve: () => void }) => {
       fullWidth
       className={classes.approval}
     >
-      Approve
+      <Typography variant="caption">Approve</Typography>
     </RButton>
   );
 };

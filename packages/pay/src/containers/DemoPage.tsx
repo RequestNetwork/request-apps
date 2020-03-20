@@ -13,6 +13,8 @@ import {
   TextField,
   Slider,
   ButtonGroup,
+  ThemeProvider,
+  createMuiTheme,
 } from "@material-ui/core";
 import SettingsIcon from "@material-ui/icons/Settings";
 import { PaymentPage, ErrorContainer } from "./PaymentPage";
@@ -181,6 +183,8 @@ const defaultState: IState = {
   ens: true,
 };
 
+const defaultTheme = createMuiTheme({});
+
 const DemoSettings = ({
   state,
   setState: set,
@@ -238,7 +242,7 @@ const DemoSettings = ({
     return <></>;
   }
   return (
-    <>
+    <ThemeProvider theme={defaultTheme}>
       <Dialog open={open} onClose={() => setOpen(false)} fullWidth={true}>
         <DialogTitle>Demo Settings</DialogTitle>
         <DialogContent>
@@ -396,7 +400,7 @@ const DemoSettings = ({
           <SettingsIcon />
         </Fab>
       </Draggable>
-    </>
+    </ThemeProvider>
   );
 };
 

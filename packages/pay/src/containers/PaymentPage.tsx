@@ -74,11 +74,11 @@ export const ErrorContainer = () => {
     return (
       <>
         <ErrorMessage error={error} request={request} />
-        <Spacer size={4} />
+        <Spacer size={4} top />
       </>
     );
   }
-  return <Spacer size={15} xs={5} />;
+  return <Spacer top={true} size={15} xs={5} />;
 };
 
 export const PaymentPage = () => {
@@ -145,6 +145,7 @@ export const PaymentPage = () => {
   const showFooter =
     !mobile ||
     request.status === "paid" ||
+    request.status === "canceled" ||
     (request.status === "pending" && !paying);
   return (
     <RContainer>

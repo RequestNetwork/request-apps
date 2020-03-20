@@ -38,7 +38,6 @@ const useHelpStyles = makeStyles(theme => ({
     boxSizing: 'border-box',
     color: 'rgba(0, 0, 0, 0.87)',
     position: 'relative',
-    paddingBottom: 30,
     '&::after': {
       content: "''",
       position: 'absolute',

@@ -163,7 +163,10 @@ export default () => {
     return <></>;
   }
 
-  if (request.status === "canceled") {
+  if (
+    request.status === "canceled" ||
+    (request.status === "pending" && !paying)
+  ) {
     return <></>;
   }
 

@@ -107,7 +107,6 @@ export const theme = createMuiTheme({
       contained: {
         padding: '16px 24px',
         backgroundColor: '#fff',
-        color: '#050B20',
         border: '1px solid #E4E4E4',
         boxSizing: 'border-box',
         borderRadius: 4,
@@ -119,7 +118,16 @@ export const theme = createMuiTheme({
         minWidth: 280,
         height: 80,
         '&:hover': {
-          boxShadow: '0px 5px 5px rgba(0, 30, 38, 0.3)',
+          boxShadow: '0px 5px 5px rgba(0, 30, 38, 0.3) !important',
+          backgroundColor: '#001E26',
+        },
+        '& .MuiTouchRipple-rippleVisible': {
+          backgroundColor: '#050B20',
+          // animation: 'unset',
+          // opacity: 0,
+          '& .MuiTouchRipple-child': {
+            display: 'none',
+          },
         },
         border: 0,
       },

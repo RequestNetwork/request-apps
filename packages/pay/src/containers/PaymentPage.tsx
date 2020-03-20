@@ -44,10 +44,8 @@ const useStyles = makeStyles(theme => ({
     width: "100%",
     position: "sticky",
     bottom: 0,
-    background: "white",
     [theme.breakpoints.up("sm")]: {
       position: "relative",
-      background: "unset",
     },
   },
 }));

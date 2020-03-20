@@ -7,6 +7,7 @@ const useStyles = makeStyles(() => ({
     position: 'relative',
     padding: '2rem',
     overflow: 'hidden',
+    transform: 'scale(0.5)',
   },
   '@global': {
     '@keyframes arrow-animation': {

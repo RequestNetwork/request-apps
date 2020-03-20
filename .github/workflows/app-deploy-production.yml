@@ -1,4 +1,4 @@
-name: "[Pay] Deploy to Production"
+name: "[App] Deploy to Production"
 
 on:
   push:
@@ -16,15 +16,15 @@ jobs:
           node-version: 10.x
       - name: yarn install & build
         run: |
-          yarn 
+          yarn
           yarn workspace request-shared build
           yarn workspace request-ui build
-          yarn workspace pay build
+          yarn workspace app build
       - uses: benjlevesque/s3-sync-action@master
         env:
           CI: false
           SOURCE_DIR: "./build"
           AWS_REGION: eu-west-1
-          AWS_S3_BUCKET: baguette-pay.request.network
+          AWS_S3_BUCKET: baguette-v2.request.network
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

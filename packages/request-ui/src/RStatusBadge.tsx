@@ -42,7 +42,10 @@ const useHelpStyles = makeStyles(theme => ({
       content: "''",
       position: 'absolute',
       top: 'calc(100% - 3px)',
-      left: '20px',
+      left: '60px',
+      [theme.breakpoints.up('sm')]: {
+        left: '20px',
+      },
       height: '7px',
       width: '7px',
       backgroundColor: theme.palette.common.white,
@@ -75,6 +78,8 @@ const HelpIcon = () => {
         popper: classes.popper,
       }}
       placement="top-start"
+      enterTouchDelay={0}
+      leaveTouchDelay={2000}
     >
       <ContactSupportIcon className={classes.helpIcon} />
     </Tooltip>

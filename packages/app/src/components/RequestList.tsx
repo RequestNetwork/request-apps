@@ -58,8 +58,16 @@ const Row = React.memo(
         <Box flex={1 / 10}>
           <Moment format="YYYY/MM/DD">{request.timestamp}</Moment>
         </Box>
-        <Box flex={2 / 10}>{short(request.payeeName || request.payee)}</Box>
-        <Box flex={2 / 10}>{short(request.payerName || request.payer)}</Box>
+        <Box flex={2 / 10}>
+          <Typography variant={isPayee ? "h5" : "body2"}>
+            {short(request.payeeName || request.payee)}
+          </Typography>
+        </Box>
+        <Box flex={2 / 10}>
+          <Typography variant={isPayer ? "h5" : "body2"}>
+            {short(request.payerName || request.payer)}
+          </Typography>
+        </Box>
         <Box flex={1 / 10} display="flex">
           <Amount
             amount={request.amount}

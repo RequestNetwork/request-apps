@@ -27,7 +27,12 @@ export const listRequests = async (
   });
   return Promise.all(
     requests.map(request =>
-      parseRequest(request.requestId, request.getData(), false)
+      parseRequest(
+        request.requestId,
+        request.getData(),
+        network as string,
+        false
+      )
     )
   );
 };

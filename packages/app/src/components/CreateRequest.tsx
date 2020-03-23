@@ -13,7 +13,14 @@ import * as Yup from "yup";
 import { Skeleton } from "@material-ui/lab";
 import WalletAddressValidator from "wallet-address-validator";
 
-import { RIcon, RContainer, Spacer, RAlert, RButton } from "request-ui";
+import {
+  RIcon,
+  RContainer,
+  Spacer,
+  RAlert,
+  RButton,
+  TestnetWarning,
+} from "request-ui";
 import Dot from "./Dot";
 
 export interface IFormData {
@@ -276,8 +283,9 @@ export const CreateRequestForm = ({
   return (
     <RContainer>
       <Spacer size={15} />
-      {error && <RAlert severity="error" message={error} />}
+      {/* {error && <RAlert severity="error" message={error} />} */}
 
+      {network !== 1 && <TestnetWarning />}
       <Formik<IFormData>
         validationSchema={schema}
         onSubmit={onSubmit}

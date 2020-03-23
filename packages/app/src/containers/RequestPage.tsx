@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { makeStyles, Typography } from "@material-ui/core";
+import { makeStyles, Typography, Box, ThemeProvider } from "@material-ui/core";
 import { useWeb3React } from "@web3-react/core";
 import {
   RContainer,
@@ -7,6 +7,7 @@ import {
   Spacer,
   RButton,
   RequestSkeleton,
+  TestnetWarning,
 } from "request-ui";
 import {
   IParsedRequest,
@@ -97,6 +98,7 @@ export const RequestPage = () => {
   return (
     <RContainer>
       <Spacer size={15} />
+      {chainId !== 1 && <TestnetWarning />}
       <RequestView
         payee={request.payeeName || request.payee}
         createdDate={request.timestamp}

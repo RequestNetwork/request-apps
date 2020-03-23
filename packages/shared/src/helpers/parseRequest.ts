@@ -9,6 +9,7 @@ import { getEnsName } from "./getEnsName";
 export const parseRequest = async (
   requestId: string,
   data: Types.IRequestData,
+  network: string,
   pending: boolean
 ): Promise<IParsedRequest> => {
   const amount = Number(
@@ -77,5 +78,6 @@ export const parseRequest = async (
     payer: data.payer?.value?.toLowerCase() || undefined,
     payerName,
     raw: data,
+    network,
   };
 };

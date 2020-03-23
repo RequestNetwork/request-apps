@@ -16,6 +16,7 @@ const useStyles = makeStyles<Theme, { severity: Severity }>({
     left: 0,
     borderRadius: 0,
     width: '100%',
+    padding: '0 18px',
   },
 });
 

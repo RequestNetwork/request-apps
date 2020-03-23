@@ -21,6 +21,7 @@ export interface IParsedRequest {
   payeeName?: string;
   payerName?: string;
   raw: ClientTypes.IRequestData;
+  network: string;
 }
 
 export * from "./contexts/RequestContext";

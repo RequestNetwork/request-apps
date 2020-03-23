@@ -1,37 +1,18 @@
 import React from 'react';
-import { Box, Hidden, makeStyles } from '@material-ui/core';
+import { Box, Hidden } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
-  top: {
-    background: 'linear-gradient(-26deg,#ffffff 50%,#FAFAFA 0%)',
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      background: '#FAFAFA',
-    },
-  },
-}));
-
-export const Spacer = ({
-  size = 1,
-  top,
-  xs,
-}: {
-  size?: number;
-  xs?: number;
-  top?: boolean;
-}) => {
-  const classes = useStyles();
+export const Spacer = ({ size = 1, xs }: { size?: number; xs?: number }) => {
   if (xs) {
     return (
       <>
         <Hidden xsDown>
-          <Spacer size={size} top={top} />
+          <Spacer size={size} />
         </Hidden>
         <Hidden smUp>
-          <Spacer size={xs} top={top} />
+          <Spacer size={xs} />
         </Hidden>
       </>
     );
   }
-  return <Box height={size * 4} className={top ? classes.top : ''} />;
+  return <Box height={size * 4} />;
 };

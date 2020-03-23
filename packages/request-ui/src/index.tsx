@@ -16,3 +16,4 @@ export * from './Spacer';
 export * from './ErrorBoundary';
 
 export * from './hooks';
+export * from './TestnetWarning';

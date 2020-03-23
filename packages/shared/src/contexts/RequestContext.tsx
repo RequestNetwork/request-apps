@@ -35,7 +35,7 @@ export const RequestContext = React.createContext<IContext | null>(null);
 const loadRequest = async (
   requestId: string,
   network?: string
-): Promise<Request | null> => {
+): Promise<{ network: string; request: Request } | null> => {
   if (!network) {
     return (
       (await loadRequest(requestId, "mainnet")) ||
@@ -51,7 +51,10 @@ const loadRequest = async (
             : "https://gateway.request.network",
       },
     });
-    return await rn.fromRequestId(requestId);
+    return {
+      network,
+      request: await rn.fromRequestId(requestId),
+    };
   } catch (error) {
     return null;
   }
@@ -73,9 +76,14 @@ export const RequestProvider: React.FC = ({ children }) => {
   // load request and handle pending state change.
   useEffect(() => {
     if (id) {
-      loadRequest(id).then(request => {
-        if (request) {
-          parseRequest(request.requestId, request.getData(), pending)
+      loadRequest(id).then(result => {
+        if (result) {
+          parseRequest(
+            result.request.requestId,
+            result.request.getData(),
+            result.network,
+            pending
+          )
             .then(setParsedRequest)
             .then(() => setLoading(false));
         } else {

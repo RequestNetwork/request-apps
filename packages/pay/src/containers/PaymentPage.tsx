@@ -12,6 +12,7 @@ import {
   RSpinner,
   RContainer,
   RequestSkeleton,
+  TestnetWarning,
 } from "request-ui";
 
 import Feedback from "../components/Feedback";
@@ -59,23 +60,48 @@ const WrappedSpinner = () => {
   );
 };
 
+const useErrorContainerStyles = makeStyles(theme => ({
+  container: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    flexDirection: "column",
+    background: "linear-gradient(-26deg,#ffffff 50%,#FAFAFA 0%)",
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+      background: "#FAFAFA",
+    },
+  },
+}));
+
 export const ErrorContainer = () => {
   const mobile = useMobile();
   const { error } = usePayment();
   const { request } = useRequest();
+  const classes = useErrorContainerStyles();
 
   const requiresApproval = error instanceof RequiresApprovalError;
   const showErrorAtTop = !requiresApproval || mobile;
 
   if (request?.status === "open" && error && showErrorAtTop) {
     return (
-      <>
+      <Box className={classes.container}>
         <ErrorMessage error={error} request={request} />
-        <Spacer size={4} top />
-      </>
+        <Spacer size={4} />
+        <RContainer>
+          {request && request.network !== "mainnet" && <TestnetWarning />}
+        </RContainer>
+      </Box>
     );
   }
-  return <Spacer top={true} size={15} xs={5} />;
+  return (
+    <Box className={classes.container}>
+      <RContainer>
+        <Spacer size={15} xs={5} />
+        {request && request.network !== "mainnet" && <TestnetWarning />}
+      </RContainer>
+    </Box>
+  );
 };
 
 export const PaymentPage = () => {
@@ -140,7 +166,6 @@ export const PaymentPage = () => {
   return (
     <RContainer>
       <Feedback open={feedbackOpen} onClose={() => setFeedbackOpen(false)} />
-
       {request ? (
         <RequestView
           amount={request.amount.toLocaleString("en-US", {

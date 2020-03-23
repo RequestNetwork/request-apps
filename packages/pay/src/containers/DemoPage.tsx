@@ -114,7 +114,7 @@ const getReason = async (length: number) => {
   return reasons[length];
 };
 
-const getRequest = async (state: IState) => {
+const getRequest = async (state: IState): Promise<IParsedRequest> => {
   return {
     requestId: "0x000000000000000000000000000000000000000",
     amount: Number(state.amount),
@@ -145,6 +145,7 @@ const getRequest = async (state: IState) => {
         },
       },
     } as any,
+    network: state.testnet ? "rinkeby" : "mainnet",
   };
 };
 
@@ -164,6 +165,7 @@ interface IState {
   debug: boolean;
   broadcasting: boolean;
   ens: boolean;
+  testnet: boolean;
 }
 
 const defaultState: IState = {
@@ -181,6 +183,7 @@ const defaultState: IState = {
   debug: false,
   broadcasting: false,
   ens: true,
+  testnet: true,
 };
 
 const defaultTheme = createMuiTheme({});
@@ -383,6 +386,14 @@ const DemoSettings = ({
               color="primary"
               checked={state.ens}
               onChange={() => set({ ens: !state.ens })}
+            />
+          </Box>
+          <Box className={classes.field} alignItems="center">
+            <FormLabel>Testnet</FormLabel>
+            <Switch
+              color="primary"
+              checked={state.testnet}
+              onChange={() => set({ testnet: !state.testnet })}
             />
           </Box>
         </DialogContent>

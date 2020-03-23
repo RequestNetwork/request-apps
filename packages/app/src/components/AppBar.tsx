@@ -82,13 +82,6 @@ export const RequestAppBar = ({
             >
               <Typography variant="h4">Create a request</Typography>
             </NavLink>
-            <NavLink
-              activeClassName={classes.active}
-              className={classes.link}
-              to="/invoice"
-            >
-              <Typography variant="h4">Create an invoice</Typography>
-            </NavLink>
           </Box>
           <Box>
             {account ? (

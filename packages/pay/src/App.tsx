@@ -16,8 +16,8 @@ const useStyles = makeStyles(theme => ({
     alignItems: "center",
     justifyContent: "center",
     minHeight: "100%",
-    maxWidth: "100vw"
-  }
+    maxWidth: "100vw",
+  },
 }));
 
 const App: React.FC = () => {

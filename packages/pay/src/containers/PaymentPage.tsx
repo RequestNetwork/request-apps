@@ -28,6 +28,8 @@ import { usePrevious } from "../hooks/usePrevious";
 import { useMobile } from "request-ui";
 import ErrorPage from "./ErrorPage";
 import { ErrorMessage } from "../components/ErrorMessage";
+import { useEagerConnect } from "../hooks/useEagerConnect";
+import { useInactiveListener } from "../hooks/useInactiveListnerer";
 
 export const RequestNotFound = () => {
   return (
@@ -210,12 +212,20 @@ export const PaymentPage = () => {
   );
 };
 
+const AutoConnect = () => {
+  const tried = useEagerConnect();
+  useInactiveListener(!tried);
+
+  return <></>;
+};
+
 export default () => {
   return (
     <RequestProvider>
       <Web3ReactProvider getLibrary={provider => new Web3Provider(provider)}>
         <ConnectorProvider>
           <PaymentProvider>
+            <AutoConnect />
             <ErrorContainer />
             <PaymentPage />
           </PaymentProvider>

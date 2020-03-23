@@ -12,6 +12,7 @@ export const RFooter = () => {
       alignItems="center"
       flex={1}
       justifyContent="flex-end"
+      color="text.secondary"
     >
       <Box display="flex" flexDirection="row">
         <Typography variant="caption">Powered by</Typography>

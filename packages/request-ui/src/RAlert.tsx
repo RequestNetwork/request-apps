@@ -4,7 +4,7 @@ import WarningRoundedIcon from '@material-ui/icons/WarningRounded';
 import ErrorRoundedIcon from '@material-ui/icons/ErrorRounded';
 import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
 import InfoRoundedIcon from '@material-ui/icons/InfoRounded';
-import { makeStyles, Theme } from '@material-ui/core';
+import { makeStyles, Theme, Box } from '@material-ui/core';
 import { alertColors } from './colors';
 
 export type Severity = 'success' | 'info' | 'warning' | 'error';
@@ -41,7 +41,7 @@ export const RAlert = ({
       color={severity}
       className={classes.alert}
     >
-      {message}
+      <Box color="text.primary">{message}</Box>
     </Alert>
   );
 };

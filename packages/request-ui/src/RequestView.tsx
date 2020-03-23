@@ -105,20 +105,24 @@ export const RequestView = ({
       <Box className={classes.header} color="">
         <Typography variant="h5">Request for payment from</Typography>
         <Spacer />
-        <Typography variant="caption">{payee}</Typography>
+        <Box color="text.secondary">
+          <Typography variant="caption">{payee}</Typography>
+        </Box>
       </Box>
       <Box className={classes.body}>
-        <Typography variant="body2">
-          {paidDate ? (
-            <>
-              Paid on <Moment format="LL">{paidDate}</Moment>{' '}
-            </>
-          ) : (
-            <>
-              Created on <Moment format="LL">{createdDate}</Moment>{' '}
-            </>
-          )}
-        </Typography>
+        <Box color="text.secondary">
+          <Typography variant="body2">
+            {paidDate ? (
+              <>
+                Paid on <Moment format="LL">{paidDate}</Moment>{' '}
+              </>
+            ) : (
+              <>
+                Created on <Moment format="LL">{createdDate}</Moment>{' '}
+              </>
+            )}
+          </Typography>
+        </Box>
         <Spacer size={4} />
         <RStatusBadge status={status} />
         <Spacer size={3} />
@@ -127,14 +131,16 @@ export const RequestView = ({
         </Typography>
 
         {counterValue && (
-          <Typography variant="body2">
-            {counterCurrency} {counterValue}
-          </Typography>
+          <Box color="text.secondary">
+            <Typography variant="body2">
+              {counterCurrency} {counterValue}
+            </Typography>
+          </Box>
         )}
       </Box>
 
       {reason && (
-        <Box className={classes.footer}>
+        <Box className={classes.footer} color="text.secondary">
           <CommentIcon />
           <Spacer />
           <Typography variant="caption">{reason}</Typography>

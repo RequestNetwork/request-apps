@@ -5,7 +5,7 @@ import { useWeb3React } from "@web3-react/core";
 
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import { useConnector } from "../contexts/ConnectorContext";
-import { makeStyles, Typography } from "@material-ui/core";
+import { makeStyles, Typography, Box } from "@material-ui/core";
 import { Types } from "@requestnetwork/request-client.js";
 import { getBtcPaymentUrl } from "@requestnetwork/payment-processor";
 import { useMobile } from "request-ui";
@@ -85,14 +85,15 @@ const ConnectAction = ({
       color="default"
       onClick={web3 ? activate : mobile ? redirectMetamask : installMetamask}
     >
-      {/* TODO color body2 */}
-      <Typography variant="h4">
-        {web3
-          ? "Pay with Metamask"
-          : mobile
-          ? "Open with Metamask"
-          : "Install Metamask"}
-      </Typography>
+      <Box color="text.primary">
+        <Typography variant="h4">
+          {web3
+            ? "Pay with Metamask"
+            : mobile
+            ? "Open with Metamask"
+            : "Install Metamask"}
+        </Typography>
+      </Box>
     </RButton>
   );
 };
@@ -109,8 +110,9 @@ const ReceiptLink = (props: {
       startIcon={<ArrowDownward />}
       color="default"
     >
-      {/* TODO color="body2" */}
-      <Typography variant="h5">Download PDF receipt</Typography>
+      <Box color="text.primary">
+        <Typography variant="h5">Download PDF receipt</Typography>
+      </Box>
     </RButton>
   );
 };

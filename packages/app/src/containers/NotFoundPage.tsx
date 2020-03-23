@@ -4,7 +4,7 @@ import ErrorPage from "./ErrorPage";
 export default () => {
   return (
     <ErrorPage
-      topText="This page does not exist!"
+      topText="404 not found."
       bottomText="Please double check your url."
     />
   );

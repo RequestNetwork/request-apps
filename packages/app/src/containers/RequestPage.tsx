@@ -1,11 +1,16 @@
 import React from "react";
 import { makeStyles, Typography } from "@material-ui/core";
 import { useWeb3React } from "@web3-react/core";
-import { RContainer, RequestView, Spacer, RButton } from "request-ui";
+import {
+  RContainer,
+  RequestView,
+  Spacer,
+  RButton,
+  RequestSkeleton,
+} from "request-ui";
 import { IParsedRequest, RequestProvider, useRequest } from "request-shared";
 
 import ShareRequest from "../components/ShareRequest";
-import Loading from "../components/Loading";
 import NotFoundPage from "./NotFoundPage";
 
 const useStyles = makeStyles(theme => ({
@@ -45,7 +50,12 @@ export const RequestPage = () => {
 
   const { request, loading } = useRequest();
   if (loading) {
-    return <Loading />;
+    return (
+      <RContainer>
+        <Spacer size={15} />
+        <RequestSkeleton />
+      </RContainer>
+    );
   }
   if (!request) {
     return <NotFoundPage />;

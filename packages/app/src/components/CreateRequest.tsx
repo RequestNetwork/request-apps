@@ -10,6 +10,7 @@ import {
 } from "@material-ui/core";
 import Moment from "react-moment";
 import * as Yup from "yup";
+import { Skeleton } from "@material-ui/lab";
 import WalletAddressValidator from "wallet-address-validator";
 
 import { RIcon, RContainer, Spacer, RAlert, RButton } from "request-ui";
@@ -29,6 +30,7 @@ export interface IProps {
   ) => void;
   account?: string;
   isPending?: boolean;
+  loading: boolean;
 }
 
 const useHeaderStyles = makeStyles(() => ({
@@ -52,7 +54,13 @@ const useHeaderStyles = makeStyles(() => ({
   },
 }));
 
-const Header = ({ account }: { account?: string }) => {
+const Header = ({
+  account,
+  loading,
+}: {
+  account?: string;
+  loading: boolean;
+}) => {
   const classes = useHeaderStyles({ account });
   const theme = useTheme();
   const displayName = account
@@ -79,12 +87,23 @@ const Header = ({ account }: { account?: string }) => {
           <Typography variant="h5">Your wallet</Typography>
         </Box>
         <Box height={8} />
+
         <Box color="#656565" display="flex" alignItems="center">
-          <Box className={classes.dot} />
-          <Box width={8} />
-          <Typography variant="body2">
-            {displayName ? displayName : "no wallet connected"}
-          </Typography>
+          {loading ? (
+            <>
+              <Skeleton variant="circle" height={18} width={18} />
+              <Box width={8} />
+              <Skeleton variant="text" width={200} />
+            </>
+          ) : (
+            <>
+              <Box className={classes.dot} />
+              <Box width={8} />
+              <Typography variant="body2">
+                {displayName ? displayName : "no wallet connected"}
+              </Typography>
+            </>
+          )}
         </Box>
       </Box>
     </Box>
@@ -255,6 +274,7 @@ export const CreateRequestForm = ({
   onSubmit,
   account,
   isPending = false,
+  loading,
 }: IProps) => {
   return (
     <RContainer>
@@ -272,7 +292,7 @@ export const CreateRequestForm = ({
         }}
       >
         <>
-          <Header account={account} />
+          <Header account={account} loading={loading} />
           <Body />
           <Footer account={account} isPending={isPending} />
         </>

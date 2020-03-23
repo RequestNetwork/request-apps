@@ -4,6 +4,7 @@ import { IParsedRequest } from "request-shared";
 import { Link } from "react-router-dom";
 import { RStatusBadge } from "request-ui";
 import Moment from "react-moment";
+import { Skeleton } from "@material-ui/lab";
 
 const useStyles = makeStyles(theme => ({
   container: {},
@@ -90,12 +91,44 @@ const Row = React.memo(
   }
 );
 
+const SkeletonRow = () => {
+  return (
+    <Box
+      display="flex"
+      justifyContent="space-around"
+      alignItems="center"
+      height={48}
+    >
+      <Box flex={1 / 10}>
+        <Skeleton width={100} />
+      </Box>
+      <Box flex={2 / 10}>
+        <Skeleton width={200} />
+      </Box>
+      <Box flex={2 / 10}>
+        <Skeleton width={200} />
+      </Box>
+      <Box flex={1 / 10}>
+        <Skeleton width={100} />
+      </Box>
+      <Box flex={2 / 10}>
+        <Skeleton variant="rect" height={32} width={100} />
+      </Box>
+      <Box flex={1 / 10}>
+        <Skeleton width={100} />
+      </Box>
+    </Box>
+  );
+};
+
 export default ({
   requests,
   account,
+  loading,
 }: {
-  requests: IParsedRequest[];
-  account: string;
+  requests?: IParsedRequest[];
+  account?: string;
+  loading: boolean;
 }) => {
   const classes = useStyles();
 
@@ -133,9 +166,18 @@ export default ({
         </Box>
         <Box flex={1 / 10}></Box>
       </Box>
-      {requests.map(request => (
-        <Row key={request.requestId} request={request} account={account} />
-      ))}
+      {loading || !requests || !account ? (
+        <>
+          <SkeletonRow />
+          <SkeletonRow />
+          <SkeletonRow />
+          <SkeletonRow />
+        </>
+      ) : (
+        requests.map(request => (
+          <Row key={request.requestId} request={request} account={account} />
+        ))
+      )}
     </Box>
   );
 };

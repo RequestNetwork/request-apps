@@ -7,7 +7,6 @@ import { IdentityTypes, PaymentTypes } from "@requestnetwork/types";
 import { useWeb3React } from "@web3-react/core";
 
 import { CreateRequestForm, IFormData } from "../components/CreateRequest";
-import Loading from "../components/Loading";
 import { useConnectedUser } from "../contexts/UserContext";
 
 export default () => {
@@ -62,15 +61,13 @@ export default () => {
       setError(e.message);
     }
   };
-  if (web3Loading) {
-    return <Loading />;
-  }
   return (
     <CreateRequestForm
       account={account || undefined}
       error={error}
       onSubmit={submit}
       isPending={!!requestId}
+      loading={web3Loading}
     />
   );
 };

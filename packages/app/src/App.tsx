@@ -34,11 +34,9 @@ const ApplicationBar = () => {
   const { account, activate } = useWeb3React();
   const { name, loading } = useConnectedUser();
 
-  if (loading) {
-    return <></>;
-  }
   return (
     <RequestAppBar
+      loading={loading}
       account={name || account}
       connect={() => activate(new InjectedConnector({}))}
     />

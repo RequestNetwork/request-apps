@@ -11,10 +11,10 @@ import {
   RequestView,
   RSpinner,
   RContainer,
+  RequestSkeleton,
 } from "request-ui";
 
 import Feedback from "../components/Feedback";
-import Loading from "../components/Loading";
 import PaymentActions from "../components/PaymentActions";
 import { ConnectorProvider, useConnector } from "../contexts/ConnectorContext";
 import {
@@ -67,8 +67,7 @@ export const ErrorContainer = () => {
   const requiresApproval = error instanceof RequiresApprovalError;
   const showErrorAtTop = !requiresApproval || mobile;
 
-  if (!request) return null;
-  if (request.status === "open" && error && showErrorAtTop) {
+  if (request?.status === "open" && error && showErrorAtTop) {
     return (
       <>
         <ErrorMessage error={error} request={request} />
@@ -122,47 +121,44 @@ export const PaymentPage = () => {
     }
   }, [requestLoading, connectorReady, active, paymentReady, loaded]);
 
-  if (!loaded) {
-    return <Loading />;
-  }
-
-  if (!request) {
+  if (loaded && !request) {
     return <RequestNotFound />;
-  }
-  if (!connectorReady) {
-    return <Loading />;
   }
 
   const requiresApproval =
-    request.status === "open" && error instanceof RequiresApprovalError;
+    request?.status === "open" && error instanceof RequiresApprovalError;
   const activating = !active && !!connectorName;
   const stickToBottom =
-    (mobile && active && request.status === "open") ||
-    (request.status === "pending" && paying);
+    (mobile && active && request?.status === "open") ||
+    (request?.status === "pending" && paying);
   const showSpinner = approving || activating;
   const showFooter =
     !mobile ||
-    request.status === "paid" ||
-    request.status === "canceled" ||
-    (request.status === "pending" && !paying);
+    request?.status === "paid" ||
+    request?.status === "canceled" ||
+    (request?.status === "pending" && !paying);
   return (
     <RContainer>
       <Feedback open={feedbackOpen} onClose={() => setFeedbackOpen(false)} />
 
-      <RequestView
-        amount={request.amount.toLocaleString("en-US", {
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 5,
-        })}
-        createdDate={request.timestamp}
-        currency={request.currency}
-        payee={request.payeeName || request.payee}
-        reason={request.reason}
-        status={request.status}
-        paidDate={request.paidDate}
-        counterValue={counterValue}
-        counterCurrency={counterCurrency}
-      />
+      {request ? (
+        <RequestView
+          amount={request.amount.toLocaleString("en-US", {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 5,
+          })}
+          createdDate={request.timestamp}
+          currency={request.currency}
+          payee={request.payeeName || request.payee}
+          reason={request.reason}
+          status={request.status}
+          paidDate={request.paidDate}
+          counterValue={counterValue}
+          counterCurrency={counterCurrency}
+        />
+      ) : (
+        <RequestSkeleton />
+      )}
 
       {requiresApproval && !mobile ? (
         <>

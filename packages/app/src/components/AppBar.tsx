@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router";
+import React from "react";
 import { NavLink } from "react-router-dom";
+import DashboardIcon from "@material-ui/icons/DashboardOutlined";
 
 import {
   AppBar,
@@ -13,6 +13,7 @@ import {
 import { RLogo } from "request-ui";
 import ConnectButton from "./ConnectButton";
 import UserInfo from "./UserInfo";
+import { Skeleton } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -51,9 +52,11 @@ const useStyles = makeStyles((theme: Theme) => ({
 export const RequestAppBar = ({
   account,
   connect,
+  loading,
 }: {
   account?: string | null;
   connect: () => Promise<void>;
+  loading: boolean;
 }) => {
   const classes = useStyles();
 
@@ -73,6 +76,8 @@ export const RequestAppBar = ({
               className={classes.link}
               to="/dashboard"
             >
+              <DashboardIcon fontSize="small" />
+              <Box width="8px" />
               <Typography variant="h4">My dashboard</Typography>
             </NavLink>
             <NavLink
@@ -80,11 +85,28 @@ export const RequestAppBar = ({
               className={classes.link}
               to="/create"
             >
+              <DashboardIcon fontSize="small" />
+              <Box width="8px" />
               <Typography variant="h4">Create a request</Typography>
             </NavLink>
           </Box>
           <Box>
-            {account ? (
+            {loading ? (
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                width={320}
+                height={60}
+                borderRadius={4}
+                boxSizing="border-box"
+                border="1px solid #E4E4E4"
+              >
+                <Skeleton variant="circle" width={20} height={20} />
+                <Box width={8} />
+                <Skeleton variant="text" width={250} height={32} />
+              </Box>
+            ) : account ? (
               <UserInfo name={account} />
             ) : (
               <ConnectButton connect={connect} />

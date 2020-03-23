@@ -4,6 +4,7 @@ import Moment from 'react-moment';
 import { Box, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import CommentIcon from '@material-ui/icons/Comment';
+import { Skeleton } from '@material-ui/lab';
 
 import { RequestStatus } from 'request-shared';
 
@@ -86,6 +87,36 @@ interface IProps {
   counterValue?: string;
   counterCurrency: string;
 }
+
+export const RequestSkeleton = () => {
+  const classes = useStyles();
+
+  return (
+    <Box className={classes.container}>
+      <Box className={classes.header} color="">
+        <Typography variant="h5">Request for payment from</Typography>
+        <Spacer />
+        <Skeleton variant="text" width={400} />
+      </Box>
+      <Box className={classes.body}>
+        <Skeleton variant="text" width={200} />
+        <Spacer size={4} />
+        <Skeleton variant="rect" width={75} height={32} />
+        <Spacer size={3} />
+        <Skeleton variant="text" width={100} height={36} />
+        <Skeleton variant="text" width={70} height={20} />
+      </Box>
+
+      <Box className={classes.footer} color="text.secondary">
+        <CommentIcon />
+        <Spacer />
+        <Skeleton width="30%" />
+        <Skeleton width="60%" />
+        <Skeleton width="40%" />
+      </Box>
+    </Box>
+  );
+};
 
 export const RequestView = ({
   payee,

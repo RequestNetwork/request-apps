@@ -72,9 +72,9 @@ export const parseRequest = async (
     currencyType: data.currencyInfo.type,
     currencyNetwork: data.currencyInfo.network,
     txHash: data.balance?.events[0]?.parameters?.txHash,
-    payee: data.payee?.value || "",
+    payee: data.payee?.value?.toLowerCase() || "",
     payeeName,
-    payer: data.payer?.value || undefined,
+    payer: data.payer?.value?.toLowerCase() || undefined,
     payerName,
     raw: data,
   };

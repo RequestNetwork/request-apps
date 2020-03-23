@@ -124,8 +124,8 @@ export const theme = createMuiTheme({
         },
         '& .MuiTouchRipple-rippleVisible': {
           backgroundColor: '#050B20',
-          // animation: 'unset',
-          // opacity: 0,
+          animation: 'unset',
+          opacity: 0,
           '& .MuiTouchRipple-child': {
             display: 'none',
           },

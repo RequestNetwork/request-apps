@@ -21,6 +21,7 @@ interface IContext {
    * Pending means the payment is being processed and takes a long time.
    */
   setPending: (val: boolean) => void;
+  update: () => void;
 }
 
 /**
@@ -64,6 +65,7 @@ export const RequestProvider: React.FC = ({ children }) => {
   const counterCurrency = "USD";
   const [counterValue, setCounterValue] = useState<string>("");
   const [pending, setPending] = useState(false);
+  const [forceUpdate, setForceUpdate] = useState(false);
 
   // gets counter currency rate
   const rate = useRate(parsedRequest?.currency, counterCurrency);
@@ -81,7 +83,7 @@ export const RequestProvider: React.FC = ({ children }) => {
         }
       });
     }
-  }, [id, pending]);
+  }, [id, pending, forceUpdate]);
 
   // handle rate conversion
   useEffect(() => {
@@ -100,6 +102,7 @@ export const RequestProvider: React.FC = ({ children }) => {
         counterCurrency,
         counterValue,
         setPending,
+        update: () => setForceUpdate(!forceUpdate),
       }}
     >
       {children}

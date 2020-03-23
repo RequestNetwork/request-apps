@@ -45,10 +45,8 @@ const Amount = ({
 
 const Row = React.memo(
   ({ request, account }: { request: IParsedRequest; account: string }) => {
-    const isPayee =
-      account && account.toLowerCase() === request.payee?.toLowerCase();
-    const isPayer =
-      account && account.toLowerCase() === request.payer?.toLowerCase();
+    const isPayee = account && account.toLowerCase() === request.payee;
+    const isPayer = account && account.toLowerCase() === request.payer;
     return (
       <Box
         display="flex"

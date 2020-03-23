@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles, Typography } from "@material-ui/core";
 import { useWeb3React } from "@web3-react/core";
 import {
@@ -8,7 +8,12 @@ import {
   RButton,
   RequestSkeleton,
 } from "request-ui";
-import { IParsedRequest, RequestProvider, useRequest } from "request-shared";
+import {
+  IParsedRequest,
+  RequestProvider,
+  useRequest,
+  cancelRequest,
+} from "request-shared";
 
 import ShareRequest from "../components/ShareRequest";
 import NotFoundPage from "./NotFoundPage";
@@ -23,22 +28,35 @@ const useStyles = makeStyles(theme => ({
 const RequestActions = ({
   request,
   account,
+  cancel,
 }: {
   request: IParsedRequest;
   account?: string | null;
+  cancel: () => Promise<void>;
 }) => {
+  const [cancelling, setCancelling] = useState(false);
+  const onCancelClick = async () => {
+    setCancelling(true);
+    await cancel();
+    setCancelling(false);
+  };
   const classes = useStyles();
-  if (account && account === request.payee) {
+  account = account?.toLowerCase();
+  if (
+    request.status === "open" &&
+    account &&
+    [request.payer, request.payee].includes(account)
+  ) {
     return (
-      <RButton color="default" className={classes.cancel}>
-        <Typography variant="h4">Cancel request</Typography>
-      </RButton>
-    );
-  }
-  if (account && account === request.payer) {
-    return (
-      <RButton color="default" className={classes.cancel}>
-        <Typography variant="h4">Decline request</Typography>
+      <RButton
+        color="default"
+        className={classes.cancel}
+        onClick={onCancelClick}
+        disabled={cancelling}
+      >
+        <Typography variant="h4">
+          {request.payer === account ? "Decline request" : "Cancel request"}
+        </Typography>
       </RButton>
     );
   }
@@ -46,9 +64,25 @@ const RequestActions = ({
 };
 
 export const RequestPage = () => {
-  const { account } = useWeb3React();
+  const { account, chainId } = useWeb3React();
 
-  const { request, loading } = useRequest();
+  const { request, loading, update } = useRequest();
+
+  const cancel = async () => {
+    if (!request || !account || !chainId) {
+      throw new Error("cannot cancel because page is not ready");
+    }
+    try {
+      await cancelRequest(request.requestId, account, chainId);
+    } catch (e) {
+      if (e.code === 4001) {
+      } else {
+        throw e;
+      }
+    }
+    update();
+  };
+
   if (loading) {
     return (
       <RContainer>
@@ -79,7 +113,7 @@ export const RequestPage = () => {
       <Spacer size={12} />
       <ShareRequest requestId={request.requestId} />
       <Spacer size={11} />
-      <RequestActions request={request} account={account} />
+      <RequestActions request={request} account={account} cancel={cancel} />
       <Spacer size={12} />
     </RContainer>
   );

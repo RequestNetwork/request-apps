@@ -1,6 +1,5 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import DashboardIcon from "@material-ui/icons/DashboardOutlined";
 
 import {
   AppBar,
@@ -78,7 +77,6 @@ export const RequestAppBar = ({
               className={classes.link}
               to="/dashboard"
             >
-              <DashboardIcon fontSize="small" />
               <Box width="8px" />
               <Typography variant="h4">My dashboard</Typography>
             </NavLink>
@@ -87,7 +85,6 @@ export const RequestAppBar = ({
               className={classes.link}
               to="/create"
             >
-              <DashboardIcon fontSize="small" />
               <Box width="8px" />
               <Typography variant="h4">Create a request</Typography>
             </NavLink>

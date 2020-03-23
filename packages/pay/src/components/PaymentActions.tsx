@@ -38,7 +38,7 @@ const PayAction = ({
       startIcon={<RIcon variant={disabled ? "dark" : "light"} />}
       sticky
       loading={paying}
-      direction={broadcasting ? "right" : "left"}
+      direction="left"
     >
       <Typography variant="h5">Pay now</Typography>
     </RButton>

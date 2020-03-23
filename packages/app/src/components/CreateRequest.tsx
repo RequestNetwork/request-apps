@@ -222,7 +222,7 @@ const Footer = ({
         fullWidth
         onClick={submitForm}
         loading={isSubmitting || isPending}
-        direction={isPending ? "right" : "left"}
+        direction="right"
       >
         <Typography variant="caption">Create a request</Typography>
       </RButton>

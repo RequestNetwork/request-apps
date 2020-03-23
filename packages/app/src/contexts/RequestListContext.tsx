@@ -14,9 +14,18 @@ export const RequestListProvider: React.FC = ({ children }) => {
 
   const [requests, setRequests] = useState<IParsedRequest[]>();
   useEffect(() => {
+    let canceled = false;
     if (chainId && account) {
-      listRequests(account, chainId).then(setRequests);
+      setRequests(undefined);
+      listRequests(account, chainId).then(newRequests => {
+        if (!canceled) {
+          setRequests(newRequests);
+        }
+      });
     }
+    return () => {
+      canceled = true;
+    };
   }, [chainId, account]);
   return (
     <RequestListContext.Provider

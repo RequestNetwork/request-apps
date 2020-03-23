@@ -78,11 +78,26 @@ const Row = React.memo(
           <RStatusBadge status={request.status} />
         </Box>
         <Box flex={1 / 10}>
-          <Link to={`/${request.requestId}`} style={{ textDecoration: "none" }}>
-            <Typography variant="h5" style={{ color: "#00CC8E" }}>
-              View request
-            </Typography>
-          </Link>
+          {request.status !== "open" || isPayee ? (
+            <Link
+              to={`/${request.requestId}`}
+              style={{ textDecoration: "none" }}
+            >
+              <Typography variant="h5" style={{ color: "#00CC8E" }}>
+                View request
+              </Typography>
+            </Link>
+          ) : (
+            <a
+              href={`https://pay.request.network/${request.requestId}`}
+              style={{ textDecoration: "none" }}
+              target="_blank"
+            >
+              <Typography variant="h5" style={{ color: "#00CC8E" }}>
+                Pay now
+              </Typography>
+            </a>
+          )}
         </Box>
       </Box>
     );

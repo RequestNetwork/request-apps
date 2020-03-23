@@ -51,10 +51,12 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export const RequestAppBar = ({
   account,
+  network,
   connect,
   loading,
 }: {
   account?: string | null;
+  network?: number;
   connect: () => Promise<void>;
   loading: boolean;
 }) => {
@@ -107,7 +109,7 @@ export const RequestAppBar = ({
                 <Skeleton variant="text" width={250} height={32} />
               </Box>
             ) : account ? (
-              <UserInfo name={account} />
+              <UserInfo name={account} network={network} />
             ) : (
               <ConnectButton connect={connect} />
             )}

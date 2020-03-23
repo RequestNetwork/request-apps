@@ -496,6 +496,7 @@ export default () => {
             request,
             loading: !request,
             setPending: () => {},
+            update: () => {},
           }}
         >
           <web3context.Provider

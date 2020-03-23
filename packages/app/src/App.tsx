@@ -31,11 +31,12 @@ const useStyles = makeStyles(() => ({
 }));
 
 const ApplicationBar = () => {
-  const { account, activate } = useWeb3React();
+  const { account, activate, chainId } = useWeb3React();
   const { name, loading } = useConnectedUser();
 
   return (
     <RequestAppBar
+      network={chainId}
       loading={loading}
       account={name || account}
       connect={() => activate(new InjectedConnector({}))}

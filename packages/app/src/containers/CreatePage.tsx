@@ -64,6 +64,7 @@ export default () => {
   return (
     <CreateRequestForm
       account={account || undefined}
+      network={chainId}
       error={error}
       onSubmit={submit}
       isPending={!!requestId}

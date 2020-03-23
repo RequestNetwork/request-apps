@@ -14,6 +14,7 @@ import { Skeleton } from "@material-ui/lab";
 import WalletAddressValidator from "wallet-address-validator";
 
 import { RIcon, RContainer, Spacer, RAlert, RButton } from "request-ui";
+import Dot from "./Dot";
 
 export interface IFormData {
   amount?: number;
@@ -29,6 +30,7 @@ export interface IProps {
     formikActions: FormikHelpers<IFormData>
   ) => void;
   account?: string;
+  network?: number;
   isPending?: boolean;
   loading: boolean;
 }
@@ -44,21 +46,15 @@ const useHeaderStyles = makeStyles(() => ({
     justifyContent: "space-between",
     display: "flex",
   },
-  dot: {
-    height: 18,
-    width: 18,
-    backgroundColor: ({ account }: { account?: string }) =>
-      account ? "#00CC8E" : "#DE1C22",
-    borderRadius: "50%",
-    display: "inline-block",
-  },
 }));
 
 const Header = ({
   account,
+  network,
   loading,
 }: {
   account?: string;
+  network?: number;
   loading: boolean;
 }) => {
   const classes = useHeaderStyles({ account });
@@ -97,7 +93,7 @@ const Header = ({
             </>
           ) : (
             <>
-              <Box className={classes.dot} />
+              <Dot account={account} network={network} />
               <Box width={8} />
               <Typography variant="body2">
                 {displayName ? displayName : "no wallet connected"}
@@ -274,6 +270,7 @@ export const CreateRequestForm = ({
   onSubmit,
   account,
   isPending = false,
+  network,
   loading,
 }: IProps) => {
   return (
@@ -292,7 +289,7 @@ export const CreateRequestForm = ({
         }}
       >
         <>
-          <Header account={account} loading={loading} />
+          <Header account={account} network={network} loading={loading} />
           <Body />
           <Footer account={account} isPending={isPending} />
         </>

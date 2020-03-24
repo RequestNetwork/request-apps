@@ -126,8 +126,7 @@ const useBodyStyles = makeStyles(theme => ({
     borderBottom: "1px solid #E9E9E9",
   },
   field: {
-    marginTop: 12,
-    marginBottom: 20,
+    marginBottom: 8,
   },
 }));
 
@@ -136,15 +135,14 @@ const Amount = ({ className }: { className?: string }) => {
   return (
     <TextField
       {...field}
-      autoFocus={true}
+      autoFocus
       name="amount"
       label="Amount"
       className={className}
-      autoComplete="off"
       fullWidth
       required
       error={Boolean(meta.error && meta.touched)}
-      helperText={Boolean(meta.error && meta.touched) ? meta.error : ""}
+      helperText={Boolean(meta.error && meta.touched) ? meta.error : " "}
     />
   );
 };
@@ -158,11 +156,10 @@ const Currency = ({ className }: { className?: string }) => {
       select
       name="currency"
       label=" "
-      autoComplete="off"
       fullWidth
       className={className}
       error={Boolean(meta.error && meta.touched)}
-      helperText={Boolean(meta.error && meta.touched) ? meta.error : ""}
+      helperText={Boolean(meta.error && meta.touched) ? meta.error : " "}
     >
       <MenuItem value="DAI">DAI</MenuItem>
       <MenuItem value="ETH">ETH</MenuItem>
@@ -180,11 +177,10 @@ const Payer = ({ className }: { className?: string }) => {
       label="Who are you sending this request to? (optional)"
       placeholder="Enter an ENS name or ETH address"
       className={className}
-      autoComplete="off"
       fullWidth
       size="medium"
       error={Boolean(meta.error && meta.touched)}
-      helperText={Boolean(meta.error && meta.touched) ? meta.error : ""}
+      helperText={Boolean(meta.error && meta.touched) ? meta.error : " "}
     />
   );
 };
@@ -197,11 +193,10 @@ const Reason = ({ className }: { className?: string }) => {
       {...field}
       name="reason"
       label="Reason (optional)"
-      autoComplete="off"
       fullWidth
       className={className}
       error={Boolean(meta.error && meta.touched)}
-      helperText={Boolean(meta.error && meta.touched) ? meta.error : ""}
+      helperText={Boolean(meta.error && meta.touched) ? meta.error : " "}
     />
   );
 };
@@ -214,7 +209,7 @@ const Body = () => {
         <Box flex={0.8}>
           <Amount className={classes.field} />
         </Box>
-        <Box flex={0.2}>
+        <Box flex={0.2} marginTop="-4px">
           <Currency className={classes.field} />
         </Box>
       </Box>
@@ -245,6 +240,7 @@ const Footer = ({
         onClick={submitForm}
         loading={isSubmitting || isPending}
         direction="right"
+        tabIndex={5}
       >
         <Typography variant="caption">Create a request</Typography>
       </RButton>

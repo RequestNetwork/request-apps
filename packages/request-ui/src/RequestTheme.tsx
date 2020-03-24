@@ -77,6 +77,9 @@ export const theme = createMuiTheme({
     MuiButton: {
       disableElevation: true,
     },
+    MuiTextField: {
+      autoComplete: 'off',
+    },
   },
   overrides: {
     MuiCssBaseline: {
@@ -148,13 +151,22 @@ export const theme = createMuiTheme({
         textTransform: 'initial',
       },
     },
-    MuiDialogTitle: {
-      root: {},
-    },
-    MuiTextField: {
+    MuiInput: {
       root: {
-        '& > *': {
-          fontSize: 14,
+        fontSize: 14,
+        lineHeight: '20px',
+        '&:before': {
+          borderBottom: '1px solid #E4E4E4 !important',
+        },
+      },
+      input: {
+        '&::placeholder': {
+          color: '#656565',
+        },
+      },
+      underline: {
+        '&:after': {
+          borderBottom: '1px solid #00CC8E !important',
         },
       },
     },
@@ -162,12 +174,36 @@ export const theme = createMuiTheme({
       asterisk: {
         display: 'none',
       },
+      shrink: {
+        transform: 'translate(0, 1.5px) scale(0.9)',
+      },
     },
-    MuiInput: {
+    MuiFormLabel: {
       root: {
         fontSize: 14,
-        '&:before': {
-          borderBottom: '1px solid #E4E4E4 !important',
+        '&$focused': {
+          color: '#00CC8E',
+        },
+        '&$error': {
+          color: undefined,
+        },
+      },
+      filled: {
+        color: '#00CC8E',
+      },
+      error: {
+        color: '#00CC8E',
+      },
+      focused: {
+        color: '#00CC8E',
+      },
+    },
+    MuiFormHelperText: {
+      root: {
+        '&$error': {
+          fontSize: 12,
+          lineHeight: '16px',
+          color: '#DE1C22',
         },
       },
     },

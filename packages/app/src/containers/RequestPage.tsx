@@ -87,7 +87,7 @@ export const RequestPage = () => {
   if (loading) {
     return (
       <RContainer>
-        <Spacer size={15} />
+        <Spacer size={15} xs={8} />
         <RequestSkeleton />
       </RContainer>
     );
@@ -97,7 +97,7 @@ export const RequestPage = () => {
   }
   return (
     <RContainer>
-      <Spacer size={15} />
+      <Spacer size={15} xs={8} />
       {chainId !== 1 && <TestnetWarning />}
       <RequestView
         payee={request.payeeName || request.payee}

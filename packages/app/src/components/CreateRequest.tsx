@@ -232,7 +232,12 @@ const Footer = ({
   >();
   return (
     <>
-      <Spacer size={12} />
+      <Hidden xsDown>
+        <Spacer size={12} />
+      </Hidden>
+      <Hidden smUp>
+        <Box flex={1} />
+      </Hidden>
       <RButton
         disabled={!values.amount || !isValid || !account}
         color="primary"
@@ -241,6 +246,7 @@ const Footer = ({
         loading={isSubmitting || isPending}
         direction="right"
         tabIndex={5}
+        sticky
       >
         <Typography variant="caption">Create a request</Typography>
       </RButton>
@@ -278,7 +284,7 @@ export const CreateRequestForm = ({
 }: IProps) => {
   return (
     <RContainer>
-      <Spacer size={15} />
+      <Spacer size={15} xs={8} />
       {/* {error && <RAlert severity="error" message={error} />} */}
 
       {network !== 1 && <TestnetWarning />}

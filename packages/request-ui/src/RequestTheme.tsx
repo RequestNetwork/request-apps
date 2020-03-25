@@ -225,5 +225,10 @@ export const theme = createMuiTheme({
         padding: '30px 65px 40px 65px',
       },
     },
+    MuiBackdrop: {
+      root: {
+        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+      },
+    },
   },
 });

@@ -1,5 +1,6 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { NavLink, useLocation } from "react-router-dom";
+import { RLogo } from "request-ui";
 
 import {
   AppBar,
@@ -8,18 +9,26 @@ import {
   Theme,
   Toolbar,
   Typography,
+  IconButton,
+  SwipeableDrawer,
 } from "@material-ui/core";
-import { RLogo } from "request-ui";
+import MenuIcon from "@material-ui/icons/Menu";
+import CloseIcon from "@material-ui/icons/Close";
+
+import { Skeleton } from "@material-ui/lab";
+
 import ConnectButton from "./ConnectButton";
 import UserInfo from "./UserInfo";
-import { Skeleton } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     height: 80,
     padding: "0 24px",
     backgroundColor: "#fff",
-    boxShadow: "0px 4px 5px rgba(211, 214, 219, 0.5)",
+    boxShadow: "none",
+    [theme.breakpoints.up("sm")]: {
+      boxShadow: "0px 4px 5px rgba(211, 214, 219, 0.5)",
+    },
   },
   toolbar: {
     margin: 0,
@@ -29,14 +38,18 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: "flex",
   },
   link: {
+    display: "flex",
     alignItems: "center",
     marginLeft: 40,
     textDecoration: "none",
     color: theme.palette.common.black,
-    display: "none",
-    [theme.breakpoints.up("sm")]: {
-      display: "inline-flex",
-    },
+  },
+  mobileLink: {
+    display: "flex",
+    alignItems: "center",
+    marginBottom: 20,
+    textDecoration: "none",
+    color: theme.palette.common.black,
   },
   active: {
     borderBottom: "2px solid #00CC8E",
@@ -45,6 +58,38 @@ const useStyles = makeStyles((theme: Theme) => ({
   item: {
     display: "inline-flex",
     alignItems: "center",
+  },
+  connect: {
+    display: "none",
+    [theme.breakpoints.up("sm")]: {
+      display: "inline-flex",
+    },
+  },
+  mobileMenu: {
+    color: "#050B20",
+    display: "inline-flex",
+    [theme.breakpoints.up("sm")]: {
+      display: "none",
+    },
+  },
+  desktopMenu: {
+    display: "none",
+    [theme.breakpoints.up("sm")]: {
+      display: "flex",
+    },
+  },
+  drawer: {
+    width: "70%",
+    maxWidth: 272,
+    padding: "80px 20px",
+    display: "flex",
+    alignItems: "start",
+  },
+  closeIcon: {
+    position: "absolute",
+    right: 0,
+    top: 0,
+    color: "#050B20",
   },
 }));
 
@@ -60,6 +105,31 @@ export const RequestAppBar = ({
   loading: boolean;
 }) => {
   const classes = useStyles();
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    setDrawerOpen(false);
+  }, [pathname]);
+
+  const Links = ({ className }: { className: string }) => (
+    <>
+      <NavLink
+        activeClassName={classes.active}
+        className={className}
+        to="/dashboard"
+      >
+        <Typography variant="h4">My dashboard</Typography>
+      </NavLink>
+      <NavLink
+        activeClassName={classes.active}
+        className={className}
+        to="/create"
+      >
+        <Typography variant="h4">Create a request</Typography>
+      </NavLink>
+    </>
+  );
 
   return (
     <AppBar position="static" className={classes.root}>
@@ -70,24 +140,16 @@ export const RequestAppBar = ({
               <RLogo />
             </NavLink>
           </Box>
-
-          <Box display="flex" alignContent="flex-start" flex={1} height="100%">
-            <NavLink
-              activeClassName={classes.active}
-              className={classes.link}
-              to="/dashboard"
-            >
-              <Typography variant="h4">My dashboard</Typography>
-            </NavLink>
-            <NavLink
-              activeClassName={classes.active}
-              className={classes.link}
-              to="/create"
-            >
-              <Typography variant="h4">Create a request</Typography>
-            </NavLink>
+          <Box
+            display="flex"
+            alignContent="flex-start"
+            flex={1}
+            height="100%"
+            className={classes.desktopMenu}
+          >
+            <Links className={classes.link} />
           </Box>
-          <Box>
+          <Box className={classes.connect}>
             {loading ? (
               <Box
                 display="flex"
@@ -109,8 +171,34 @@ export const RequestAppBar = ({
               <ConnectButton connect={connect} />
             )}
           </Box>
+          <Box flex={1} className={classes.mobileMenu} />
+          <Box className={classes.mobileMenu}>
+            <IconButton
+              style={{ color: "#050B20" }}
+              onClick={() => setDrawerOpen(true)}
+            >
+              <MenuIcon />
+            </IconButton>
+          </Box>
         </Box>
       </Toolbar>
+      <SwipeableDrawer
+        anchor="right"
+        open={drawerOpen}
+        onOpen={() => setDrawerOpen(true)}
+        onClose={() => setDrawerOpen(false)}
+        classes={{
+          paper: classes.drawer,
+        }}
+      >
+        <IconButton
+          className={classes.closeIcon}
+          onClick={() => setDrawerOpen(false)}
+        >
+          <CloseIcon />
+        </IconButton>
+        <Links className={classes.mobileLink} />
+      </SwipeableDrawer>
     </AppBar>
   );
 };

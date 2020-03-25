@@ -24,7 +24,7 @@ const useStyles = makeStyles(() => ({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    // height: "calc(100% - 80px)",
+    minHeight: "calc(100% - 80px)",
     maxWidth: "100vw",
     //overflow: "scroll",
   },

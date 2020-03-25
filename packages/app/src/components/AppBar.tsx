@@ -77,7 +77,6 @@ export const RequestAppBar = ({
               className={classes.link}
               to="/dashboard"
             >
-              <Box width="8px" />
               <Typography variant="h4">My dashboard</Typography>
             </NavLink>
             <NavLink
@@ -85,7 +84,6 @@ export const RequestAppBar = ({
               className={classes.link}
               to="/create"
             >
-              <Box width="8px" />
               <Typography variant="h4">Create a request</Typography>
             </NavLink>
           </Box>

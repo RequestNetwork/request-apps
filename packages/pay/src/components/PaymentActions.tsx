@@ -20,7 +20,6 @@ import { IParsedRequest, useRequest } from "request-shared";
 const PayAction = ({
   disabled,
   pay,
-  broadcasting,
   paying,
 }: {
   broadcasting: boolean;

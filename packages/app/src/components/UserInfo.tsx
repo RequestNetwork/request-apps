@@ -13,12 +13,19 @@ export default ({ name, network }: { name: string; network?: number }) => {
       <Box display="flex" alignItems="center">
         <Dot network={network} account={name} />
         <Box width={4} />
-        <img src={MetamaskIcon} width={32} height={32} />
+        <img src={MetamaskIcon} width={48} height={48} />
       </Box>
     );
   };
   return (
-    <RButton color="default" startIcon={<CombinedIcon />}>
+    <RButton
+      color="default"
+      startIcon={<CombinedIcon />}
+      style={{
+        paddingTop: "6px",
+        paddingBottom: "6px",
+      }}
+    >
       {displayName}
     </RButton>
   );

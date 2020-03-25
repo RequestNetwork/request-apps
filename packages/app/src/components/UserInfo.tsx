@@ -15,7 +15,8 @@ const useStyles = makeStyles(theme => ({
   icon: {
     display: "none",
     [theme.breakpoints.up("sm")]: {
-      display: "block",
+      display: "flex",
+      alignItems: "center",
     },
   },
 }));
@@ -27,7 +28,7 @@ export default ({ name, network }: { name: string; network?: number }) => {
 
   const CombinedIcon = () => {
     return (
-      <Box display="flex" alignItems="center" className={classes.icon}>
+      <Box className={classes.icon}>
         <Dot network={network} account={name} />
         <Box width={4} />
         <img src={MetamaskIcon} width={48} height={48} />

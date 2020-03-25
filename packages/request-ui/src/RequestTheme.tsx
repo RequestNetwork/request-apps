@@ -207,5 +207,23 @@ export const theme = createMuiTheme({
         },
       },
     },
+    MuiDialog: {
+      paper: {
+        backgroundColor: '#fafafa',
+      },
+    },
+    MuiDialogTitle: {
+      root: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: '14px 24px',
+      },
+    },
+    MuiDialogContent: {
+      root: {
+        padding: '30px 65px 40px 65px',
+      },
+    },
   },
 });

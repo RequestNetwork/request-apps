@@ -5,7 +5,7 @@ import { useWeb3React } from "@web3-react/core";
 
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import { useConnector } from "../contexts/ConnectorContext";
-import { makeStyles, Typography, Box } from "@material-ui/core";
+import { Typography, Box } from "@material-ui/core";
 import { Types } from "@requestnetwork/request-client.js";
 import { getBtcPaymentUrl } from "@requestnetwork/payment-processor";
 import { useMobile } from "request-ui";
@@ -44,25 +44,9 @@ const PayAction = ({
     </RButton>
   );
 };
-
-const useStyles = makeStyles(theme => ({
-  approval: {
-    [theme.breakpoints.up("sm")]: {
-      width: 235,
-    },
-  },
-}));
 const ApproveAction = ({ approve }: { approve: () => void }) => {
-  const classes = useStyles();
   return (
-    <RButton
-      sticky
-      size="medium"
-      onClick={approve}
-      color="secondary"
-      fullWidth
-      className={classes.approval}
-    >
+    <RButton sticky size="medium" onClick={approve} color="secondary" fullWidth>
       <Typography variant="caption">Approve</Typography>
     </RButton>
   );

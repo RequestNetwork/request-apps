@@ -1,16 +1,19 @@
 import React from "react";
-import { makeStyles, Typography } from "@material-ui/core";
+import { makeStyles, Typography, Theme } from "@material-ui/core";
 
-const useFilterStyles = makeStyles(() => ({
+const useFilterStyles = makeStyles<Theme, { active: boolean }>(theme => ({
   root: {
     height: 56,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     color: ({ active }) => (active ? "#00CC8E" : "#1A1A1A"),
-    borderBottom: ({ active }: { active: boolean }) =>
-      `1px solid ${active ? "#00CC8E" : "#C7C7C7"}`,
+    borderBottom: ({ active }) => `1px solid ${active ? "#00CC8E" : "#C7C7C7"}`,
     cursor: "pointer",
+    flex: 1,
+    [theme.breakpoints.up("sm")]: {
+      flex: "unset",
+    },
   },
   item: {
     padding: "16px 24px",

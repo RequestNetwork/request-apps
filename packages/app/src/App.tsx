@@ -23,7 +23,7 @@ const useStyles = makeStyles(() => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "center",
+    //justifyContent: "center",
     minHeight: "calc(100% - 80px)",
     maxWidth: "100vw",
     //overflow: "scroll",

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { IParsedRequest } from "request-shared";
 import { Spacer } from "request-ui";
 
-import { Box } from "@material-ui/core";
+import { Box, Hidden, makeStyles } from "@material-ui/core";
 import { useWeb3React } from "@web3-react/core";
 
 import CsvExport from "../components/CsvExport";
@@ -23,7 +23,19 @@ const applyFilter = (
   if (filter === "paid") return requests.filter(x => x.status === "paid");
 };
 
+const useStyles = makeStyles(theme => ({
+  container: {
+    backgroundColor: "white",
+    maxWidth: 1150,
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+      backgroundColor: "unset",
+    },
+  },
+}));
+
 export default () => {
+  const classes = useStyles();
   const { account, chainId } = useWeb3React();
   const { loading: web3Loading } = useConnectedUser();
   const { requests } = useRequestList();
@@ -38,10 +50,10 @@ export default () => {
     return <NotLoggedPage />;
   }
   return (
-    <Box maxWidth={1150} width="100%">
-      <Spacer size={24} />
+    <Box className={classes.container}>
+      <Spacer size={24} xs={12} />
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Box display="flex">
+        <Box display="flex" flex={1}>
           {["All", "Outstanding", "Paid"].map((f, index) => (
             <Filter
               key={index}
@@ -51,7 +63,9 @@ export default () => {
             />
           ))}
         </Box>
-        <CsvExport requests={requests} />
+        <Hidden xsDown>
+          <CsvExport requests={requests} />
+        </Hidden>
       </Box>
       <RequestList
         requests={filteredRequests}

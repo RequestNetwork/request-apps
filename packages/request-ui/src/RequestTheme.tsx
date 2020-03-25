@@ -1,5 +1,7 @@
 import { createMuiTheme } from '@material-ui/core/styles';
 
+const defaultTheme = createMuiTheme({});
+
 export const theme = createMuiTheme({
   palette: {
     action: {
@@ -217,12 +219,18 @@ export const theme = createMuiTheme({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        padding: '14px 24px',
+        padding: '14px',
+        [defaultTheme.breakpoints.up('sm')]: {
+          padding: '14px 24px',
+        },
       },
     },
     MuiDialogContent: {
       root: {
-        padding: '30px 65px 40px 65px',
+        padding: '32px',
+        [defaultTheme.breakpoints.up('sm')]: {
+          padding: '30px 65px 40px 65px',
+        },
       },
     },
     MuiBackdrop: {

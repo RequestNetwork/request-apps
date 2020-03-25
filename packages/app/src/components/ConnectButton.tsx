@@ -37,8 +37,11 @@ const useStyles = makeStyles(theme => ({
     },
   },
   button: {
-    width: 256,
+    width: "100%",
     top: -2,
+    [theme.breakpoints.up("sm")]: {
+      width: 256,
+    },
   },
   animated: {
     [theme.breakpoints.up("sm")]: {
@@ -141,7 +144,6 @@ export default ({ connect }: { connect: () => Promise<void> }) => {
                 >
                   <Typography variant="caption">Let us know</Typography>
                 </Link>
-                .
               </Box>
             </>
           )}

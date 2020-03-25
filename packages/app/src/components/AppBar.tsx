@@ -110,7 +110,7 @@ export const RequestAppBar = ({
 
   useEffect(() => {
     setDrawerOpen(false);
-  }, [pathname]);
+  }, [pathname, account]);
 
   const Links = ({ className }: { className: string }) => (
     <>
@@ -198,6 +198,12 @@ export const RequestAppBar = ({
           <CloseIcon />
         </IconButton>
         <Links className={classes.mobileLink} />
+        <Box flex={1} />
+        {account ? (
+          <UserInfo name={account} network={network} />
+        ) : (
+          <ConnectButton connect={connect} />
+        )}
       </SwipeableDrawer>
     </AppBar>
   );

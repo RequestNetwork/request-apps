@@ -17,7 +17,7 @@ import {
 } from "request-shared";
 
 import ShareRequest from "../components/ShareRequest";
-import NotFoundPage from "./NotFoundPage";
+import ErrorPage from "./ErrorPage";
 
 const useStyles = makeStyles(theme => ({
   cancel: {
@@ -25,6 +25,15 @@ const useStyles = makeStyles(theme => ({
     border: "1px solid #E4E4E4",
   },
 }));
+
+export const RequestNotFound = () => {
+  return (
+    <ErrorPage
+      topText="Your request has not been found, sorry!"
+      bottomText="You might want to try again later"
+    />
+  );
+};
 
 const RequestActions = ({
   request,
@@ -93,12 +102,12 @@ export const RequestPage = () => {
     );
   }
   if (!request) {
-    return <NotFoundPage />;
+    return <RequestNotFound />;
   }
   return (
     <RContainer>
       <Spacer size={15} xs={8} />
-      {chainId !== 1 && <TestnetWarning />}
+      {request && request.network !== "mainnet" && <TestnetWarning />}
       <RequestView
         payee={request.payeeName || request.payee}
         createdDate={request.timestamp}
@@ -122,8 +131,10 @@ export const RequestPage = () => {
 };
 
 export default () => {
+  const { chainId } = useWeb3React();
+  if (!chainId) return <></>;
   return (
-    <RequestProvider>
+    <RequestProvider chainId={chainId}>
       <RequestPage />
     </RequestProvider>
   );

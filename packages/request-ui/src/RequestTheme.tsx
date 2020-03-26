@@ -163,6 +163,11 @@ export const theme = createMuiTheme({
         '&:before': {
           borderBottom: '1px solid #E4E4E4 !important',
         },
+        // disable webkit spin button
+        '& input::-webkit-clear-button, & input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {
+          display: 'none',
+          margin: 80,
+        },
       },
       input: {
         '&::placeholder': {
@@ -190,16 +195,10 @@ export const theme = createMuiTheme({
           color: '#00CC8E',
         },
         '&$error': {
-          color: undefined,
+          color: '#00CC8E',
         },
       },
       filled: {
-        color: '#00CC8E',
-      },
-      error: {
-        color: '#00CC8E',
-      },
-      focused: {
         color: '#00CC8E',
       },
     },

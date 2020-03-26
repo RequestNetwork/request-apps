@@ -140,6 +140,7 @@ const Amount = ({ className }: { className?: string }) => {
       name="amount"
       label="Amount"
       className={className}
+      type="number"
       fullWidth
       required
       error={Boolean(meta.error && meta.touched)}
@@ -260,7 +261,9 @@ const isValidEns = (val: string) =>
     val
   );
 export const schema = Yup.object().shape<IFormData>({
-  amount: Yup.number().required("Required"),
+  amount: Yup.number()
+    .typeError("Should be a number")
+    .required("Required"),
   payer: Yup.string().test(
     "is-valid-recipient",
     "Should be a valid ENS or ETH address",

@@ -11,7 +11,7 @@ export const Spinner: React.FC<SvgIconProps> = props => {
             cy="0"
             r="3"
             fill="#00cc8e"
-            fill-opacity="1"
+            fillOpacity="1"
             transform="scale(1 1.77521)"
           >
             <animateTransform
@@ -41,7 +41,7 @@ export const Spinner: React.FC<SvgIconProps> = props => {
             cy="0"
             r="3"
             fill="#00cc8e"
-            fill-opacity="0.9166666666666666"
+            fillOpacity="0.9166666666666666"
             transform="scale(1 1.88354)"
           >
             <animateTransform
@@ -71,7 +71,7 @@ export const Spinner: React.FC<SvgIconProps> = props => {
             cy="0"
             r="3"
             fill="#00cc8e"
-            fill-opacity="0.8333333333333334"
+            fillOpacity="0.8333333333333334"
             transform="scale(1 1.99188)"
           >
             <animateTransform
@@ -101,7 +101,7 @@ export const Spinner: React.FC<SvgIconProps> = props => {
             cy="0"
             r="3"
             fill="#00cc8e"
-            fill-opacity="0.75"
+            fillOpacity="0.75"
             transform="scale(1 2.10021)"
           >
             <animateTransform
@@ -131,7 +131,7 @@ export const Spinner: React.FC<SvgIconProps> = props => {
             cy="0"
             r="3"
             fill="#00cc8e"
-            fill-opacity="0.6666666666666666"
+            fillOpacity="0.6666666666666666"
             transform="scale(1 2.20854)"
           >
             <animateTransform
@@ -161,7 +161,7 @@ export const Spinner: React.FC<SvgIconProps> = props => {
             cy="0"
             r="3"
             fill="#00cc8e"
-            fill-opacity="0.5833333333333334"
+            fillOpacity="0.5833333333333334"
             transform="scale(1 1.01688)"
           >
             <animateTransform
@@ -191,7 +191,7 @@ export const Spinner: React.FC<SvgIconProps> = props => {
             cy="0"
             r="3"
             fill="#00cc8e"
-            fill-opacity="0.5"
+            fillOpacity="0.5"
             transform="scale(1 1.12521)"
           >
             <animateTransform
@@ -221,7 +221,7 @@ export const Spinner: React.FC<SvgIconProps> = props => {
             cy="0"
             r="3"
             fill="#00cc8e"
-            fill-opacity="0.4166666666666667"
+            fillOpacity="0.4166666666666667"
             transform="scale(1 1.23354)"
           >
             <animateTransform
@@ -251,7 +251,7 @@ export const Spinner: React.FC<SvgIconProps> = props => {
             cy="0"
             r="3"
             fill="#00cc8e"
-            fill-opacity="0.3333333333333333"
+            fillOpacity="0.3333333333333333"
             transform="scale(1 1.34188)"
           >
             <animateTransform
@@ -281,7 +281,7 @@ export const Spinner: React.FC<SvgIconProps> = props => {
             cy="0"
             r="3"
             fill="#00cc8e"
-            fill-opacity="0.25"
+            fillOpacity="0.25"
             transform="scale(1 1.45021)"
           >
             <animateTransform
@@ -311,7 +311,7 @@ export const Spinner: React.FC<SvgIconProps> = props => {
             cy="0"
             r="3"
             fill="#00cc8e"
-            fill-opacity="0.16666666666666666"
+            fillOpacity="0.16666666666666666"
             transform="scale(1 1.55854)"
           >
             <animateTransform
@@ -341,7 +341,7 @@ export const Spinner: React.FC<SvgIconProps> = props => {
             cy="0"
             r="3"
             fill="#00cc8e"
-            fill-opacity="0.08333333333333333"
+            fillOpacity="0.08333333333333333"
             transform="scale(1 1.66688)"
           >
             <animateTransform

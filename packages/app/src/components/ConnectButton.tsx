@@ -85,7 +85,7 @@ export default ({ connect }: { connect: () => Promise<void> }) => {
   return (
     <>
       <Dialog open={open} maxWidth="sm" fullWidth>
-        <DialogTitle>
+        <DialogTitle disableTypography>
           {connecting ? (
             <></>
           ) : (

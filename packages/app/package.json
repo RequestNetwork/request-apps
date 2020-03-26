@@ -27,6 +27,7 @@
     "react-scripts": "3.4.0",
     "request-ui": "0.1.0",
     "typescript": "~3.7.2",
+    "use-clipboard-copy": "^0.1.2",
     "wallet-address-validator": "^0.2.4",
     "yup": "^0.28.3"
   },

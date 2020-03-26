@@ -1,10 +1,21 @@
 import React from "react";
-import { makeStyles, Box, Typography, Hidden } from "@material-ui/core";
+import {
+  makeStyles,
+  Box,
+  Typography,
+  Hidden,
+  Tooltip,
+  IconButton,
+} from "@material-ui/core";
+import CheckIcon from "@material-ui/icons/Check";
 import { IParsedRequest } from "request-shared";
 import { Link } from "react-router-dom";
 import { RStatusBadge, Spacer } from "request-ui";
 import Moment from "react-moment";
 import { Skeleton } from "@material-ui/lab";
+import { useClipboard } from "use-clipboard-copy";
+
+import { CopyIcon } from "./CopyIcon";
 
 const short = (val?: string) =>
   val
@@ -12,6 +23,62 @@ const short = (val?: string) =>
       ? `${val.slice(0, 10)}...${val.slice(-10)}`
       : val
     : "";
+
+const useAddressStyles = makeStyles(() => ({
+  container: {
+    display: "flex",
+    width: "100%",
+    height: 22,
+    alignItems: "center",
+    "& .copy": {
+      display: "none",
+    },
+    "&:hover .copy": {
+      display: "block",
+    },
+  },
+}));
+
+const Address = ({
+  address,
+  display,
+  currentUser,
+  text,
+}: {
+  address?: string;
+  display?: string;
+  currentUser: boolean;
+  text?: string;
+}) => {
+  const classes = useAddressStyles();
+  const { copied, copy } = useClipboard({
+    copiedTimeout: 1000,
+  });
+
+  return (
+    <Box className={classes.container}>
+      {text && (
+        <Hidden mdUp>
+          <Box width={40}>{text}</Box>
+        </Hidden>
+      )}
+      <Tooltip title={address}>
+        <Typography variant={currentUser ? "h5" : "body2"}>
+          {display || short(address)}
+        </Typography>
+      </Tooltip>
+      {address && (
+        <IconButton className="copy" size="small" onClick={() => copy(address)}>
+          {copied ? (
+            <CheckIcon style={{ width: 16, height: 16 }} />
+          ) : (
+            <CopyIcon style={{ width: 16, height: 16 }} />
+          )}
+        </IconButton>
+      )}
+    </Box>
+  );
+};
 
 const Amount = ({
   amount,
@@ -22,22 +89,27 @@ const Amount = ({
   currency: string;
   role?: "payee" | "payer";
 }) => {
+  const displayAmount = amount.toLocaleString("en-US", {
+    minimumFractionDigits: 3,
+    maximumFractionDigits: 3,
+  });
+  const titleAmount = amount.toLocaleString("en-US", {
+    minimumFractionDigits: 3,
+    maximumFractionDigits: 18,
+  });
   return (
-    <Box
-      display="flex"
-      color={role === "payee" ? "#008556" : role === "payer" ? "#DE1C22" : ""}
-      flex={1}
-      textAlign="right"
+    <Tooltip
+      title={titleAmount !== displayAmount ? `${amount} ${currency}` : ""}
     >
-      <Typography variant="h5">
-        {role === "payer" ? <>-</> : <>+</>}&nbsp;
-        {amount.toLocaleString("en-US", {
-          minimumFractionDigits: 3,
-          maximumFractionDigits: 3,
-        })}{" "}
-        {currency}
-      </Typography>
-    </Box>
+      <Box
+        color={role === "payee" ? "#008556" : role === "payer" ? "#DE1C22" : ""}
+      >
+        <Typography variant="h5">
+          {role === "payer" ? <>-</> : <>+</>}&nbsp;
+          {displayAmount} {currency}
+        </Typography>
+      </Box>
+    </Tooltip>
   );
 };
 
@@ -109,8 +181,8 @@ const useStyles = makeStyles(theme => ({
 const Row = React.memo(
   ({ request, account }: { request: IParsedRequest; account: string }) => {
     const classes = useStyles();
-    const isPayee = account && account.toLowerCase() === request.payee;
-    const isPayer = account && account.toLowerCase() === request.payer;
+    const isPayee = !!account && account.toLowerCase() === request.payee;
+    const isPayer = !!account && account.toLowerCase() === request.payer;
     return (
       <Box className={classes.row}>
         <Box className={classes.rowInner}>
@@ -120,24 +192,23 @@ const Row = React.memo(
           </Box>
           <Box flex={2 / 10} className={classes.payee}>
             <Box display="flex">
-              <Hidden smUp>
-                <Box width={40}>From:</Box>
-              </Hidden>
-              <Typography variant={isPayee ? "h5" : "body2"}>
-                {short(request.payeeName || request.payee)}
-              </Typography>
+              <Address
+                address={request.payee}
+                display={request.payeeName}
+                currentUser={isPayee}
+                text="From"
+              />
             </Box>
           </Box>
           <Box flex={2 / 10} className={classes.payer}>
             <Spacer size={0} xs={2} />
-            <Box display="flex">
-              <Hidden smUp>
-                <Box width={40}>To:</Box>
-              </Hidden>
-              <Typography variant={isPayer ? "h5" : "body2"}>
-                {short(request.payerName || request.payer)}
-              </Typography>
-            </Box>
+
+            <Address
+              address={request.payer}
+              display={request.payerName}
+              currentUser={isPayer}
+              text={"To"}
+            />
           </Box>
           <Box flex={1 / 10} className={classes.amount}>
             <Amount

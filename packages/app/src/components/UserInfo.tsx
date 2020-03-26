@@ -31,7 +31,7 @@ export default ({ name, network }: { name: string; network?: number }) => {
       <Box className={classes.icon}>
         <Dot network={network} account={name} />
         <Box width={4} />
-        <img src={MetamaskIcon} width={48} height={48} />
+        <img alt="" src={MetamaskIcon} width={48} height={48} />
       </Box>
     );
   };

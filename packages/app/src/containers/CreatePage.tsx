@@ -23,7 +23,7 @@ export default () => {
       }, 10000);
       return () => clearTimeout(t);
     }
-  }, [requestId]);
+  }, [requestId, history]);
 
   const submit = async (
     values: IFormData,

@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  makeStyles,
-  Container,
-  Box,
-  Typography,
-  Hidden,
-} from "@material-ui/core";
+import { makeStyles, Box, Typography, Hidden } from "@material-ui/core";
 import { IParsedRequest } from "request-shared";
 import { Link } from "react-router-dom";
 import { RStatusBadge, Spacer } from "request-ui";
@@ -165,6 +159,7 @@ const Row = React.memo(
                 href={`https://pay.request.network/${request.requestId}`}
                 style={{ textDecoration: "none" }}
                 target="_blank"
+                rel="noopener noreferrer"
               >
                 <Typography variant="h5" style={{ color: "#00CC8E" }}>
                   Pay now

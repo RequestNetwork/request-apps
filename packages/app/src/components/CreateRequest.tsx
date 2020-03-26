@@ -14,14 +14,7 @@ import * as Yup from "yup";
 import { Skeleton } from "@material-ui/lab";
 import WalletAddressValidator from "wallet-address-validator";
 
-import {
-  RIcon,
-  RContainer,
-  Spacer,
-  RAlert,
-  RButton,
-  TestnetWarning,
-} from "request-ui";
+import { RIcon, RContainer, Spacer, RButton, TestnetWarning } from "request-ui";
 import Dot from "./Dot";
 
 export interface IFormData {
@@ -257,7 +250,7 @@ const Footer = ({
 };
 
 const isValidEns = (val: string) =>
-  /^[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?$/.test(
+  /^[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?$/.test(
     val
   );
 export const schema = Yup.object().shape<IFormData>({

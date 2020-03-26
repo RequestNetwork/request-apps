@@ -123,7 +123,7 @@ export default ({ connect }: { connect: () => Promise<void> }) => {
                   alignItems="center"
                   justifyContent="space-between"
                 >
-                  <img src={MetamaskIcon} width={48} height={48} />
+                  <img alt="" src={MetamaskIcon} width={48} height={48} />
                   <Typography variant="caption">Metamask</Typography>
                   <Box width={48} />
                 </Box>

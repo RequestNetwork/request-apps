@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   makeStyles,
   Typography,
@@ -53,7 +53,6 @@ const useStyles = makeStyles(theme => ({
 
 export default ({ requestId }: { requestId: string }) => {
   const classes = useStyles();
-  const ref = useRef<any>();
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {

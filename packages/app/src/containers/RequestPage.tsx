@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { makeStyles, Typography, Box, ThemeProvider } from "@material-ui/core";
+import { makeStyles, Typography } from "@material-ui/core";
 import { useWeb3React } from "@web3-react/core";
 import {
   RContainer,
@@ -19,7 +19,7 @@ import {
 import ShareRequest from "../components/ShareRequest";
 import ErrorPage from "./ErrorPage";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   cancel: {
     color: "#DE1C22",
     border: "1px solid #E4E4E4",

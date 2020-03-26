@@ -1,6 +1,5 @@
 import React from "react";
 import { makeStyles, Box, Theme, Tooltip } from "@material-ui/core";
-import { number } from "yup";
 
 interface IProps {
   account?: string;

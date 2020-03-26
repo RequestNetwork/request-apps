@@ -33,6 +33,10 @@ export default () => {
       throw new Error("not connected");
     }
     try {
+      const paymentNetworkType =
+        values.currency!.split("-")[0] === "ETH"
+          ? PaymentTypes.PAYMENT_NETWORK_ID.ETH_INPUT_DATA
+          : PaymentTypes.PAYMENT_NETWORK_ID.ERC20_PROXY_CONTRACT;
       const requestId = await createRequest(
         {
           amount: amountToString(values.amount!, values.currency!),
@@ -47,7 +51,7 @@ export default () => {
               }
             : undefined,
           paymentNetwork: {
-            id: PaymentTypes.PAYMENT_NETWORK_ID.ERC20_PROXY_CONTRACT,
+            id: paymentNetworkType,
             parameters: {
               paymentAddress: account, // TODO
             },

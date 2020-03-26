@@ -32,7 +32,6 @@ export interface IProps {
   ) => void;
   account?: string;
   network?: number;
-  isPending?: boolean;
   loading: boolean;
 }
 
@@ -214,13 +213,7 @@ const Body = () => {
   );
 };
 
-const Footer = ({
-  isPending,
-  account,
-}: {
-  isPending: boolean;
-  account?: string;
-}) => {
+const Footer = ({ account }: { account?: string }) => {
   const { submitForm, isValid, values, isSubmitting } = useFormikContext<
     IFormData
   >();
@@ -237,7 +230,7 @@ const Footer = ({
         color="primary"
         fullWidth
         onClick={submitForm}
-        loading={isSubmitting || isPending}
+        loading={isSubmitting}
         direction="right"
         tabIndex={5}
         sticky
@@ -285,7 +278,6 @@ export const CreateRequestForm = ({
   error,
   onSubmit,
   account,
-  isPending = false,
   network,
   loading,
 }: IProps) => {
@@ -311,7 +303,7 @@ export const CreateRequestForm = ({
             <Header account={account} network={network} loading={loading} />
             <Body />
           </Box>
-          <Footer account={account} isPending={isPending} />
+          <Footer account={account} />
         </>
       </Formik>
     </RContainer>

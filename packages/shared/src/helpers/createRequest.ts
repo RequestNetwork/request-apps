@@ -1,5 +1,5 @@
 import { IdentityTypes, PaymentTypes } from "@requestnetwork/types";
-import { RequestNetwork } from "@requestnetwork/request-client.js";
+import { RequestNetwork, Request } from "@requestnetwork/request-client.js";
 import { Web3SignatureProvider } from "@requestnetwork/web3-signature";
 import { chainIdToName } from "./chainIdToName";
 
@@ -15,7 +15,7 @@ export const createRequest = async (
   { currency, amount, payer, paymentNetwork, contentData }: ICreateRequestArgs,
   account: string,
   network: string | number
-): Promise<string> => {
+): Promise<Request> => {
   network = chainIdToName(network);
   const requestNetwork = new RequestNetwork({
     nodeConnectionConfig: {
@@ -43,5 +43,5 @@ export const createRequest = async (
       value: account,
     },
   });
-  return request.requestId;
+  return request;
 };

@@ -12,18 +12,8 @@ import { useConnectedUser } from "../contexts/UserContext";
 export default () => {
   const history = useHistory();
   const [error, setError] = useState<string>();
-  const [requestId, setRequestId] = useState<string>();
   const { account, chainId } = useWeb3React();
   const { loading: web3Loading } = useConnectedUser();
-
-  useEffect(() => {
-    if (requestId) {
-      const t = setTimeout(() => {
-        history.push(`/${requestId}`);
-      }, 10000);
-      return () => clearTimeout(t);
-    }
-  }, [requestId, history]);
 
   const submit = async (
     values: IFormData,
@@ -37,7 +27,7 @@ export default () => {
         values.currency!.split("-")[0] === "ETH"
           ? PaymentTypes.PAYMENT_NETWORK_ID.ETH_INPUT_DATA
           : PaymentTypes.PAYMENT_NETWORK_ID.ERC20_PROXY_CONTRACT;
-      const requestId = await createRequest(
+      const request = await createRequest(
         {
           amount: amountToString(values.amount!, values.currency!),
           contentData: {
@@ -60,7 +50,8 @@ export default () => {
         account,
         chainId
       );
-      setRequestId(requestId);
+      // await request.waitForConfirmation();
+      history.push(`/${request.requestId}`);
     } catch (e) {
       setError(e.message);
     }
@@ -71,7 +62,6 @@ export default () => {
       network={chainId}
       error={error}
       onSubmit={submit}
-      isPending={!!requestId}
       loading={web3Loading}
     />
   );

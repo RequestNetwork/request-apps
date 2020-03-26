@@ -25,12 +25,12 @@ const Amount = ({
   return (
     <Box
       display="flex"
-      color={role === "payee" ? "#00cc8e" : role === "payer" ? "#ce2e2e" : ""}
+      color={role === "payee" ? "#008556" : role === "payer" ? "#DE1C22" : ""}
       flex={1}
       textAlign="right"
     >
       <Typography variant="h5">
-        {role === "payer" ? <>-</> : <>&nbsp;</>}&nbsp;
+        {role === "payer" ? <>-</> : <>+</>}&nbsp;
         {amount.toLocaleString("en-US", {
           minimumFractionDigits: 3,
           maximumFractionDigits: 3,
@@ -52,6 +52,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: "white",
     boxShadow: "0px 4px 5px rgba(211, 214, 219, 0.8)",
     [theme.breakpoints.up("sm")]: {
+      borderBottom: "solid 1px #E4E4E4",
       margin: 0,
       padding: 0,
       height: 48,

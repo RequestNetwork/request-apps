@@ -51,7 +51,7 @@ export default () => {
   }
   return (
     <Box className={classes.container}>
-      <Spacer size={24} xs={12} />
+      <Spacer size={24} xs={5} />
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Box display="flex" flex={1}>
           {["All", "Outstanding", "Paid"].map((f, index) => (

@@ -36,16 +36,18 @@ export interface IProps {
   loading: boolean;
 }
 
-const useHeaderStyles = makeStyles(() => ({
+const useHeaderStyles = makeStyles(theme => ({
   container: {
     height: 124,
     width: "100%",
-    background: "white",
-    borderRadius: "3px 3px 0px 0px",
     padding: 32,
-    borderBottom: "1px solid #E9E9E9",
+    borderBottom: "1px solid #E4E4E4",
     justifyContent: "space-between",
     display: "flex",
+    boxShadow: "0px -4px 5px rgba(211, 214, 219, 0.5)",
+    [theme.breakpoints.up("sm")]: {
+      boxShadow: "none",
+    },
   },
 }));
 
@@ -114,10 +116,7 @@ const useBodyStyles = makeStyles(theme => ({
     display: "flex",
     flexDirection: "column",
     //justifyContent: "space-around",
-    background: "white",
-    borderRadius: "3px 3px 0px 0px",
     padding: "20px 32px",
-    borderBottom: "1px solid #E9E9E9",
   },
   field: {
     marginBottom: 8,
@@ -271,6 +270,17 @@ export const schema = Yup.object().shape<IFormData>({
   currency: Yup.mixed().required("Required"),
 });
 
+const useStyles = makeStyles(theme => ({
+  container: {
+    width: "100%",
+    background: "white",
+    boxShadow: "0px 4px 5px rgba(211, 214, 219, 0.5)",
+    [theme.breakpoints.up("sm")]: {
+      borderRadius: 4,
+    },
+  },
+}));
+
 export const CreateRequestForm = ({
   error,
   onSubmit,
@@ -279,12 +289,13 @@ export const CreateRequestForm = ({
   network,
   loading,
 }: IProps) => {
+  const classes = useStyles();
   return (
     <RContainer>
       <Spacer size={15} xs={8} />
       {/* {error && <RAlert severity="error" message={error} />} */}
 
-      {network !== 1 && <TestnetWarning />}
+      {network && network !== 1 && <TestnetWarning />}
       <Formik<IFormData>
         validationSchema={schema}
         onSubmit={onSubmit}
@@ -296,8 +307,10 @@ export const CreateRequestForm = ({
         }}
       >
         <>
-          <Header account={account} network={network} loading={loading} />
-          <Body />
+          <Box className={classes.container}>
+            <Header account={account} network={network} loading={loading} />
+            <Body />
+          </Box>
           <Footer account={account} isPending={isPending} />
         </>
       </Formik>

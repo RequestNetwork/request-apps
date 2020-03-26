@@ -24,6 +24,9 @@ export const theme = createMuiTheme({
   },
   typography: {
     fontFamily: "'Inter', sans-serif",
+    allVariants: {
+      fontVariantLigatures: 'none',
+    },
     body1: {
       fontWeight: 'normal',
       fontSize: 12,

@@ -93,10 +93,6 @@ const useStyles = makeStyles<Theme, IProps>(theme => ({
   },
   buttonRoot: {
     padding: ({ loading }) => (loading ? 0 : undefined),
-    borderRadius: 0,
-    [theme.breakpoints.up('sm')]: {
-      borderRadius: 4,
-    },
   },
   ripple: {
     backgroundColor: '#050B20',

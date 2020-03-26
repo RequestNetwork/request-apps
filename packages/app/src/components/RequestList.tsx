@@ -47,11 +47,11 @@ const useStyles = makeStyles(theme => ({
     flexDirection: "row",
     height: 176,
     padding: "20px 16px",
-    margin: "20px 16px 4px 16px",
+    margin: "20px 0 4px 0",
     width: "unset",
     backgroundColor: "white",
     boxShadow: "0px 4px 5px rgba(211, 214, 219, 0.8)",
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("md")]: {
       borderBottom: "solid 1px #E4E4E4",
       margin: 0,
       padding: 0,
@@ -65,7 +65,7 @@ const useStyles = makeStyles(theme => ({
     position: "relative",
     alignItems: "start",
     flex: 1,
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("md")]: {
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "space-around",
@@ -85,6 +85,8 @@ const useStyles = makeStyles(theme => ({
     },
   },
   amount: {
+    display: "flex",
+    justifyContent: "flex-end",
     [theme.breakpoints.down("sm")]: {
       position: "absolute",
       bottom: 0,
@@ -92,11 +94,13 @@ const useStyles = makeStyles(theme => ({
   },
   payer: {
     [theme.breakpoints.down("sm")]: {
+      width: "100%",
       marginTop: 8,
     },
   },
   payee: {
     [theme.breakpoints.down("sm")]: {
+      width: "100%",
       marginTop: 24,
     },
   },
@@ -135,7 +139,7 @@ const Row = React.memo(
               </Typography>
             </Box>
           </Box>
-          <Box flex={1 / 10} display="flex" className={classes.amount}>
+          <Box flex={1 / 10} className={classes.amount}>
             <Amount
               amount={request.amount}
               currency={request.currency}
@@ -213,7 +217,7 @@ export default ({
 }) => {
   return (
     <Box display="flex" flexDirection="column" width="100%" height="100%">
-      <Hidden xsDown>
+      <Hidden smDown>
         <Box
           display="flex"
           justifyContent="space-around"

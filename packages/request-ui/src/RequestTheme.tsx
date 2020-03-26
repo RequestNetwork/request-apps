@@ -139,6 +139,10 @@ export const theme = createMuiTheme({
           },
         },
         border: 0,
+        borderRadius: 0,
+        [defaultTheme.breakpoints.up('sm')]: {
+          borderRadius: 4,
+        },
       },
       containedSecondary: {
         padding: '20px 32px',

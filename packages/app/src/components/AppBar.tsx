@@ -61,20 +61,20 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   connect: {
     display: "none",
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("md")]: {
       display: "inline-flex",
     },
   },
   mobileMenu: {
     color: "#050B20",
     display: "inline-flex",
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("md")]: {
       display: "none",
     },
   },
   desktopMenu: {
     display: "none",
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("md")]: {
       display: "flex",
     },
   },

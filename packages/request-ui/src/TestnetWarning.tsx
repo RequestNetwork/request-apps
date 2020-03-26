@@ -1,21 +1,34 @@
 import React from 'react';
-import { Box, Typography } from '@material-ui/core';
+import { Box, Typography, makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles(theme => ({
+  bottomLine: {
+    borderBottom: '4px solid #FFB95F',
+    width: '100%',
+    maxWidth: 320,
+    [theme.breakpoints.up('sm')]: {
+      maxWidth: 'unset',
+    },
+  },
+  textBox: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 180,
+    height: 40,
+    color: 'white',
+    backgroundColor: '#FFB95F',
+  },
+}));
 
 export const TestnetWarning = () => {
+  const classes = useStyles();
   return (
     <>
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        width="180px"
-        height="40px"
-        color="#fff"
-        style={{ backgroundColor: '#FFB95F' }}
-      >
+      <Box className={classes.textBox}>
         <Typography variant="body1">Test Network</Typography>
       </Box>
-      <Box width="100%" borderBottom="4px solid #FFB95F" />
+      <Box className={classes.bottomLine} />
     </>
   );
 };

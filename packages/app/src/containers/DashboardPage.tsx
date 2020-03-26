@@ -28,8 +28,12 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: "white",
     maxWidth: 1150,
     width: "100%",
-    [theme.breakpoints.up("sm")]: {
+    maxWidth: 1150,
+    padding: "0 16px",
+    [theme.breakpoints.up("md")]: {
       backgroundColor: "unset",
+      padding: "unset",
+    },
     },
   },
 }));

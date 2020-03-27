@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { IParsedRequest } from "request-shared";
 import { Spacer } from "request-ui";
 
-import { Box, Hidden, makeStyles } from "@material-ui/core";
+import { Box, Hidden, makeStyles, Fab, IconButton } from "@material-ui/core";
+import AddIcon from "@material-ui/icons/Add";
 import { useWeb3React } from "@web3-react/core";
 
 import CsvExport from "../components/CsvExport";
@@ -11,17 +11,6 @@ import RequestList from "../components/RequestList";
 import { useRequestList } from "../contexts/RequestListContext";
 import { useConnectedUser } from "../contexts/UserContext";
 import NotLoggedPage from "./NotLoggedPage";
-
-const applyFilter = (
-  requests: IParsedRequest[] | undefined,
-  filter: string
-) => {
-  if (!requests) return undefined;
-  if (filter === "all") return requests;
-  if (filter === "outstanding")
-    return requests.filter(x => x.status === "open");
-  if (filter === "paid") return requests.filter(x => x.status === "paid");
-};
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -42,13 +31,17 @@ export default () => {
   const classes = useStyles();
   const { account, chainId } = useWeb3React();
   const { loading: web3Loading } = useConnectedUser();
-  const { requests } = useRequestList();
-  const [filter, setFilter] = useState("all");
-  const [filteredRequests, setFilteredRequests] = useState<IParsedRequest[]>();
+  const { requests, filter, setFilter } = useRequestList();
+  const [firstLoad, setFirstLoad] = useState(true);
+  useEffect(() => {
+    setTimeout(() => {
+      setFirstLoad(false);
+    }, 1000);
+  }, [firstLoad]);
 
   useEffect(() => {
-    setFilteredRequests(applyFilter(requests, filter));
-  }, [filter, requests]);
+    setFirstLoad(true);
+  }, [filter]);
 
   if (!web3Loading && (!account || !chainId)) {
     return <NotLoggedPage />;
@@ -72,7 +65,7 @@ export default () => {
         </Hidden>
       </Box>
       <RequestList
-        requests={filteredRequests}
+        requests={firstLoad ? requests?.slice(0, 15) : requests}
         account={account || undefined}
         loading={web3Loading}
       />

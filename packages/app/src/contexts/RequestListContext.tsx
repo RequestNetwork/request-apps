@@ -5,14 +5,39 @@ import { useWeb3React } from "@web3-react/core";
 interface IContext {
   requests?: IParsedRequest[];
   loading: boolean;
+  refresh: () => void;
+  filter: string;
+  setFilter: (val: string) => void;
 }
 
 const RequestListContext = React.createContext<IContext | null>(null);
 
+const applyFilter = (
+  requests: IParsedRequest[] | undefined,
+  filter: string
+) => {
+  if (!requests) return undefined;
+  if (filter === "all") return requests;
+  if (filter === "outstanding")
+    return requests.filter(x => x.status === "open");
+  if (filter === "paid") return requests.filter(x => x.status === "paid");
+};
+
 export const RequestListProvider: React.FC = ({ children }) => {
   const { account, chainId } = useWeb3React();
-
+  const [forceUpdate, setForceUpdate] = useState(false);
   const [requests, setRequests] = useState<IParsedRequest[]>();
+
+  const [filter, setFilter] = useState("all");
+  const [filteredRequests, setFilteredRequests] = useState<IParsedRequest[]>();
+
+  useEffect(() => {
+    setFilteredRequests(undefined);
+    setTimeout(() => {
+      setFilteredRequests(applyFilter(requests, filter));
+    }, 100);
+  }, [filter, requests]);
+
   useEffect(() => {
     let canceled = false;
     if (chainId && account) {
@@ -26,10 +51,16 @@ export const RequestListProvider: React.FC = ({ children }) => {
     return () => {
       canceled = true;
     };
-  }, [chainId, account]);
+  }, [chainId, account, forceUpdate]);
   return (
     <RequestListContext.Provider
-      value={{ requests, loading: requests === undefined }}
+      value={{
+        requests: filteredRequests,
+        loading: filteredRequests === undefined,
+        refresh: () => setForceUpdate(!forceUpdate),
+        filter,
+        setFilter,
+      }}
     >
       {children}
     </RequestListContext.Provider>

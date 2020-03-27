@@ -6,6 +6,7 @@ import { RequestNetwork, Request } from "@requestnetwork/request-client.js";
 import { useRate } from "../hooks/useRate";
 import { parseRequest } from "../helpers/parseRequest";
 import { IParsedRequest } from "../";
+import { chainIdToName } from "../helpers/chainIdToName";
 
 interface IContext {
   /** true if first fetch is ongoing */
@@ -34,7 +35,7 @@ export const RequestContext = React.createContext<IContext | null>(null);
 /** Gets a request from a gateway. Tries mainnet then rinkeby */
 const loadRequest = async (
   requestId: string,
-  network?: string
+  network?: string | number
 ): Promise<{ network: string; request: Request } | null> => {
   if (!network) {
     return (
@@ -42,6 +43,7 @@ const loadRequest = async (
       (await loadRequest(requestId, "rinkeby"))
     );
   }
+  network = chainIdToName(network);
   try {
     const rn = new RequestNetwork({
       nodeConnectionConfig: {
@@ -61,7 +63,10 @@ const loadRequest = async (
 };
 
 /** Loads the request and converts the amount to counter currency */
-export const RequestProvider: React.FC = ({ children }) => {
+export const RequestProvider: React.FC<{ chainId?: string | number }> = ({
+  children,
+  chainId,
+}) => {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [parsedRequest, setParsedRequest] = useState<IParsedRequest>();
@@ -73,10 +78,15 @@ export const RequestProvider: React.FC = ({ children }) => {
   // gets counter currency rate
   const rate = useRate(parsedRequest?.currency, counterCurrency);
 
+  useEffect(() => {
+    setLoading(true);
+    setParsedRequest(undefined);
+  }, [chainId]);
+
   // load request and handle pending state change.
   useEffect(() => {
     if (id) {
-      loadRequest(id).then(result => {
+      loadRequest(id, chainId).then(result => {
         if (result) {
           parseRequest(
             result.request.requestId,
@@ -91,7 +101,7 @@ export const RequestProvider: React.FC = ({ children }) => {
         }
       });
     }
-  }, [id, pending, forceUpdate]);
+  }, [id, pending, forceUpdate, chainId]);
 
   // handle rate conversion
   useEffect(() => {

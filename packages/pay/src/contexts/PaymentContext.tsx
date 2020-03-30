@@ -169,15 +169,15 @@ export const PaymentProvider: React.FC = ({ children }) => {
     ) {
       setReady(true);
       setError(new FiatRequestNotSupportedError());
-    }
-    if (request?.currencyType === Types.RequestLogic.CURRENCY.BTC) {
+    } else if (request?.currencyType === Types.RequestLogic.CURRENCY.BTC) {
       setReady(true);
+    } else {
+      if (!account || !request || !library) return;
+      runChecks(request.raw, account, library).then(err => {
+        setError(err);
+        setReady(true);
+      });
     }
-    if (!account || !request || !library) return;
-    runChecks(request.raw, account, library).then(err => {
-      setError(err);
-      setReady(true);
-    });
   }, [request, approving, paying, account, library]);
 
   const value = {

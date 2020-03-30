@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Spacer } from "request-ui";
+import { Spacer, TestnetWarning } from "request-ui";
 
 import { Box, Hidden, makeStyles, Fab, IconButton } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
@@ -55,6 +55,7 @@ export default () => {
   return (
     <Box className={classes.container}>
       <Spacer size={24} xs={5} />
+      {chainId && chainId !== 1 && <TestnetWarning />}
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Box display="flex" flex={1}>
           {["All", "Outstanding", "Paid"].map((f, index) => (

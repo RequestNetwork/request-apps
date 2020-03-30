@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme => ({
   button: {
     width: "100%",
     top: -2,
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("md")]: {
       width: 256,
     },
   },

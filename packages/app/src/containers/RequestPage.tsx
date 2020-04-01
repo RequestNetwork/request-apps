@@ -110,7 +110,9 @@ export const RequestPage = () => {
       {request && request.network !== "mainnet" && <TestnetWarning />}
       <RequestView
         payee={request.payeeName || request.payee}
-        createdDate={request.timestamp}
+        createdDate={request.createdDate}
+        paidDate={request.paidDate}
+        canceledDate={request.canceledDate}
         status={request.status}
         amount={request.amount.toLocaleString("en-US", {
           minimumFractionDigits: 0,

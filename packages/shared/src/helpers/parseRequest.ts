@@ -30,6 +30,9 @@ export const parseRequest = async (
     : "open";
 
   const paidTimestamp = data.balance?.events.reverse()[0]?.timestamp;
+  const canceledTimestamp = data.events.find(
+    x => x.name === Types.RequestLogic.ACTION_NAME.CANCEL
+  )?.timestamp;
 
   const extensionsValues = Object.values(data.extensions).find(
     x => x.type === "payment-network"
@@ -64,8 +67,11 @@ export const parseRequest = async (
     amount,
     currency: data.currency.split("-")[0],
     status,
-    timestamp: new Date(data.timestamp * 1000),
+    createdDate: new Date(data.timestamp * 1000),
     paidDate: paidTimestamp ? new Date(paidTimestamp * 1000) : undefined,
+    canceledDate: canceledTimestamp
+      ? new Date(canceledTimestamp * 1000)
+      : undefined,
     paymentAddress: extensionsValues?.paymentAddress,
     paymentFrom,
     reason: data.contentData?.reason,

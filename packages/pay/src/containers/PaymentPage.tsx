@@ -174,12 +174,13 @@ export const PaymentPage = () => {
             minimumFractionDigits: 0,
             maximumFractionDigits: 5,
           })}
-          createdDate={request.timestamp}
+          createdDate={request.createdDate}
+          paidDate={request.paidDate}
+          canceledDate={request.canceledDate}
           currency={request.currency}
           payee={request.payeeName || request.payee}
           reason={request.reason}
           status={request.status}
-          paidDate={request.paidDate}
           counterValue={counterValue}
           counterCurrency={counterCurrency}
         />
@@ -225,7 +226,7 @@ export default () => {
       <Web3ReactProvider getLibrary={provider => new Web3Provider(provider)}>
         <ConnectorProvider>
           <PaymentProvider>
-            <AutoConnect />
+            {/* <AutoConnect /> */}
             <ErrorContainer />
             <PaymentPage />
           </PaymentProvider>

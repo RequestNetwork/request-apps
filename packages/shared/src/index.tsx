@@ -7,8 +7,9 @@ export interface IParsedRequest {
   amount: number;
   currency: string;
   status: RequestStatus;
-  timestamp: Date;
+  createdDate: Date;
   paidDate?: Date;
+  canceledDate?: Date;
   paymentAddress: string;
   paymentFrom?: string;
   invoiceNumber?: string;

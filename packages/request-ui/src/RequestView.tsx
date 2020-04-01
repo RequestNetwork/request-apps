@@ -78,8 +78,9 @@ const useStyles = makeStyles(theme => ({
 
 interface IProps {
   payee: string;
-  paidDate?: Date;
   createdDate: Date;
+  paidDate?: Date;
+  canceledDate?: Date;
   status: RequestStatus;
   amount: string;
   currency: string;
@@ -122,6 +123,7 @@ export const RequestView = ({
   payee,
   paidDate,
   createdDate,
+  canceledDate,
   status,
   amount,
   currency,
@@ -143,15 +145,10 @@ export const RequestView = ({
       <Box className={classes.body}>
         <Box color="text.secondary">
           <Typography variant="body2">
-            {paidDate ? (
-              <>
-                Paid on <Moment format="LL">{paidDate}</Moment>{' '}
-              </>
-            ) : (
-              <>
-                Created on <Moment format="LL">{createdDate}</Moment>{' '}
-              </>
-            )}
+            {paidDate ? 'Paid' : canceledDate ? 'Canceled' : 'Created'} on{' '}
+            <Moment format="LL">
+              {paidDate || canceledDate || createdDate}
+            </Moment>
           </Typography>
         </Box>
         <Spacer size={4} />

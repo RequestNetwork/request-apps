@@ -251,7 +251,7 @@ export const schema = Yup.object().shape<IFormData>({
     .required("Required"),
   payer: Yup.string().test(
     "is-valid-recipient",
-    "Should be a valid ENS or ETH address",
+    "Please enter a valid ENS or ETH address",
     async (value: string) => {
       return (
         !value ||

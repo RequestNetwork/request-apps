@@ -8,13 +8,13 @@ import { makeStyles } from "@material-ui/core";
 const useStyles = makeStyles(theme => ({
   button: {
     padding: "6px 8px",
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("md")]: {
       padding: "6px 24px",
     },
   },
   icon: {
     display: "none",
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("md")]: {
       display: "flex",
       alignItems: "center",
     },

@@ -47,6 +47,11 @@ const useStyles = makeStyles(theme => ({
       paddingLeft: 40,
     },
   },
+  from: {
+    textOverflow: 'ellipsis',
+    width: '100%',
+    overflow: 'hidden',
+  },
   body: {
     display: 'flex',
     flexDirection: 'column',
@@ -138,7 +143,7 @@ export const RequestView = ({
       <Box className={classes.header} color="">
         <Typography variant="h5">Request for payment from</Typography>
         <Spacer />
-        <Box color="text.secondary">
+        <Box color="text.secondary" className={classes.from}>
           <Typography variant="caption">{payee}</Typography>
         </Box>
       </Box>

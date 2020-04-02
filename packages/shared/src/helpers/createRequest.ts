@@ -26,6 +26,18 @@ export const createRequest = async (
     },
     signatureProvider: new Web3SignatureProvider((window as any).ethereum),
   });
+
+  if (network === "rinkeby") {
+    switch (currency) {
+      case "DAI":
+        currency = "FAU-rinkeby";
+        break;
+      case "ETH":
+        currency = "ETH-rinkeby";
+        break;
+    }
+  }
+
   const request = await requestNetwork.createRequest({
     requestInfo: {
       currency,

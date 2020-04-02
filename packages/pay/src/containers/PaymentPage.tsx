@@ -157,8 +157,9 @@ export const PaymentPage = () => {
     request?.status === "open" && error instanceof RequiresApprovalError;
   const activating = !active && !!connectorName;
   const stickToBottom =
-    (mobile && active && request?.status === "open") ||
-    (request?.status === "pending" && paying);
+    mobile &&
+    active &&
+    (request?.status === "open" || request?.status === "pending");
   const showSpinner = approving || activating;
   const showFooter =
     !mobile ||
@@ -198,7 +199,7 @@ export const PaymentPage = () => {
           <Spacer size={5} />
         </>
       ) : (
-        <Spacer size={15} xs={10} />
+        <Spacer size={12} xs={10} />
       )}
       {stickToBottom && <Box flex={1} />}
       {!showSpinner && <PaymentActions />}

@@ -90,11 +90,11 @@ const Amount = ({
   role?: "payee" | "payer";
 }) => {
   const displayAmount = amount.toLocaleString("en-US", {
-    minimumFractionDigits: 3,
-    maximumFractionDigits: 3,
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
   });
   const titleAmount = amount.toLocaleString("en-US", {
-    minimumFractionDigits: 3,
+    minimumFractionDigits: 2,
     maximumFractionDigits: 18,
   });
   return (

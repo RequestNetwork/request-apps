@@ -235,7 +235,7 @@ const Footer = ({ account }: { account?: string }) => {
         tabIndex={5}
         sticky
       >
-        <Typography variant="caption">Create a request</Typography>
+        <Typography variant="h4">Create a request</Typography>
       </RButton>
     </>
   );

@@ -151,10 +151,6 @@ export const PaymentProvider: React.FC = ({ children }) => {
       payRequest(request.raw, library)
         .then(txCallback)
         .then(() => setTimeout(() => setPending(false), 5000))
-        .catch(e => {
-          console.log(e);
-          setError(e);
-        })
         .finally(() => setPaying(false));
     }
     if (approving) {

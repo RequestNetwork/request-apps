@@ -227,7 +227,7 @@ export default () => {
       <Web3ReactProvider getLibrary={provider => new Web3Provider(provider)}>
         <ConnectorProvider>
           <PaymentProvider>
-            {/* <AutoConnect /> */}
+            <AutoConnect />
             <ErrorContainer />
             <PaymentPage />
           </PaymentProvider>

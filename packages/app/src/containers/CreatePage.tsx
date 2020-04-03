@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { useHistory } from "react-router";
 import { amountToString, createRequest } from "request-shared";
 
-import { IdentityTypes, PaymentTypes } from "@requestnetwork/types";
 import { useWeb3React } from "@web3-react/core";
 
 import { CreateRequestForm, IFormData } from "../components/CreateRequest";
@@ -25,10 +24,6 @@ export default () => {
       throw new Error("not connected");
     }
     try {
-      const paymentNetworkType =
-        values.currency!.split("-")[0] === "ETH"
-          ? PaymentTypes.PAYMENT_NETWORK_ID.ETH_INPUT_DATA
-          : PaymentTypes.PAYMENT_NETWORK_ID.ERC20_PROXY_CONTRACT;
       const request = await createRequest(
         {
           amount: amountToString(values.amount!, values.currency!),
@@ -36,18 +31,8 @@ export default () => {
             reason: values.reason,
           },
           currency: values.currency!,
-          payer: values.payer
-            ? {
-                type: IdentityTypes.TYPE.ETHEREUM_ADDRESS,
-                value: values.payer,
-              }
-            : undefined,
-          paymentNetwork: {
-            id: paymentNetworkType,
-            parameters: {
-              paymentAddress: account, // TODO
-            },
-          },
+          payer: values.payer,
+          paymentAddress: account,
         },
         account,
         chainId
@@ -56,6 +41,7 @@ export default () => {
       history.push(`/${request.requestId}`);
       refresh();
     } catch (e) {
+      console.log(e.message);
       setError(e.message);
     }
   };

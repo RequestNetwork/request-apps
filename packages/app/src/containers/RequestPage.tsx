@@ -76,7 +76,13 @@ const RequestActions = ({
 export const RequestPage = () => {
   const { account, chainId } = useWeb3React();
 
-  const { request, loading, update } = useRequest();
+  const {
+    request,
+    loading,
+    update,
+    counterCurrency,
+    counterValue,
+  } = useRequest();
 
   const cancel = async () => {
     if (!request || !account || !chainId) {
@@ -120,8 +126,8 @@ export const RequestPage = () => {
         })}
         currency={request.currency}
         reason={request.reason}
-        counterValue={"USD"}
-        counterCurrency={"2.04"}
+        counterValue={counterValue}
+        counterCurrency={counterCurrency}
       />
       <Spacer size={12} />
       <ShareRequest requestId={request.requestId} />

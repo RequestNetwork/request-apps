@@ -25,14 +25,20 @@ export const listRequests = async (
 
     value: account,
   });
-  return Promise.all(
-    requests.map(request =>
-      parseRequest(
+
+  const list = [];
+  for (const request of requests) {
+    try {
+      const parsedRequest = await parseRequest(
         request.requestId,
         request.getData(),
         network as string,
         false
-      )
-    )
-  );
+      );
+      list.push(parsedRequest);
+    } catch (e) {
+      console.log(`request ${request.requestId} could not be parsed: ${e}`);
+    }
+  }
+  return list;
 };

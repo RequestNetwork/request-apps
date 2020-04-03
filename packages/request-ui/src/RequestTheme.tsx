@@ -104,8 +104,6 @@ export const theme = createMuiTheme({
       root: {
         textTransform: 'none',
         fontSize: '16px',
-        minWidth: 158,
-        minHeight: 56,
         overflow: 'hidden',
       },
       label: {
@@ -114,6 +112,8 @@ export const theme = createMuiTheme({
         lineHeight: '24px',
       },
       contained: {
+        minWidth: 158,
+        minHeight: 56,
         padding: '16px 24px',
         backgroundColor: '#fff',
         border: '1px solid #E4E4E4',

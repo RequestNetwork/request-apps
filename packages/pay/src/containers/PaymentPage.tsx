@@ -83,7 +83,7 @@ export const ErrorContainer = () => {
   const classes = useErrorContainerStyles();
 
   const requiresApproval = error instanceof RequiresApprovalError;
-  const showErrorAtTop = !requiresApproval || mobile;
+  const showErrorAtTop = mobile || !requiresApproval;
 
   if (request?.status === "open" && error && showErrorAtTop) {
     return (
@@ -106,8 +106,26 @@ export const ErrorContainer = () => {
   );
 };
 
-export const PaymentPage = () => {
+export const FeedbackContainer = () => {
   const [feedbackOpen, setFeedbackOpen] = React.useState(false);
+  const { request } = useRequest();
+  const prevStatus = usePrevious(request?.status);
+
+  React.useEffect(() => {
+    if (
+      prevStatus &&
+      prevStatus !== request?.status &&
+      request?.status === "paid"
+    ) {
+      setFeedbackOpen(true);
+    }
+  }, [request?.status]);
+  return (
+    <Feedback open={feedbackOpen} onClose={() => setFeedbackOpen(false)} />
+  );
+};
+
+export const PaymentPage = () => {
   const [loaded, setLoaded] = React.useState(false);
 
   const { ready: connectorReady, connectorName } = useConnector();
@@ -118,18 +136,8 @@ export const PaymentPage = () => {
     counterValue,
   } = useRequest();
   const { paying, approving, error, ready: paymentReady } = usePayment();
-  const prevStatus = usePrevious(request?.status);
   const mobile = useMobile();
   const { active } = useWeb3React();
-  React.useEffect(() => {
-    if (
-      prevStatus &&
-      prevStatus !== request?.status &&
-      request?.status === "paid"
-    ) {
-      setFeedbackOpen(true);
-    }
-  }, [request?.status]);
 
   React.useEffect(() => {
     // this hook is to avoid flashing elements on screen.
@@ -168,7 +176,6 @@ export const PaymentPage = () => {
     (request?.status === "pending" && !paying);
   return (
     <RContainer>
-      <Feedback open={feedbackOpen} onClose={() => setFeedbackOpen(false)} />
       {request ? (
         <RequestView
           amount={request.amount.toLocaleString("en-US", {
@@ -228,6 +235,7 @@ export default () => {
         <ConnectorProvider>
           <PaymentProvider>
             <AutoConnect />
+            <FeedbackContainer />
             <ErrorContainer />
             <PaymentPage />
           </PaymentProvider>

@@ -17,7 +17,7 @@ import {
   createMuiTheme,
 } from "@material-ui/core";
 import SettingsIcon from "@material-ui/icons/Settings";
-import { PaymentPage, ErrorContainer } from "./PaymentPage";
+import { PaymentPage, ErrorContainer, FeedbackContainer } from "./PaymentPage";
 import { UnsupportedChainIdError, getWeb3ReactContext } from "@web3-react/core";
 import { NoEthereumProviderError } from "@web3-react/injected-connector";
 
@@ -542,6 +542,7 @@ export default () => {
                   broadcasting: state.broadcasting,
                 }}
               >
+                <FeedbackContainer />
                 <ErrorContainer />
                 <PaymentPage />
                 {state.debug && <pre>{JSON.stringify(state)}</pre>}

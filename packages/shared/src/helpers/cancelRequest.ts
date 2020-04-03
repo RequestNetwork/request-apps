@@ -20,8 +20,9 @@ export const cancelRequest = async (
   });
 
   const request = await rn.fromRequestId(requestId);
-  await request.cancel({
+  const cancellation = await request.cancel({
     type: IdentityTypes.TYPE.ETHEREUM_ADDRESS,
     value: account,
   });
+  await new Promise(resolve => cancellation.on("confirmed", () => resolve()));
 };

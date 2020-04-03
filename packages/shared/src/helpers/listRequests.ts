@@ -40,5 +40,5 @@ export const listRequests = async (
       console.log(`request ${request.requestId} could not be parsed: ${e}`);
     }
   }
-  return list;
+  return list.sort((a, b) => b.createdDate.getTime() - a.createdDate.getTime());
 };

@@ -155,7 +155,12 @@ export const PaymentProvider: React.FC = ({ children }) => {
     }
     if (approving) {
       approveErc20(request.raw, library)
-        .then(txCallback)
+        .then(async tx => {
+          setBroadcasting(true);
+          await tx.wait(1);
+          await sleep(5000);
+          setBroadcasting(false);
+        })
         .then(() => setError(undefined))
         .finally(() => setApproving(false));
     }

@@ -13,6 +13,7 @@ import Moment from "react-moment";
 import * as Yup from "yup";
 import { Skeleton } from "@material-ui/lab";
 import WalletAddressValidator from "wallet-address-validator";
+import { isValidEns } from "request-shared";
 
 import { RIcon, RContainer, Spacer, RButton, TestnetWarning } from "request-ui";
 import Dot from "./Dot";
@@ -241,10 +242,6 @@ const Footer = ({ account }: { account?: string }) => {
   );
 };
 
-const isValidEns = (val: string) =>
-  /^[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?$/.test(
-    val
-  );
 export const schema = Yup.object().shape<IFormData>({
   amount: Yup.number()
     .typeError("Should be a number")

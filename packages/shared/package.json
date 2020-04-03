@@ -16,6 +16,7 @@
   "dependencies": {
     "@requestnetwork/request-client.js": "^0.14.0",
     "@requestnetwork/types": "0.13.0",
-    "@requestnetwork/web3-signature": "^0.4.10"
+    "@requestnetwork/web3-signature": "^0.4.10",
+    "wallet-address-validator": "^0.2.4"
   }
 }

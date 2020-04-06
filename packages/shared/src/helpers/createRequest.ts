@@ -1,9 +1,11 @@
 import { IdentityTypes, PaymentTypes } from "@requestnetwork/types";
 import { RequestNetwork, Request } from "@requestnetwork/request-client.js";
-import { Web3SignatureProvider } from "@requestnetwork/web3-signature";
+import { Web3Provider } from "ethers/providers";
+import WalletAddressValidator from "wallet-address-validator";
+
 import { chainIdToName } from "./chainIdToName";
 import { getAddressFromEns, isValidEns } from "./getEnsName";
-import WalletAddressValidator from "wallet-address-validator";
+import { CustomSignatureProvider } from "./CustomSignatureProvider";
 
 export interface ICreateRequestArgs {
   payer?: string;
@@ -26,7 +28,9 @@ export const createRequest = async (
           ? "https://gateway-rinkeby.request.network/"
           : "https://gateway.request.network/",
     },
-    signatureProvider: new Web3SignatureProvider((window as any).ethereum),
+    signatureProvider: new CustomSignatureProvider(
+      new Web3Provider((window as any).ethereum).getSigner()
+    ),
   });
 
   const paymentNetworkType =

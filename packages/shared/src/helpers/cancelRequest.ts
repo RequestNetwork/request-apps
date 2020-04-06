@@ -1,7 +1,9 @@
 import { chainIdToName } from "./chainIdToName";
 import { RequestNetwork } from "@requestnetwork/request-client.js";
 import { IdentityTypes } from "@requestnetwork/types";
-import { Web3SignatureProvider } from "@requestnetwork/web3-signature";
+import { Web3Provider } from "ethers/providers";
+
+import { CustomSignatureProvider } from "./CustomSignatureProvider";
 
 export const cancelRequest = async (
   requestId: string,
@@ -16,7 +18,9 @@ export const cancelRequest = async (
           ? "https://gateway-rinkeby.request.network"
           : "https://gateway.request.network",
     },
-    signatureProvider: new Web3SignatureProvider((window as any).ethereum),
+    signatureProvider: new CustomSignatureProvider(
+      new Web3Provider((window as any).ethereum).getSigner()
+    ),
   });
 
   const request = await rn.fromRequestId(requestId);
@@ -24,5 +28,5 @@ export const cancelRequest = async (
     type: IdentityTypes.TYPE.ETHEREUM_ADDRESS,
     value: account,
   });
-  await new Promise(resolve => cancellation.on("confirmed", () => resolve()));
+  await new Promise((resolve) => cancellation.on("confirmed", () => resolve()));
 };

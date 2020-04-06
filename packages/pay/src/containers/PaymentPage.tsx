@@ -40,7 +40,7 @@ export const RequestNotFound = () => {
   );
 };
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   wrapper: {
     display: "flex",
     justifyContent: "center",
@@ -62,7 +62,7 @@ const WrappedSpinner = () => {
   );
 };
 
-const useErrorContainerStyles = makeStyles(theme => ({
+const useErrorContainerStyles = makeStyles((theme) => ({
   container: {
     display: "flex",
     alignItems: "center",
@@ -85,19 +85,11 @@ export const ErrorContainer = () => {
   const requiresApproval = error instanceof RequiresApprovalError;
   const showErrorAtTop = mobile || !requiresApproval;
 
-  if (request?.status === "open" && error && showErrorAtTop) {
-    return (
-      <Box className={classes.container}>
-        <ErrorMessage error={error} request={request} />
-        <Spacer size={4} />
-        <RContainer>
-          {request && request.network !== "mainnet" && <TestnetWarning />}
-        </RContainer>
-      </Box>
-    );
-  }
   return (
     <Box className={classes.container}>
+      {request?.status === "open" && error && showErrorAtTop && (
+        <ErrorMessage error={error} request={request} />
+      )}
       <RContainer>
         <Spacer size={15} xs={5} />
         {request && request.network !== "mainnet" && <TestnetWarning />}
@@ -231,7 +223,7 @@ const AutoConnect = () => {
 export default () => {
   return (
     <RequestProvider>
-      <Web3ReactProvider getLibrary={provider => new Web3Provider(provider)}>
+      <Web3ReactProvider getLibrary={(provider) => new Web3Provider(provider)}>
         <ConnectorProvider>
           <PaymentProvider>
             <AutoConnect />

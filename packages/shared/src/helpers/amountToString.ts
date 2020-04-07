@@ -1,6 +1,6 @@
 import { RequestLogicTypes } from "@requestnetwork/types";
 import { Currency } from "@requestnetwork/request-client.js";
-import bn from "bignumber.js";
+import { parseUnits } from "ethers/utils";
 
 export const amountToString = (
   value: number,
@@ -11,8 +11,6 @@ export const amountToString = (
   }
 
   const base = Currency.getDecimalsForCurrency(currency);
-  const amount = new bn(value)
-    .multipliedBy(new bn(10).pow(new bn(base)))
-    .toString();
+  const amount = parseUnits(value.toString(), base).toString();
   return amount;
 };

@@ -16,6 +16,7 @@ import MetamaskIcon from "../assets/img/metamask.png";
 
 import { Spacer, RButton, RIcon } from "request-ui";
 import { IParsedRequest, useRequest } from "request-shared";
+import { downloadPdf } from "./PdfReceipt";
 
 const PayAction = ({
   disabled,
@@ -88,8 +89,7 @@ const ReceiptLink = (props: {
 }) => {
   return (
     <RButton
-      // onClick={() => downloadPdf(props)}
-      onClick={() => console.log("download")}
+      onClick={() => downloadPdf(props)}
       startIcon={<ArrowDownward />}
       color="default"
     >

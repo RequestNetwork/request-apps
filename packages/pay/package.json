@@ -6,6 +6,7 @@
     "@material-ui/core": "^4.9.7",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.46",
+    "@react-pdf/renderer": "^1.6.8",
     "@requestnetwork/payment-processor": "^0.14.0",
     "@requestnetwork/request-client.js": "^0.14.0",
     "@web3-react/core": "^6.0.7",

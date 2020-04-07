@@ -8,6 +8,7 @@ import DemoPage from "./containers/DemoPage";
 import ErrorPage from "./containers/ErrorPage";
 import NotFoundPage from "./containers/NotFoundPage";
 import PaymentPage from "./containers/PaymentPage";
+import { ReceiptPreview } from "./components/PdfReceipt";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -51,6 +52,7 @@ const App: React.FC = () => {
               <Route path="/demo" component={DemoPage} />
               {/* Main Payment page */}
               <Route path="/:id([0-9a-fA-F]+)" component={PaymentPage} />
+              <Route path="/pdf/:id([0-9a-fA-F]+)" component={ReceiptPreview} />
               <Route path="*" component={NotFoundPage} />
             </Switch>
           </ErrorBoundary>

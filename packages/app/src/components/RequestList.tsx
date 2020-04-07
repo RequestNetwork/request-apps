@@ -322,10 +322,17 @@ export default ({
           <SkeletonRow />
           <SkeletonRow />
         </>
-      ) : (
+      ) : requests.length > 0 ? (
         requests.map(request => (
           <Row key={request.requestId} request={request} account={account} />
         ))
+      ) : (
+        <Box display="flex" alignItems="center" flexDirection="column">
+          <Spacer size={6} xs={12} />
+          <Typography variant="body2">
+            You don't have any requests yet.
+          </Typography>
+        </Box>
       )}
     </Box>
   );

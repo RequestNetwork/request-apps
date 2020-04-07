@@ -65,7 +65,7 @@ const ConnectAction = ({
   const mobile = useMobile();
   return (
     <RButton
-      startIcon={<img src={MetamaskIcon} width={32} height={32} />}
+      startIcon={<img src={MetamaskIcon} alt="" width={32} height={32} />}
       color="default"
       onClick={web3 ? activate : mobile ? redirectMetamask : installMetamask}
     >
@@ -107,7 +107,7 @@ const BtcPay = ({ url }: { url: string }) => {
       <RButton
         color="default"
         onClick={() => window.open(url, "_blank")?.focus()}
-        startIcon={<img src={BtcIcon} width={16} height={16} />}
+        startIcon={<img src={BtcIcon} alt="" width={16} height={16} />}
       >
         Pay
       </RButton>

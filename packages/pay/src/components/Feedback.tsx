@@ -18,7 +18,7 @@ import { useConnector } from "../contexts/ConnectorContext";
 import { useDissmissable } from "request-ui";
 import { useHubspotFeedback } from "../hooks/useHubspotFeedback";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     width: 375,
     top: 60,
@@ -155,21 +155,6 @@ export default ({ open, onClose }: { open: boolean; onClose: () => void }) => {
     onClose();
   }, [mood, email, comment, onClose, sendFeedback, providerName]);
 
-  const CloseButton = ({
-    onClose = close,
-  }: {
-    onClose?: () => Promise<void>;
-  }) => (
-    <IconButton
-      size="small"
-      aria-label="close"
-      color="inherit"
-      onClick={onClose}
-    >
-      <CloseIcon fontSize="small" />
-    </IconButton>
-  );
-
   const submitEmail = useCallback(() => {
     if (input) {
       if (EmailValidator.validate(input)) {
@@ -266,7 +251,7 @@ export default ({ open, onClose }: { open: boolean; onClose: () => void }) => {
               value={input}
               autoFocus={true}
               multiline
-              onChange={(val) => setInput(val.target.value)}
+              onChange={val => setInput(val.target.value)}
               className={classes.textField}
               size="small"
               InputProps={{
@@ -303,7 +288,7 @@ export default ({ open, onClose }: { open: boolean; onClose: () => void }) => {
               autoFocus={true}
               value={input}
               placeholder="Email address"
-              onChange={(val) => setInput(val.target.value)}
+              onChange={val => setInput(val.target.value)}
               className={classes.textField}
               InputProps={{
                 className: classes.input,

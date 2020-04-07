@@ -24,6 +24,8 @@ jobs:
           yarn workspace request-shared build
           yarn workspace request-ui build
           yarn workspace pay build
+        env:
+          CI: false
       - uses: benjlevesque/s3-sync-action@master
         env:
           CI: false

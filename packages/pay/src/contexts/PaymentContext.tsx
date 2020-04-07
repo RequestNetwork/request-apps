@@ -142,7 +142,7 @@ export const PaymentProvider: React.FC = ({ children }) => {
     } else {
       setLoadingPendingTx(false);
     }
-  }, [library, request]);
+  }, [library, request, setPending]);
 
   // Process paying a request or approving an erc20 allowance
   useEffect(() => {
@@ -164,7 +164,7 @@ export const PaymentProvider: React.FC = ({ children }) => {
         .then(() => setError(undefined))
         .finally(() => setApproving(false));
     }
-  }, [approving, paying, request, account, library, txCallback]);
+  }, [approving, paying, request, account, library, txCallback, setPending]);
 
   // Run checks and show error messages if something is wrong.
   useEffect(() => {

@@ -90,7 +90,7 @@ export const ConnectorProvider: React.FC = ({ children }) => {
     if (connectorName && prevActive && !active && !error) {
       setConnectorName("");
     }
-  }, [error, active, prevActive, connectorName]);
+  }, [error, active, prevActive, connectorName, deactivate]);
 
   // handle connector activation
   useEffect(() => {
@@ -98,7 +98,7 @@ export const ConnectorProvider: React.FC = ({ children }) => {
       console.log(connectorName);
       activate(connectors[connectorName], undefined, false);
     }
-  }, [connectors, connectorName]);
+  }, [connectors, connectorName, activate]);
 
   // Try activate the previously used connector silently
   useEffect(() => {
@@ -145,7 +145,7 @@ export const ConnectorProvider: React.FC = ({ children }) => {
     // return () => {
     //   walletconnect?.off(URI_AVAILABLE, setWalletConnectUrl);
     // };
-  }, [connectors]);
+  }, [connectors, activate]);
 
   return (
     <ConnectorContext.Provider

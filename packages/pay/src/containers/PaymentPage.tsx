@@ -114,7 +114,7 @@ export const FeedbackContainer = () => {
     ) {
       setFeedbackOpen(true);
     }
-  }, [request?.status]);
+  }, [request, prevStatus]);
   return (
     <Feedback open={feedbackOpen} onClose={() => setFeedbackOpen(false)} />
   );

@@ -55,7 +55,7 @@ export function useEagerConnect(request?: IParsedRequest) {
         }
       });
     }
-  }, [connector]); // intentionally only running on mount (make sure it's only mounted once :))
+  }, [connector, activate]); // intentionally only running on mount (make sure it's only mounted once :))
 
   // if the connection worked, wait until we get confirmation of that to flip the flag
   useEffect(() => {
@@ -101,5 +101,5 @@ export function useEagerConnect(request?: IParsedRequest) {
         }
       };
     }
-  }, [active, error, tried, activate]);
+  }, [active, error, tried, activate, connector]);
 }

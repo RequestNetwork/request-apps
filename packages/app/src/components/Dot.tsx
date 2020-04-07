@@ -21,7 +21,7 @@ const useStyles = makeStyles<Theme, IProps>(theme => ({
     height: 18,
     width: 18,
     backgroundColor: ({ account, network }) =>
-      account && network ? dotColors[network] : "#DE1C22",
+      account && network ? dotColors[network] || "#DE1C22" : "#DE1C22",
     borderRadius: "50%",
     display: "inline-block",
   },

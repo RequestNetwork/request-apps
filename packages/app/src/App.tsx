@@ -1,7 +1,7 @@
 import { Web3Provider } from "ethers/providers";
 import React from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
-import { ErrorBoundary, theme } from "request-ui";
+import { ErrorBoundary, theme, RAlert } from "request-ui";
 
 import { CssBaseline, makeStyles, ThemeProvider } from "@material-ui/core";
 import { useWeb3React, Web3ReactProvider } from "@web3-react/core";
@@ -31,7 +31,7 @@ const App: React.FC = () => {
   const classes = useStyles();
   const tried = useEagerConnect();
   useInactiveListener(!tried);
-  const { account, activate, chainId } = useWeb3React();
+  const { account, activate, chainId, error } = useWeb3React();
   const { name, loading } = useConnectedUser();
 
   return (
@@ -44,6 +44,9 @@ const App: React.FC = () => {
           account={name || account}
           connect={() => activate(injected)}
         />
+        {error && error.name === "UnsupportedChainIdError" && (
+          <RAlert severity="error" message="Network not supported" />
+        )}
         <div className={classes.paper}>
           <Switch>
             <Route path="/" exact>

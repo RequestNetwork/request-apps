@@ -29,7 +29,6 @@ import { useMobile } from "request-ui";
 import ErrorPage from "./ErrorPage";
 import { ErrorMessage } from "../components/ErrorMessage";
 import { useEagerConnect } from "../hooks/useEagerConnect";
-import { useInactiveListener } from "../hooks/useInactiveListnerer";
 
 export const RequestNotFound = () => {
   return (
@@ -40,7 +39,7 @@ export const RequestNotFound = () => {
   );
 };
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   wrapper: {
     display: "flex",
     justifyContent: "center",
@@ -62,7 +61,7 @@ const WrappedSpinner = () => {
   );
 };
 
-const useErrorContainerStyles = makeStyles((theme) => ({
+const useErrorContainerStyles = makeStyles(theme => ({
   container: {
     display: "flex",
     alignItems: "center",
@@ -78,12 +77,16 @@ const useErrorContainerStyles = makeStyles((theme) => ({
 
 export const ErrorContainer = () => {
   const mobile = useMobile();
-  const { error } = usePayment();
+  const { error: paymentError } = usePayment();
+  const { error: web3Error } = useWeb3React();
+
   const { request } = useRequest();
   const classes = useErrorContainerStyles();
 
-  const requiresApproval = error instanceof RequiresApprovalError;
+  const requiresApproval = paymentError instanceof RequiresApprovalError;
   const showErrorAtTop = mobile || !requiresApproval;
+
+  const error = web3Error || paymentError;
 
   return (
     <Box className={classes.container}>
@@ -129,7 +132,7 @@ export const PaymentPage = () => {
   } = useRequest();
   const { paying, approving, error, ready: paymentReady } = usePayment();
   const mobile = useMobile();
-  const { active } = useWeb3React();
+  const { active, error: web3Error } = useWeb3React();
 
   React.useEffect(() => {
     // this hook is to avoid flashing elements on screen.
@@ -160,7 +163,7 @@ export const PaymentPage = () => {
     mobile &&
     active &&
     (request?.status === "open" || request?.status === "pending");
-  const showSpinner = approving || activating;
+  const showSpinner = (approving || activating) && !web3Error && !error;
   const showFooter =
     !mobile ||
     request?.status === "paid" ||
@@ -214,8 +217,8 @@ export const PaymentPage = () => {
 };
 
 const AutoConnect = () => {
-  const tried = useEagerConnect();
-  useInactiveListener(!tried);
+  const { request } = useRequest();
+  useEagerConnect(request);
 
   return <></>;
 };
@@ -223,7 +226,7 @@ const AutoConnect = () => {
 export default () => {
   return (
     <RequestProvider>
-      <Web3ReactProvider getLibrary={(provider) => new Web3Provider(provider)}>
+      <Web3ReactProvider getLibrary={provider => new Web3Provider(provider)}>
         <ConnectorProvider>
           <PaymentProvider>
             <AutoConnect />

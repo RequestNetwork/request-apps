@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { InjectedConnector } from "@web3-react/injected-connector";
 
-import {
-  WalletConnectConnector,
-  URI_AVAILABLE,
-  UserRejectedRequestError as UserRejectedRequestErrorWalletConnect,
-} from "@web3-react/walletconnect-connector";
+// import {
+//   WalletConnectConnector,
+//   URI_AVAILABLE,
+//   UserRejectedRequestError as UserRejectedRequestErrorWalletConnect,
+// } from "@web3-react/walletconnect-connector";
 import { AbstractConnector } from "@web3-react/abstract-connector";
 import { useWeb3React } from "@web3-react/core";
 import { UserRejectedRequestError as UserRejectedRequestErrorInjected } from "@web3-react/injected-connector";
 import { usePrevious } from "../hooks/usePrevious";
-import { RequestLogicTypes } from "@requestnetwork/types";
-import { IParsedRequest, useRequest } from "request-shared";
+import { useRequest } from "request-shared";
+import { getConnectors } from "../connectors";
 
 interface IContext {
   /** name of the active connector */
@@ -19,7 +19,7 @@ interface IContext {
   /** set the active connector */
   activateConnector: (name: string) => void;
   /** for walletconnect only, the connection URL */
-  walletConnectUrl?: string;
+  // walletConnectUrl?: string;
   /** true when connectors are loaded. Avoids flashing UIs */
   ready: boolean;
   /** name of the connected provider (metamask,...) if available */
@@ -31,41 +31,6 @@ interface IContext {
  * It relies on both Web3ReactContext for the web3 context, and the RequestContext for the current request.
  */
 export const ConnectorContext = React.createContext<IContext | null>(null);
-
-/** Get available connectors based on request type and network. */
-const getConnectors = (
-  request: IParsedRequest
-): Record<string, AbstractConnector> => {
-  if (
-    !(
-      request.currencyType === RequestLogicTypes.CURRENCY.ETH ||
-      request.currencyType === RequestLogicTypes.CURRENCY.ERC20
-    )
-  ) {
-    return {};
-  }
-  const rpc: Record<number, string> = {};
-  const supportedChainIds = [];
-  if (request?.currencyNetwork === "rinkeby") {
-    supportedChainIds.push(4);
-    rpc[4] = "https://rinkeby.infura.io/v3/84842078b09946638c03157f83405213";
-  } else if (request?.currencyNetwork === "mainnet") {
-    supportedChainIds.push(1);
-    rpc[1] = "https://mainnet.infura.io/v3/84842078b09946638c03157f83405213";
-  }
-
-  return {
-    injected: new InjectedConnector({ supportedChainIds }),
-    walletconnect:
-      request &&
-      new WalletConnectConnector({
-        rpc,
-        bridge: "https://bridge.walletconnect.org",
-        qrcode: false,
-        pollingInterval: 8000,
-      }),
-  };
-};
 
 /** attempt to get the connected wallet. Falls back to the connector name (injected, walletconnect...) */
 export default function getProviderName(connectorName?: string): string {
@@ -97,7 +62,7 @@ export const ConnectorProvider: React.FC = ({ children }) => {
     Record<string, AbstractConnector>
   >();
   const [connectorName, setConnectorName] = useState<string>();
-  const [walletConnectUrl, setWalletConnectUrl] = useState("");
+  //  const [walletConnectUrl, setWalletConnectUrl] = useState("");
   const [ready, setReady] = useState(false);
 
   const { request } = useRequest();
@@ -116,8 +81,8 @@ export const ConnectorProvider: React.FC = ({ children }) => {
   useEffect(() => {
     if (
       error &&
-      (error instanceof UserRejectedRequestErrorInjected ||
-        error instanceof UserRejectedRequestErrorWalletConnect)
+      error instanceof UserRejectedRequestErrorInjected
+      // ||error instanceof UserRejectedRequestErrorWalletConnect
     ) {
       setConnectorName("");
       deactivate();
@@ -148,7 +113,7 @@ export const ConnectorProvider: React.FC = ({ children }) => {
 
     if (injected && walletconnect) {
       // try getting walletconnect URL
-      walletconnect.on(URI_AVAILABLE, setWalletConnectUrl);
+      // walletconnect.on(URI_AVAILABLE, setWalletConnectUrl);
       // try activating Injected connector
       injected.isAuthorized().then(async isAuthorized => {
         if (isAuthorized) {
@@ -177,9 +142,9 @@ export const ConnectorProvider: React.FC = ({ children }) => {
     }
     setReady(true);
 
-    return () => {
-      walletconnect?.off(URI_AVAILABLE, setWalletConnectUrl);
-    };
+    // return () => {
+    //   walletconnect?.off(URI_AVAILABLE, setWalletConnectUrl);
+    // };
   }, [connectors]);
 
   return (
@@ -187,7 +152,7 @@ export const ConnectorProvider: React.FC = ({ children }) => {
       value={{
         connectorName,
         activateConnector: setConnectorName,
-        walletConnectUrl,
+        // walletConnectUrl,
         ready,
         providerName: getProviderName(connectorName),
       }}

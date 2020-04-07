@@ -73,7 +73,10 @@ export default ({ connect }: { connect: () => Promise<void> }) => {
   const [open, setOpen] = useState(false);
   const click = () => {
     setConnecting(true);
-    connect().finally(() => setConnecting(false));
+    connect().finally(() => {
+      setOpen(false);
+      setConnecting(false);
+    });
   };
 
   useEffect(() => {

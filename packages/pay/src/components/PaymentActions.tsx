@@ -173,7 +173,7 @@ export default () => {
     return <></>;
   }
 
-  if (!active) {
+  if (!active && !error) {
     return (
       <ConnectAction
         activate={() => activateConnector("injected")}

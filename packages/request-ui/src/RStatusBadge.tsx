@@ -69,8 +69,8 @@ const HelpIcon = () => {
     <Tooltip
       title={
         <Typography variant="body1">
-          Payment is processing but taking longer than expected. Please check
-          back soon.
+          Your payment has been successfully submitted. We are waiting for it to
+          be confirmed.
         </Typography>
       }
       classes={{

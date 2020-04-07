@@ -1,10 +1,11 @@
 import React from 'react';
 import { makeStyles, Box } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   '@global': {
     body: {
       background: 'linear-gradient(-68deg,#FAFAFA 35%,#ffffff 0%)',
+      backgroundRepeat: 'no-repeat',
       [theme.breakpoints.up('sm')]: {
         background: '#FAFAFA',
       },

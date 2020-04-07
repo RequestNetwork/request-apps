@@ -32,7 +32,7 @@ export const RAlert = ({
   message,
 }: {
   severity: Severity;
-  message: string;
+  message: string | JSX.Element;
 }) => {
   const classes = useStyles({ severity });
   return (

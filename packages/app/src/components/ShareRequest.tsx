@@ -61,6 +61,11 @@ export default ({ requestId }: { requestId: string }) => {
     }
   }, [copied]);
 
+  const url =
+    window.location.host.startsWith("baguette") ||
+    window.location.host === "localhost"
+      ? `https://baguette-pay.request.network/${requestId}`
+      : `https://pay.request.network/${requestId}`;
   return (
     <>
       <Typography variant="h5">Share your request</Typography>
@@ -68,7 +73,7 @@ export default ({ requestId }: { requestId: string }) => {
       <Box display="flex" className={classes.wrapper}>
         <TextField
           variant="outlined"
-          value={`https://pay.request.network/${requestId}`}
+          value={url}
           InputProps={{
             className: classes.inputBase,
             classes: {
@@ -76,10 +81,7 @@ export default ({ requestId }: { requestId: string }) => {
             },
           }}
         />
-        <CopyToClipboard
-          text={`https://pay.request.network/${requestId}`}
-          onCopy={() => setCopied(true)}
-        >
+        <CopyToClipboard text={url} onCopy={() => setCopied(true)}>
           <Button
             variant="contained"
             color="secondary"

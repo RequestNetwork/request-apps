@@ -11,10 +11,25 @@ import {
   RequiresApprovalError,
 } from "../contexts/PaymentContext";
 import { IParsedRequest } from "request-shared";
+import { Link } from "@material-ui/core";
 
 const getErrorMessage = (error: Error, request: IParsedRequest) => {
   if (error instanceof NoEthereumProviderError) {
-    return "No Ethereum browser extension detected, install MetaMask on desktop or visit from a dApp browser on mobile.";
+    return (
+      <>
+        No compatible wallet detected. Please{" "}
+        <Link
+          underline="always"
+          style={{
+            color: "#656565",
+          }}
+          href="https://metamask.io/download.html"
+        >
+          install Metamask
+        </Link>{" "}
+        or finish your payment using a mobile wallet.
+      </>
+    );
   }
   if (error instanceof FiatRequestNotSupportedError) {
     return "This is a fiat request. You can't pay it here. You must be lost 🙃";
@@ -24,20 +39,20 @@ const getErrorMessage = (error: Error, request: IParsedRequest) => {
   }
   if (error instanceof UnsupportedChainIdError) {
     if (request.currencyNetwork === "mainnet") {
-      return "Please connect your wallet to the Main Ethereum Network to pay this request.";
+      return "This is a live request. Please connect to the main network to pay.";
     }
     if (request.currencyNetwork === "rinkeby") {
-      return "Please connect your wallet to the Rinkeby Test Network to pay this request.";
+      return "This is a test request. Please connect to the Rinkeby Test Network to pay.";
     }
 
-    return "Please connect your wallet to {request.currencyNetwork} to pay this request.";
+    return `Please connect your wallet to ${request.currencyNetwork} to pay this request.`;
   }
 
   if (error instanceof NotEnoughForRequestError) {
-    return `Please add ${request.currency} to your wallet to make a payment.`;
+    return `You do not have sufficient funds. Please add ${request.currency} to your wallet to pay this request.`;
   }
   if (error instanceof NotEnoughForGasError) {
-    return `Please add ETH to your wallet to make a payment.`;
+    return `You do not have sufficient ETH to pay gas. Please add ETH to your wallet to pay this request.`;
   }
 
   console.error(error);

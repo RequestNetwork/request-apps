@@ -18,9 +18,10 @@ import { useConnector } from "../contexts/ConnectorContext";
 import { useDissmissable } from "request-ui";
 import { useHubspotFeedback } from "../hooks/useHubspotFeedback";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: 375,
+    top: 60,
     [theme.breakpoints.down("xs")]: {
       top: 0,
       left: 0,
@@ -265,7 +266,7 @@ export default ({ open, onClose }: { open: boolean; onClose: () => void }) => {
               value={input}
               autoFocus={true}
               multiline
-              onChange={val => setInput(val.target.value)}
+              onChange={(val) => setInput(val.target.value)}
               className={classes.textField}
               size="small"
               InputProps={{
@@ -302,7 +303,7 @@ export default ({ open, onClose }: { open: boolean; onClose: () => void }) => {
               autoFocus={true}
               value={input}
               placeholder="Email address"
-              onChange={val => setInput(val.target.value)}
+              onChange={(val) => setInput(val.target.value)}
               className={classes.textField}
               InputProps={{
                 className: classes.input,

@@ -9,13 +9,13 @@ import ErrorPage from "./containers/ErrorPage";
 import NotFoundPage from "./containers/NotFoundPage";
 import PaymentPage from "./containers/PaymentPage";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   paper: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    minHeight: "100%",
+    minHeight: "100vh",
     maxWidth: "100vw",
   },
 }));

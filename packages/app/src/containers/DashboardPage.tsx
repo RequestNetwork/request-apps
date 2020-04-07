@@ -9,11 +9,14 @@ import { useHistory } from "react-router-dom";
 import CsvExport from "../components/CsvExport";
 import { Filter } from "../components/Filter";
 import RequestList from "../components/RequestList";
-import { useRequestList } from "../contexts/RequestListContext";
+import {
+  useRequestList,
+  RequestListProvider,
+} from "../contexts/RequestListContext";
 import { useConnectedUser } from "../contexts/UserContext";
 import NotLoggedPage from "./NotLoggedPage";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   container: {
     backgroundColor: "white",
     width: "100%",
@@ -31,7 +34,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default () => {
+export const Dashboard = () => {
   const classes = useStyles();
   const { account, chainId } = useWeb3React();
   const { loading: web3Loading } = useConnectedUser();
@@ -85,5 +88,13 @@ export default () => {
         </Fab>
       </Hidden>
     </Box>
+  );
+};
+
+export default () => {
+  return (
+    <RequestListProvider>
+      <Dashboard />
+    </RequestListProvider>
   );
 };

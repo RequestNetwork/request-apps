@@ -7,14 +7,12 @@ import { useWeb3React } from "@web3-react/core";
 
 import { CreateRequestForm, IFormData } from "../components/CreateRequest";
 import { useConnectedUser } from "../contexts/UserContext";
-import { useRequestList } from "../contexts/RequestListContext";
 
 export default () => {
   const history = useHistory();
   const [error, setError] = useState<string>();
   const { account, chainId } = useWeb3React();
   const { loading: web3Loading } = useConnectedUser();
-  const { refresh } = useRequestList();
 
   const submit = async (
     values: IFormData,
@@ -39,7 +37,6 @@ export default () => {
       );
       // await request.waitForConfirmation();
       history.push(`/${request.requestId}`);
-      refresh();
     } catch (e) {
       console.log(e.message);
       setError(e.message);

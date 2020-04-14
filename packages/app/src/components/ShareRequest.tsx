@@ -68,7 +68,7 @@ export default ({ requestId }: { requestId: string }) => {
       : `https://pay.request.network/${requestId}`;
   return (
     <>
-      <Typography variant="h5">Share your request</Typography>
+      <Typography variant="h5">Share Request</Typography>
       <Spacer size={3} />
       <Box display="flex" className={classes.wrapper}>
         <TextField

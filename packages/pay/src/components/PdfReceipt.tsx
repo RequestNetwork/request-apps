@@ -168,13 +168,7 @@ export const PdfReceipt = ({ request }: { request: IParsedRequest }) => {
       },
     ],
   });
-  const amountAndCurrency =
-    request.amount.toLocaleString("en-US", {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 5,
-    }) +
-    " " +
-    request.currency;
+  const amountAndCurrency = request.amount.toString() + " " + request.currency;
   if (request.status !== "paid") throw new Error("Request not paid");
   return (
     <Document>

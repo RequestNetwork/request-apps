@@ -13,7 +13,7 @@ import Moment from "react-moment";
 import * as Yup from "yup";
 import { Skeleton } from "@material-ui/lab";
 import WalletAddressValidator from "wallet-address-validator";
-import { isValidEns } from "request-shared";
+import { isValidEns, getAddressFromEns } from "request-shared";
 
 import { RIcon, RContainer, Spacer, RButton, TestnetWarning } from "request-ui";
 import Dot from "./Dot";
@@ -256,7 +256,8 @@ const Footer = ({ account }: { account?: string }) => {
 
 export const schema = Yup.object().shape<IFormData>({
   amount: Yup.number()
-    .typeError("Should be a number")
+    .positive("Please enter a positive number")
+    .typeError("Please enter a number")
     .required("Required"),
   payer: Yup.string().test(
     "is-valid-recipient",
@@ -265,7 +266,7 @@ export const schema = Yup.object().shape<IFormData>({
       return (
         !value ||
         WalletAddressValidator.validate(value, "ethereum") ||
-        isValidEns(value)
+        (isValidEns(value) && !!(await getAddressFromEns(value)))
       );
     }
   ),

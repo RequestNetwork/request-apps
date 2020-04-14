@@ -12,6 +12,7 @@ import { useRequest } from "request-shared";
 import { Web3Provider, TransactionResponse } from "ethers/providers";
 import { Types } from "@requestnetwork/request-client.js";
 import React from "react";
+import { ethers } from "ethers";
 
 export class NotEnoughForGasError extends Error {
   constructor() {
@@ -112,12 +113,25 @@ export const PaymentProvider: React.FC = ({ children }) => {
       }
       localStorage.setItem("txhash", tx.hash);
       setBroadcasting(true);
-      await sleep(15000);
-      setPending(true);
-      await tx.wait(1);
-      await sleep(1000);
-      setBroadcasting(false);
+      const t = setTimeout(() => {
+        setPending(true);
+      }, 15000);
+      // For ETH, use etherscan, for others, use default provider.
+      // this is to match the behaviour of request payment detection.
+      if (request?.currencyType === Types.RequestLogic.CURRENCY.ETH) {
+        const provider = new ethers.providers.EtherscanProvider(
+          request?.currencyNetwork,
+          "TCVQQU5V39TAS1V6HF61P9K7IJZVEHH1D9"
+        );
+        await provider.waitForTransaction(tx.hash, 1);
+        await sleep(3000);
+      } else {
+        await tx.wait(1);
+      }
       localStorage.removeItem("txhash");
+      clearTimeout(t);
+      setBroadcasting(false);
+      setPending(false);
     },
     [setBroadcasting, setPending]
   );
@@ -150,7 +164,6 @@ export const PaymentProvider: React.FC = ({ children }) => {
     if (paying && request.status === "open") {
       payRequest(request.raw, library)
         .then(txCallback)
-        .then(() => setTimeout(() => setPending(false), 5000))
         .finally(() => setPaying(false));
     }
     if (approving) {

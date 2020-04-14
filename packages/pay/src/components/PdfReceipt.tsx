@@ -129,6 +129,30 @@ const styles = StyleSheet.create({
     alignItems: "center",
     color: "#656565",
   },
+  testNetwork: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    width: "110%",
+    marginTop: -40,
+    marginRight: -25,
+    marginLeft: -25,
+    marginBottom: 40,
+  },
+  testNetworkBanner: {
+    height: 4,
+    backgroundColor: "#FFB95F",
+    width: "100%",
+  },
+  testNetworkText: {
+    backgroundColor: "#FFB95F",
+    color: "white",
+    height: 40,
+    width: 180,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });
 
 export const PdfReceipt = ({ request }: { request: IParsedRequest }) => {
@@ -155,6 +179,14 @@ export const PdfReceipt = ({ request }: { request: IParsedRequest }) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
+        {request.network !== "mainnet" && (
+          <View style={styles.testNetwork}>
+            <View style={styles.testNetworkBanner} />
+            <View style={styles.testNetworkText}>
+              <Text>Test Network</Text>
+            </View>
+          </View>
+        )}
         <View style={styles.title}>
           <Text>Receipt</Text>
         </View>

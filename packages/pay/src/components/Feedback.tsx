@@ -149,10 +149,15 @@ export default ({ open, onClose }: { open: boolean; onClose: () => void }) => {
   const { providerName } = useConnector();
 
   const close = useCallback(async () => {
-    if (mood && email === undefined && comment === undefined) {
-      await sendFeedback({ mood, comment, email, wallet: providerName });
-    }
     onClose();
+    if (mood && email === undefined && comment === undefined) {
+      await sendFeedback({
+        mood,
+        comment: "",
+        email: "",
+        wallet: providerName,
+      });
+    }
   }, [mood, email, comment, onClose, sendFeedback, providerName]);
 
   const submitEmail = useCallback(() => {

@@ -24,12 +24,9 @@ const useStyles = makeStyles(theme => ({
     "70%": {
       transform: "scale(1,1) translate(0px, 0px)",
     },
-    "80%": {
-      transform: "scale(1,0.8) translate(0px, 10px)",
-    },
 
     "90%": {
-      transform: "scale(1,1.1) translate(0px, -25px)",
+      transform: "scale(1,1) translate(0px, -2px)",
     },
 
     "100%": {
@@ -40,12 +37,12 @@ const useStyles = makeStyles(theme => ({
     width: "100%",
     top: -2,
     [theme.breakpoints.up("md")]: {
-      width: 256,
+      width: "unset",
     },
   },
   animated: {
     [theme.breakpoints.up("sm")]: {
-      animation: "$bounce 3.75s infinite",
+      animation: "$bounce 3.25s infinite",
 
       "&:hover": {
         animation: "none",
@@ -119,7 +116,12 @@ export default ({ connect }: { connect: () => Promise<void> }) => {
             </Box>
           ) : (
             <>
-              <RButton color="default" fullWidth onClick={click}>
+              <RButton
+                color="default"
+                fullWidth
+                onClick={click}
+                data-testid="connect-metamask"
+              >
                 <Box
                   display="flex"
                   flex={1}
@@ -154,6 +156,7 @@ export default ({ connect }: { connect: () => Promise<void> }) => {
       </Dialog>
       <RButton
         color="secondary"
+        data-testid="connect-button"
         onClick={() => setOpen(true)}
         disabled={open}
         className={classnames(classes.button, {

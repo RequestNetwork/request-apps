@@ -112,7 +112,7 @@ export const PaymentProvider: React.FC = ({ children }) => {
       }
       localStorage.setItem("txhash", tx.hash);
       setBroadcasting(true);
-      await sleep(1000);
+      await sleep(15000);
       setPending(true);
       await tx.wait(1);
       await sleep(1000);

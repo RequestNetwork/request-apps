@@ -447,7 +447,7 @@ export default () => {
   const simulatePay = async () => {
     await sleep(2500);
     set({ broadcasting: true, paying: true });
-    await sleep(1000);
+    await sleep(15000);
     set({ broadcasting: true, paying: true, status: "pending" });
     await sleep(5000);
     set({ broadcasting: false, paying: false, status: "paid" });

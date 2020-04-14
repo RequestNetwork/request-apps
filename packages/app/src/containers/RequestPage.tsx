@@ -18,6 +18,8 @@ import {
 
 import ShareRequest from "../components/ShareRequest";
 import ErrorPage from "./ErrorPage";
+import { useConnectedUser } from "../contexts/UserContext";
+import NotLoggedPage from "./NotLoggedPage";
 
 const useStyles = makeStyles(() => ({
   cancel: {
@@ -139,8 +141,12 @@ export const RequestPage = () => {
 };
 
 export default () => {
-  const { chainId } = useWeb3React();
-  if (!chainId) return <></>;
+  const { chainId, account } = useWeb3React();
+  const { loading: web3Loading } = useConnectedUser();
+
+  if (!web3Loading && (!account || !chainId)) {
+    return <NotLoggedPage />;
+  }
   return (
     <RequestProvider chainId={chainId}>
       <RequestPage />

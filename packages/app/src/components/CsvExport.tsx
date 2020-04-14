@@ -12,11 +12,18 @@ export default ({ requests }: { requests?: IParsedRequest[] }) => {
         filename: "requests",
         useKeysAsHeaders: true,
       });
-      csv.generateCsv(requests.map(({ raw, ...request }) => request));
+      csv.generateCsv(
+        requests.map(({ raw, ...request }) => {
+          return Object.keys(request).reduce((obj, field) => {
+            obj[field] = (request as any)[field] || "";
+            return obj;
+          }, {} as any);
+        })
+      );
     }
   };
 
-  return requests ? (
+  return requests && requests.length > 0 ? (
     <Link
       color="inherit"
       style={{ display: "flex" }}
@@ -25,7 +32,7 @@ export default ({ requests }: { requests?: IParsedRequest[] }) => {
     >
       <ArrowDownward />
       <Box width={8} />
-      <Typography variant="h4">Export in CSV</Typography>
+      <Typography variant="h4">Export to CSV</Typography>
     </Link>
   ) : (
     <div />

@@ -17,6 +17,8 @@ import { isValidEns } from "request-shared";
 
 import { RIcon, RContainer, Spacer, RButton, TestnetWarning } from "request-ui";
 import Dot from "./Dot";
+import { DaiIcon } from "./currencies/DaiIcon";
+import { EthIcon } from "./currencies/EthIcon";
 
 export interface IFormData {
   amount?: number;
@@ -144,6 +146,12 @@ const Amount = ({ className }: { className?: string }) => {
 const Currency = ({ className }: { className?: string }) => {
   const [field, meta] = useField("currency");
 
+  const CurrencyIcon = ({ text, icon: Icon }: any) => (
+    <Box display="flex" alignItems="center">
+      <Icon style={{ width: 18, height: 18, marginRight: 4 }} /> {text}
+    </Box>
+  );
+
   return (
     <TextField
       {...field}
@@ -155,8 +163,12 @@ const Currency = ({ className }: { className?: string }) => {
       error={Boolean(meta.error && meta.touched)}
       helperText={Boolean(meta.error && meta.touched) ? meta.error : " "}
     >
-      <MenuItem value="DAI">DAI</MenuItem>
-      <MenuItem value="ETH">ETH</MenuItem>
+      <MenuItem value="DAI">
+        <CurrencyIcon text="DAI" icon={DaiIcon} />
+      </MenuItem>
+      <MenuItem value="ETH">
+        <CurrencyIcon text="ETH" icon={EthIcon} />
+      </MenuItem>
     </TextField>
   );
 };

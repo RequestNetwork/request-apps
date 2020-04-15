@@ -10,7 +10,7 @@ import { AbstractConnector } from "@web3-react/abstract-connector";
 import { useWeb3React } from "@web3-react/core";
 import { UserRejectedRequestError as UserRejectedRequestErrorInjected } from "@web3-react/injected-connector";
 import { usePrevious } from "../hooks/usePrevious";
-import { useRequest } from "request-shared";
+import { useRequest, getProviderName } from "request-shared";
 import { getConnectors } from "../connectors";
 
 interface IContext {
@@ -31,28 +31,6 @@ interface IContext {
  * It relies on both Web3ReactContext for the web3 context, and the RequestContext for the current request.
  */
 export const ConnectorContext = React.createContext<IContext | null>(null);
-
-/** attempt to get the connected wallet. Falls back to the connector name (injected, walletconnect...) */
-export default function getProviderName(connectorName?: string): string {
-  const provider = (window as any).ethereum;
-  if (provider) {
-    if (provider.isMetaMask) return "metamask";
-    if (provider.isTrust) return "trust";
-    if (provider.isGoWallet) return "goWallet";
-    if (provider.isAlphaWallet) return "alphaWallet";
-    if (provider.isStatus) return "status";
-    if (provider.isToshi) return "coinbase";
-    if (provider.isGSNProvider) return "GSN";
-    if (provider.constructor?.name === "EthereumProvider") return "mist";
-    if (provider.constructor?.name === "Web3FrameProvider") return "parity";
-    if (provider.host?.indexOf("infura") !== -1) return "infura";
-    if (provider.connection?.url.indexOf("infura") !== -1) return "infura";
-    if (provider.host?.indexOf("localhost") !== -1) return "localhost";
-    if (provider.host?.indexOf("127.0.0.1") !== -1) return "localhost";
-  }
-  if (connectorName) return connectorName;
-  return "unknown";
-}
 
 /**
  * This provider reacts to changes on the request

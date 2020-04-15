@@ -1,5 +1,6 @@
 import React, { createContext, useContext } from 'react';
 import StackdriverErrorReporter from 'stackdriver-errors-js';
+import { getProviderName } from 'request-shared';
 
 interface IProps {
   stackdriverErrorReporterApiKey?: string;
@@ -48,13 +49,17 @@ export class ErrorBoundary extends React.Component<IProps, IState> {
     return { hasError: true };
   }
 
-  componentDidCatch(error: any) {
+  componentDidCatch(error: string | Error) {
     this.report(error);
   }
 
   report(error: any) {
     if (window.location.hostname === 'localhost') {
       console.log(error);
+    }
+    const providerName = getProviderName();
+    if (providerName) {
+      error.providerName = providerName;
     }
     this.reporter.report(error);
   }

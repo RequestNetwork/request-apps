@@ -42,7 +42,11 @@ export default () => {
       // await request.waitForConfirmation();
       history.push(`/${request.requestId}`);
     } catch (e) {
-      if (e.code !== 4001 && e.message !== "canceled") {
+      if (
+        e.code !== 4001 &&
+        e.message !== "canceled" &&
+        e.message !== "Sign message cancelled"
+      ) {
         setError(e.message);
         report(e);
       }

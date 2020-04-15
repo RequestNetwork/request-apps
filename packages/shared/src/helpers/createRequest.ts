@@ -21,6 +21,17 @@ export const createRequest = async (
   network: string | number
 ): Promise<Request> => {
   network = chainIdToName(network);
+  const win = window as any;
+  if (!win.ethereum) {
+    throw new Error("ethereum not detected");
+  }
+  let signatureProvider = new CustomSignatureProvider(
+    new Web3Provider((window as any).ethereum).getSigner()
+  );
+  if (!win.ethereum.isMetamask) {
+    const { Web3SignatureProvider } = require("@requestnetwork/web3-signature");
+    signatureProvider = new Web3SignatureProvider(win.ethereum);
+  }
   const requestNetwork = new RequestNetwork({
     nodeConnectionConfig: {
       baseURL:
@@ -28,9 +39,7 @@ export const createRequest = async (
           ? "https://gateway-rinkeby.request.network/"
           : "https://gateway.request.network/",
     },
-    signatureProvider: new CustomSignatureProvider(
-      new Web3Provider((window as any).ethereum).getSigner()
-    ),
+    signatureProvider,
   });
 
   const paymentNetworkType =

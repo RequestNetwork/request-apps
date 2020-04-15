@@ -10,7 +10,7 @@ import NotFoundPage from "./containers/NotFoundPage";
 import PaymentPage from "./containers/PaymentPage";
 import { ReceiptPreview } from "request-ui";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   paper: {
     display: "flex",
     flexDirection: "column",
@@ -36,7 +36,7 @@ const App: React.FC = () => {
           >
             <Switch>
               {/* There is no homepage. In Production, redirects to request website. */}
-              {!window.location.host.startsWith("localhost") && (
+              {window.location.hostname !== "localhost" && (
                 <Route
                   path="/"
                   exact

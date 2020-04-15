@@ -53,7 +53,7 @@ export class ErrorBoundary extends React.Component<IProps, IState> {
   }
 
   report(error: any) {
-    if (window.location.host === 'localhost') {
+    if (window.location.hostname === 'localhost') {
       console.log(error);
     }
     this.reporter.report(error);

@@ -51,6 +51,13 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+export const getPayUrl = (requestId: string) =>
+  window.location.hostname === "localhost"
+    ? `http://localhost:3001/${requestId}`
+    : window.location.hostname.startsWith("baguette")
+    ? `https://baguette-pay.request.network/${requestId}`
+    : `https://pay.request.network/${requestId}`;
+
 export default ({ requestId }: { requestId: string }) => {
   const classes = useStyles();
   const [copied, setCopied] = useState(false);
@@ -61,11 +68,7 @@ export default ({ requestId }: { requestId: string }) => {
     }
   }, [copied]);
 
-  const url =
-    window.location.host.startsWith("baguette") ||
-    window.location.host === "localhost"
-      ? `https://baguette-pay.request.network/${requestId}`
-      : `https://pay.request.network/${requestId}`;
+  const url = getPayUrl(requestId);
   return (
     <>
       <Typography variant="h5">Share Request</Typography>

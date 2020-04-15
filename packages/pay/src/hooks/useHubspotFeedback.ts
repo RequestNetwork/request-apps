@@ -39,7 +39,9 @@ export const useHubspotFeedback = () => {
       },
     ];
     const formId =
-      window.location.host === "pay.request.network" ? liveFormId : testFormId;
+      window.location.hostname === "pay.request.network"
+        ? liveFormId
+        : testFormId;
     await client.post(`submit/${portalId}/${formId}`, { fields });
   };
   return {

@@ -16,6 +16,7 @@ import { Skeleton } from "@material-ui/lab";
 import { useClipboard } from "use-clipboard-copy";
 
 import { CopyIcon } from "./CopyIcon";
+import { getPayUrl } from "./ShareRequest";
 
 const short = (val?: string) =>
   val
@@ -232,7 +233,7 @@ const Row = React.memo(
               </Link>
             ) : (
               <a
-                href={`https://pay.request.network/${request.requestId}`}
+                href={getPayUrl(request.requestId)}
                 style={{ textDecoration: "none" }}
                 target="_blank"
                 rel="noopener noreferrer"

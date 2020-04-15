@@ -11,6 +11,7 @@ export class CustomSignatureProvider
   constructor(private signer: JsonRpcSigner) {}
   /** list of supported signing method */
   public supportedMethods: SignatureTypes.METHOD[] = [
+    SignatureTypes.METHOD.ECDSA,
     SignatureTypes.METHOD.ECDSA_ETHEREUM,
   ];
   /** list of supported identity types */
@@ -19,16 +20,49 @@ export class CustomSignatureProvider
   ];
   public async sign(
     data: any,
-    _signer: IdentityTypes.IIdentity
+    signer: IdentityTypes.IIdentity
   ): Promise<SignatureTypes.ISignedData> {
     const normalizedData = Utils.crypto.normalize(data);
-    const signatureValue = await this.signer.signMessage(normalizedData);
-    return {
+    const signatureValue = await this.signer.signMessage(
+      Buffer.from(normalizedData)
+    );
+
+    // some wallets (like Metamask) do a personal_sign (ECDSA_ETHEREUM),
+    //  some (like Trust) do a simple sign (ECDSA)
+    const signedData =
+      this.getSignedData(
+        data,
+        signatureValue,
+        SignatureTypes.METHOD.ECDSA_ETHEREUM,
+        signer
+      ) ||
+      this.getSignedData(
+        data,
+        signatureValue,
+        SignatureTypes.METHOD.ECDSA,
+        signer
+      );
+    if (!signedData) throw new Error("Signature failed!");
+    return signedData;
+  }
+
+  /** Get the signed data, if valid, null if not */
+  private getSignedData(
+    data: any,
+    value: string,
+    method: SignatureTypes.METHOD,
+    signer: IdentityTypes.IIdentity
+  ): SignatureTypes.ISignedData | null {
+    const signedData = {
       data,
       signature: {
-        method: SignatureTypes.METHOD.ECDSA_ETHEREUM,
-        value: signatureValue,
+        method,
+        value,
       },
     };
+    if (Utils.identity.areEqual(Utils.signature.recover(signedData), signer)) {
+      return signedData;
+    }
+    return null;
   }
 }

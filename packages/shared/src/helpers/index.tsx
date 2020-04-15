@@ -5,3 +5,4 @@ export * from "./listRequests";
 export * from "./getEnsName";
 export * from "./cancelRequest";
 export * from "./getProviderName";
+export * from "./isCancelError";

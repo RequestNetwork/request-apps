@@ -15,6 +15,7 @@ import {
   RequestProvider,
   useRequest,
   cancelRequest,
+  isCancelError,
 } from "request-shared";
 
 import ShareRequest from "../components/ShareRequest";
@@ -94,7 +95,7 @@ export const RequestPage = () => {
     try {
       await cancelRequest(request.requestId, account, chainId);
     } catch (e) {
-      if (e.code === 4001) {
+      if (!isCancelError(e)) {
       } else {
         throw e;
       }

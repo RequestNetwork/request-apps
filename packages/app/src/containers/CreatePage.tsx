@@ -1,7 +1,7 @@
 import { FormikHelpers } from "formik";
 import React, { useState } from "react";
 import { useHistory } from "react-router";
-import { amountToString, createRequest } from "request-shared";
+import { amountToString, createRequest, isCancelError } from "request-shared";
 import { useErrorReporter } from "request-ui";
 
 import { useWeb3React } from "@web3-react/core";
@@ -42,11 +42,7 @@ export default () => {
       // await request.waitForConfirmation();
       history.push(`/${request.requestId}`);
     } catch (e) {
-      if (
-        e.code !== 4001 &&
-        e.message !== "canceled" &&
-        e.message !== "Sign message cancelled"
-      ) {
+      if (!isCancelError(e)) {
         setError(e.message);
         report(e);
       }

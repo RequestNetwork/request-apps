@@ -148,10 +148,13 @@ export const PaymentProvider: React.FC = ({ children }) => {
         localStorage.removeItem("txhash");
       }
       if (request?.status === "open") {
-        setPending(true);
-        setLoadingPendingTx(false);
-        library.waitForTransaction(hash, 1).then(() => {
-          setPending(false);
+        library.getTransaction(hash).then(async tx => {
+          if (tx) {
+            setPending(true);
+            setLoadingPendingTx(false);
+            await tx.wait(1);
+            setPending(false);
+          }
           localStorage.removeItem("txhash");
         });
       }

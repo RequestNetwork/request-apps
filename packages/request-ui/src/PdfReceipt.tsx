@@ -198,7 +198,7 @@ export const PdfReceipt = ({ request }: { request: IParsedRequest }) => {
           <View style={styles.testNetwork}>
             <View style={styles.testNetworkBanner} />
             <View style={styles.testNetworkText}>
-              <Text>Test Network</Text>
+              <Text>Rinkeby Test Network</Text>
             </View>
           </View>
         )}

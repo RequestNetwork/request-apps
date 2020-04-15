@@ -12,8 +12,8 @@ const dotColors: Record<number, string> = {
 };
 
 const names: Record<number, string> = {
-  1: "Main Ethereum network",
-  4: "Rinkeby Test network",
+  1: "Main Ethereum Network",
+  4: "Rinkeby Test Network",
 };
 
 const useStyles = makeStyles<Theme, IProps>(theme => ({

@@ -135,7 +135,7 @@ export const PaymentProvider: React.FC = ({ children }) => {
       setBroadcasting(false);
       setPending(false);
     },
-    [setBroadcasting, setPending]
+    [setBroadcasting, setPending, request]
   );
 
   // Check for locally stored payment transaction hash and
@@ -192,7 +192,16 @@ export const PaymentProvider: React.FC = ({ children }) => {
         .then(() => setError(undefined))
         .finally(() => setApproving(false));
     }
-  }, [approving, paying, request, account, library, txCallback, setPending]);
+  }, [
+    approving,
+    paying,
+    request,
+    account,
+    library,
+    txCallback,
+    setPending,
+    gasPrice,
+  ]);
 
   // Run checks and show error messages if something is wrong.
   useEffect(() => {

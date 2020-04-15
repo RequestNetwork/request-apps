@@ -3,7 +3,12 @@ import React from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { ErrorBoundary, theme, RAlert } from "request-ui";
 
-import { CssBaseline, makeStyles, ThemeProvider } from "@material-ui/core";
+import {
+  CssBaseline,
+  makeStyles,
+  ThemeProvider,
+  Link,
+} from "@material-ui/core";
 import { useWeb3React, Web3ReactProvider } from "@web3-react/core";
 
 import { RequestAppBar } from "./components/AppBar";
@@ -33,6 +38,7 @@ const App: React.FC = () => {
   useInactiveListener(!tried);
   const { account, activate, chainId, error } = useWeb3React();
   const { name, loading } = useConnectedUser();
+  const web3detected = !!window.ethereum;
 
   return (
     <BrowserRouter>
@@ -44,7 +50,28 @@ const App: React.FC = () => {
           account={name || account}
           connect={() => activate(injected)}
         />
-        {error && error.name === "UnsupportedChainIdError" && (
+        {!web3detected && (
+          <RAlert
+            severity="warning"
+            message={
+              <>
+                No compatible wallet detected. Please{" "}
+                <Link
+                  underline="always"
+                  style={{
+                    color: "#656565",
+                  }}
+                  target="_blank"
+                  href="https://metamask.io/download.html"
+                >
+                  install Metamask
+                </Link>
+                .
+              </>
+            }
+          />
+        )}
+        {web3detected && error && error.name === "UnsupportedChainIdError" && (
           <RAlert severity="error" message="Network not supported" />
         )}
         <div className={classes.paper}>

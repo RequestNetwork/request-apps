@@ -23,6 +23,7 @@ const getErrorMessage = (error: Error, request: IParsedRequest) => {
           style={{
             color: "#656565",
           }}
+          target="_blank"
           href="https://metamask.io/download.html"
         >
           install Metamask

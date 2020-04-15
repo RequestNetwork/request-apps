@@ -50,13 +50,14 @@ export default ({
   onClick: () => void;
 }) => {
   const classes = useStyles();
+  const web3detected = !!window.ethereum;
 
   return (
     <RButton
       color="secondary"
       data-testid="connect-button"
       onClick={onClick}
-      disabled={connecting}
+      disabled={connecting || !web3detected}
       className={classnames(classes.button, {
         [classes.animated]: !connecting,
       })}

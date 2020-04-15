@@ -1,4 +1,5 @@
 import * as React from "react";
+import axios from "axios";
 
 import { usePayment, RequiresApprovalError } from "../contexts/PaymentContext";
 import { useWeb3React } from "@web3-react/core";
@@ -7,13 +8,22 @@ import { useConnector } from "../contexts/ConnectorContext";
 import { Typography, Box } from "@material-ui/core";
 import { Types } from "@requestnetwork/request-client.js";
 import { getBtcPaymentUrl } from "@requestnetwork/payment-processor";
-import { useMobile, ReceiptLink, Spacer, RButton, RIcon } from "request-ui";
+import {
+  useMobile,
+  ReceiptLink,
+  Spacer,
+  RButton,
+  RIcon,
+  RSpinner,
+} from "request-ui";
 import QRCode from "qrcode.react";
 import RequestIconDark from "../assets/img/Request_icon_dark.svg";
 import BtcIcon from "../assets/img/btc.png";
 import MetamaskIcon from "../assets/img/metamask.png";
-
+import CoinbaseIcon from "../assets/img/coinbase.png";
 import { useRequest } from "request-shared";
+
+import AccountBalanceWallet from "@material-ui/icons/AccountBalanceWalletOutlined";
 
 const PayAction = ({
   disabled,
@@ -51,27 +61,49 @@ const ApproveAction = ({ approve }: { approve: () => void }) => {
 
 const ConnectAction = ({
   activate,
-  redirectMetamask,
+  mobileRedirect,
   installMetamask,
 }: {
   activate: () => void;
-  redirectMetamask: () => void;
+  mobileRedirect: () => Promise<any>;
   installMetamask: () => void;
 }) => {
   const web3 = "ethereum" in window;
+  const [active, setActive] = React.useState(false);
+
+  const mobileRedirectWrapper = async () => {
+    setActive(true);
+    await mobileRedirect();
+    setActive(false);
+  };
   const mobile = useMobile();
-  return (
+  return active ? (
+    <RSpinner />
+  ) : (
     <RButton
-      startIcon={<img src={MetamaskIcon} alt="" width={32} height={32} />}
+      startIcon={
+        web3 ? (
+          <AccountBalanceWallet />
+        ) : (
+          <img
+            src={mobile ? CoinbaseIcon : MetamaskIcon}
+            alt=""
+            width={32}
+            height={32}
+          />
+        )
+      }
       color="default"
-      onClick={web3 ? activate : mobile ? redirectMetamask : installMetamask}
+      onClick={
+        web3 ? activate : mobile ? mobileRedirectWrapper : installMetamask
+      }
     >
       <Box color="text.primary">
         <Typography variant="h4">
           {web3
-            ? "Pay with Metamask"
+            ? "Connect your wallet"
             : mobile
-            ? "Open with Metamask"
+            ? "Open with Coinbase"
             : "Install Metamask"}
         </Typography>
       </Box>
@@ -108,6 +140,13 @@ const BtcPay = ({ url }: { url: string }) => {
       />
     </>
   );
+};
+
+const coinbaseShare = async (requestId: string) => {
+  const { data } = await axios.get(
+    `https://europe-west1-request-240714.cloudfunctions.net/coinbase-share?requestId=${requestId}`
+  );
+  return data || "https://go.cb-w.com/jHZvKzZ2H5";
 };
 
 export default () => {
@@ -156,11 +195,8 @@ export default () => {
     return (
       <ConnectAction
         activate={() => activateConnector("injected")}
-        redirectMetamask={() =>
-          window.open(
-            `https://metamask.app.link/dapp/${window.location.host +
-              window.location.pathname}`
-          )
+        mobileRedirect={() =>
+          coinbaseShare(request.requestId).then(url => window.open(url))
         }
         installMetamask={() => window.open("http://metamask.io/")}
       />

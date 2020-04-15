@@ -1,7 +1,7 @@
 import { Web3Provider } from "ethers/providers";
 import React from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
-import { ErrorBoundary, theme, RAlert } from "request-ui";
+import { ErrorBoundary, theme, RAlert, useMobile } from "request-ui";
 
 import {
   CssBaseline,
@@ -39,6 +39,8 @@ const App: React.FC = () => {
   const { account, activate, chainId, error } = useWeb3React();
   const { name, loading } = useConnectedUser();
   const web3detected = !!window.ethereum;
+  const isMetaMask = window.ethereum?.isMetaMask || false;
+  const isMobile = useMobile();
 
   return (
     <BrowserRouter>
@@ -50,6 +52,9 @@ const App: React.FC = () => {
           account={name || account}
           connect={() => activate(injected)}
         />
+        {web3detected && isMetaMask && isMobile && (
+          <RAlert severity="warning" message="It looks like you are using Metamask mobile. Please be aware this app might not work properly for now." />
+        )}
         {!web3detected && (
           <RAlert
             severity="warning"

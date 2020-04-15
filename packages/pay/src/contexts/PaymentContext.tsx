@@ -104,9 +104,10 @@ export const PaymentProvider: React.FC = ({ children }) => {
   const [ready, setReady] = useState(false);
   const [error, setError] = useState<Error>();
   const [gasPrice, setGasPrice] = useState<number>(6);
+  const [autorefresh, setAutorefresh] = useState(false);
 
   const { account, library } = useWeb3React<Web3Provider>();
-  const { request, setPending } = useRequest();
+  const { request, setPending, update } = useRequest();
 
   const txCallback = useCallback(
     async (tx: TransactionResponse) => {
@@ -117,7 +118,7 @@ export const PaymentProvider: React.FC = ({ children }) => {
       setBroadcasting(true);
       const t = setTimeout(() => {
         setPending(true);
-      }, 15000);
+      }, 2000);
       // For ETH, use etherscan, for others, use default provider.
       // this is to match the behaviour of request payment detection.
       if (request?.currencyType === Types.RequestLogic.CURRENCY.ETH) {
@@ -126,17 +127,27 @@ export const PaymentProvider: React.FC = ({ children }) => {
           "TCVQQU5V39TAS1V6HF61P9K7IJZVEHH1D9"
         );
         await provider.waitForTransaction(tx.hash, 1);
-        await sleep(3000);
       } else {
         await tx.wait(1);
       }
       localStorage.removeItem("txhash");
       clearTimeout(t);
-      setBroadcasting(false);
-      setPending(false);
+      setAutorefresh(true);
     },
     [setBroadcasting, setPending, request]
   );
+
+  useEffect(() => {
+    if (!autorefresh) return;
+    if (request?.status === "paid") {
+      setAutorefresh(false);
+      setPending(false);
+      setPaying(false);
+    } else {
+      const i = setInterval(update, 2000);
+      return () => clearInterval(i);
+    }
+  }, [autorefresh, request, setPending, update]);
 
   // Check for locally stored payment transaction hash and
   // set payment as pending while waiting for transaction to be complete.
@@ -175,9 +186,7 @@ export const PaymentProvider: React.FC = ({ children }) => {
     if (paying && request.status === "open") {
       payRequest(request.raw, library, undefined, {
         gasPrice: ethers.utils.parseUnits(gasPrice.toString(), "gwei"),
-      })
-        .then(txCallback)
-        .finally(() => setPaying(false));
+      }).then(txCallback);
     }
     if (approving) {
       approveErc20(request.raw, library, {

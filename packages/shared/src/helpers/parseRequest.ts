@@ -19,15 +19,16 @@ export const parseRequest = async (
     )
   );
 
-  const status = pending
-    ? "pending"
-    : data.state === Types.RequestLogic.STATE.CANCELED
-    ? "canceled"
-    : bigNumberify(data.balance?.balance ?? 0).gte(
-        bigNumberify(data.expectedAmount)
-      )
-    ? "paid"
-    : "open";
+  const status =
+    data.state === Types.RequestLogic.STATE.CANCELED
+      ? "canceled"
+      : bigNumberify(data.balance?.balance ?? 0).gte(
+          bigNumberify(data.expectedAmount)
+        )
+      ? "paid"
+      : pending
+      ? "pending"
+      : "open";
 
   const paidTimestamp = data.balance?.events.reverse()[0]?.timestamp;
   const canceledTimestamp = data.events.find(

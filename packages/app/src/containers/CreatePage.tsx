@@ -40,8 +40,10 @@ export default () => {
       // await request.waitForConfirmation();
       history.push(`/${request.requestId}`);
     } catch (e) {
-      setError(e.message);
-      report(e);
+      if (e.code !== 4001 && e.message !== "canceled") {
+        setError(e.message);
+        report(e);
+      }
     }
   };
   return (

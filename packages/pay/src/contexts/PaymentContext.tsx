@@ -13,6 +13,7 @@ import { Web3Provider, TransactionResponse } from "ethers/providers";
 import { Types } from "@requestnetwork/request-client.js";
 import React from "react";
 import { ethers } from "ethers";
+import axios from "axios";
 
 export class NotEnoughForGasError extends Error {
   constructor() {
@@ -102,6 +103,7 @@ export const PaymentProvider: React.FC = ({ children }) => {
   const [loadingPendingTx, setLoadingPendingTx] = useState(true);
   const [ready, setReady] = useState(false);
   const [error, setError] = useState<Error>();
+  const [gasPrice, setGasPrice] = useState<number>(6);
 
   const { account, library } = useWeb3React<Web3Provider>();
   const { request, setPending } = useRequest();
@@ -158,16 +160,26 @@ export const PaymentProvider: React.FC = ({ children }) => {
     }
   }, [library, request, setPending]);
 
+  useEffect(() => {
+    axios
+      .get("https://ethgasstation.info/json/ethgasAPI.json")
+      .then(res => setGasPrice(res.data.average / 10 + 1));
+  }, []);
+
   // Process paying a request or approving an erc20 allowance
   useEffect(() => {
     if (!request || !account || !library) return;
     if (paying && request.status === "open") {
-      payRequest(request.raw, library)
+      payRequest(request.raw, library, undefined, {
+        gasPrice: ethers.utils.parseUnits(gasPrice.toString(), "gwei"),
+      })
         .then(txCallback)
         .finally(() => setPaying(false));
     }
     if (approving) {
-      approveErc20(request.raw, library)
+      approveErc20(request.raw, library, {
+        gasPrice: ethers.utils.parseUnits(gasPrice.toString(), "gwei"),
+      })
         .then(async tx => {
           setBroadcasting(true);
           await tx.wait(1);

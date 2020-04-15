@@ -14,9 +14,9 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@requestnetwork/request-client.js": "^0.14.0",
-    "@requestnetwork/types": "0.13.0",
-    "@requestnetwork/web3-signature": "^0.4.10",
+    "@requestnetwork/request-client.js": "0.15.0",
+    "@requestnetwork/types": "0.14.0",
+    "@requestnetwork/web3-signature": "0.4.11",
     "ethers": "^4.0.46",
     "wallet-address-validator": "^0.2.4"
   }

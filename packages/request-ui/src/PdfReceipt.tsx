@@ -280,12 +280,12 @@ export const PdfReceipt = ({ request }: { request: IParsedRequest }) => {
             </View>
           </View>
         </View>
-        {request.reason && (
+        {request.reason ? (
           <View style={{ marginTop: 40 }}>
             <Text style={styles.caption}>Reason</Text>
             <Text style={styles.headerBodyText}>{request.reason}</Text>
           </View>
-        )}
+        ) : null}
         <View style={{ flex: 1 }} />
         <View style={styles.footer}>
           <Text>

@@ -322,7 +322,10 @@ export const CreateRequestForm = ({
           {error && (
             <>
               <Spacer size={4} />
-              <RAlert severity="error" message="An error has occured" />{" "}
+              <RAlert
+                severity="error"
+                message="Request creation has failed. Please try again later."
+              />
             </>
           )}
           <Hidden smUp>

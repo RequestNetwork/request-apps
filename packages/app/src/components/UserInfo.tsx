@@ -21,7 +21,15 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default ({ name, network }: { name: string; network?: number }) => {
+export default ({
+  name,
+  network,
+  onClick,
+}: {
+  name: string;
+  network?: number;
+  onClick: () => void;
+}) => {
   const classes = useStyles();
   const displayName =
     name.length <= 20 ? name : `${name.slice(0, 10)}...${name.slice(-10)}`;
@@ -40,6 +48,7 @@ export default ({ name, network }: { name: string; network?: number }) => {
       color="default"
       startIcon={<CombinedIcon />}
       className={classes.button}
+      onClick={onClick}
     >
       {displayName}
     </RButton>

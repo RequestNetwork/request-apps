@@ -19,6 +19,7 @@ import { Skeleton } from "@material-ui/lab";
 
 import ConnectButton from "./ConnectButton";
 import UserInfo from "./UserInfo";
+import { ConnectModal } from "./ConnectModal";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -108,6 +109,23 @@ export const RequestAppBar = ({
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { pathname } = useLocation();
 
+  const [connecting, setConnecting] = useState(false);
+  const [connectModalOpen, setConnectModalOpen] = useState(false);
+
+  const onConnect = () => {
+    setConnecting(true);
+    connect().finally(() => {
+      setConnectModalOpen(false);
+      setConnecting(false);
+    });
+  };
+
+  useEffect(() => {
+    if (connecting && !connectModalOpen) {
+      setConnecting(false);
+    }
+  }, [connectModalOpen, connecting]);
+
   useEffect(() => {
     setDrawerOpen(false);
   }, [pathname, account]);
@@ -166,9 +184,16 @@ export const RequestAppBar = ({
                 <Skeleton variant="text" width={250} height={32} />
               </Box>
             ) : account ? (
-              <UserInfo name={account} network={network} />
+              <UserInfo
+                name={account}
+                network={network}
+                onClick={() => setConnectModalOpen(true)}
+              />
             ) : (
-              <ConnectButton connect={connect} />
+              <ConnectButton
+                connecting={connecting}
+                onClick={() => setConnectModalOpen(true)}
+              />
             )}
           </Box>
           <Box flex={1} className={classes.mobileMenu} />
@@ -200,11 +225,24 @@ export const RequestAppBar = ({
         <Links className={classes.mobileLink} />
         <Box flex={1} />
         {account ? (
-          <UserInfo name={account} network={network} />
+          <UserInfo
+            name={account}
+            network={network}
+            onClick={() => setConnectModalOpen(true)}
+          />
         ) : (
-          <ConnectButton connect={connect} />
+          <ConnectButton
+            connecting={connecting}
+            onClick={() => setConnectModalOpen(true)}
+          />
         )}
       </SwipeableDrawer>
+      <ConnectModal
+        open={connectModalOpen}
+        connecting={connecting}
+        onClose={() => setConnectModalOpen(false)}
+        connect={onConnect}
+      />
     </AppBar>
   );
 };

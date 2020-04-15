@@ -15,7 +15,14 @@ import { Skeleton } from "@material-ui/lab";
 import WalletAddressValidator from "wallet-address-validator";
 import { isValidEns, getAddressFromEns } from "request-shared";
 
-import { RIcon, RContainer, Spacer, RButton, TestnetWarning } from "request-ui";
+import {
+  RIcon,
+  RContainer,
+  Spacer,
+  RButton,
+  TestnetWarning,
+  RAlert,
+} from "request-ui";
 import Dot from "./Dot";
 import { DaiIcon } from "./currencies/DaiIcon";
 import { EthIcon } from "./currencies/EthIcon";
@@ -295,7 +302,6 @@ export const CreateRequestForm = ({
   return (
     <RContainer>
       <Spacer size={15} xs={8} />
-      {/* {error && <RAlert severity="error" message={error} />} */}
 
       {network && network !== 1 && <TestnetWarning />}
       <Formik<IFormData>
@@ -313,6 +319,15 @@ export const CreateRequestForm = ({
             <Header account={account} network={network} loading={loading} />
             <Body />
           </Box>
+          {error && (
+            <>
+              <Spacer size={4} />
+              <RAlert severity="error" message="An error has occured" />{" "}
+            </>
+          )}
+          <Hidden smUp>
+            <Box flex={1} />
+          </Hidden>
           <Footer account={account} />
         </>
       </Formik>

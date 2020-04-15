@@ -2,6 +2,7 @@ import { FormikHelpers } from "formik";
 import React, { useState } from "react";
 import { useHistory } from "react-router";
 import { amountToString, createRequest } from "request-shared";
+import { useErrorReporter } from "request-ui";
 
 import { useWeb3React } from "@web3-react/core";
 
@@ -13,6 +14,7 @@ export default () => {
   const [error, setError] = useState<string>();
   const { account, chainId } = useWeb3React();
   const { loading: web3Loading } = useConnectedUser();
+  const { report } = useErrorReporter();
 
   const submit = async (
     values: IFormData,
@@ -38,8 +40,8 @@ export default () => {
       // await request.waitForConfirmation();
       history.push(`/${request.requestId}`);
     } catch (e) {
-      console.log(e.message);
       setError(e.message);
+      report(e);
     }
   };
   return (

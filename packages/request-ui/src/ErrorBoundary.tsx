@@ -1,5 +1,5 @@
-import React from "react";
-import StackdriverErrorReporter from "stackdriver-errors-js";
+import React, { createContext, useContext } from 'react';
+import StackdriverErrorReporter from 'stackdriver-errors-js';
 
 interface IProps {
   stackdriverErrorReporterApiKey?: string;
@@ -11,6 +11,18 @@ interface IProps {
 interface IState {
   hasError: boolean;
 }
+
+const ErrorReporterContext = createContext<
+  { report: (error: Error) => void } | undefined
+>(undefined);
+
+export const useErrorReporter = () => {
+  const context = useContext(ErrorReporterContext);
+  if (!context) {
+    throw new Error('This must be used within a ErrorReporterContext provider');
+  }
+  return context;
+};
 
 /**
  * Limits propagation of errors, and reports error in production using GoogleStackDriver
@@ -28,7 +40,7 @@ export class ErrorBoundary extends React.Component<IProps, IState> {
       key: this.props.stackdriverErrorReporterApiKey,
       projectId: this.props.projectId,
       service: this.props.service,
-      disabled: window.location.hostname === "localhost",
+      disabled: window.location.hostname === 'localhost',
     });
   }
 
@@ -37,6 +49,13 @@ export class ErrorBoundary extends React.Component<IProps, IState> {
   }
 
   componentDidCatch(error: any) {
+    this.report(error);
+  }
+
+  report(error: any) {
+    if (window.location.host === 'localhost') {
+      console.log(error);
+    }
     this.reporter.report(error);
   }
 
@@ -45,6 +64,10 @@ export class ErrorBoundary extends React.Component<IProps, IState> {
       const Component = this.props.component;
       return <Component />;
     }
-    return this.props.children;
+    return (
+      <ErrorReporterContext.Provider value={{ report: this.report.bind(this) }}>
+        {this.props.children}
+      </ErrorReporterContext.Provider>
+    );
   }
 }

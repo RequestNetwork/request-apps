@@ -29,6 +29,8 @@ export default () => {
           amount: amountToString(values.amount!, values.currency!),
           contentData: {
             reason: values.reason,
+            builderId: "request-team",
+            createdWith: window.location.hostname,
           },
           currency: values.currency!,
           payer: values.payer,

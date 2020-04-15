@@ -1,5 +1,5 @@
-import * as React from "react";
-import Moment from "react-moment";
+import * as React from 'react';
+import Moment from 'react-moment';
 import {
   Page,
   Text,
@@ -10,8 +10,11 @@ import {
   Font,
   pdf,
   PDFViewer,
-} from "@react-pdf/renderer";
-import { IParsedRequest, RequestProvider, useRequest } from "request-shared";
+} from '@react-pdf/renderer';
+import ArrowDownward from '@material-ui/icons/ArrowDownward';
+import { IParsedRequest, RequestProvider, useRequest } from 'request-shared';
+import { RButton } from './RButton';
+import { Box, Typography } from '@material-ui/core';
 
 interface IProps {
   request: IParsedRequest;
@@ -20,9 +23,9 @@ interface IProps {
 }
 
 const downloadFile = (function() {
-  var a = document.createElement("a");
+  var a = document.createElement('a');
   document.body.appendChild(a);
-  (a as any).style = "display: none";
+  (a as any).style = 'display: none';
   return (blob: Blob, fileName: string) => {
     const url = window.URL.createObjectURL(blob);
     a.href = url;
@@ -35,7 +38,25 @@ const downloadFile = (function() {
 export const downloadPdf = async (props: IProps) => {
   const blob = await pdf(<PdfReceipt {...props} />).toBlob();
 
-  downloadFile(blob, "receipt.pdf");
+  downloadFile(blob, 'receipt.pdf');
+};
+
+export const ReceiptLink = (props: {
+  request: IParsedRequest;
+  counterCurrency: string;
+  counterValue?: string;
+}) => {
+  return (
+    <RButton
+      onClick={() => downloadPdf(props)}
+      startIcon={<ArrowDownward />}
+      color="default"
+    >
+      <Box color="text.primary">
+        <Typography variant="h5">Download PDF receipt</Typography>
+      </Box>
+    </RButton>
+  );
 };
 
 export const ReceiptPreview = () => {
@@ -52,7 +73,7 @@ const RequestPreview = () => {
     return null;
   }
   return (
-    <PDFViewer style={{ width: "100%", height: "100vh" }}>
+    <PDFViewer style={{ width: '100%', height: '100vh' }}>
       <PdfReceipt request={request} />
     </PDFViewer>
   );
@@ -61,39 +82,39 @@ const RequestPreview = () => {
 // Create styles
 const styles = StyleSheet.create({
   page: {
-    flexDirection: "column",
-    backgroundColor: "#FAFAFA",
-    padding: "40px 20px 48px 23px",
-    fontFamily: "Inter",
+    flexDirection: 'column',
+    backgroundColor: '#FAFAFA',
+    padding: '40px 20px 48px 23px',
+    fontFamily: 'Inter',
     fontSize: 12,
-    fontStyle: "normal",
-    fontWeight: "normal",
-    lineHeight: "16px",
+    fontStyle: 'normal',
+    fontWeight: 'normal',
+    lineHeight: '16px',
   },
   title: {
     marginBottom: 12,
-    alignItems: "flex-end",
+    alignItems: 'flex-end',
     fontWeight: 600,
     fontSize: 16,
-    lineHeight: "24px",
+    lineHeight: '24px',
   },
   headerRow: {
     marginBottom: 4,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   headerBodyText: {
     marginBottom: 4,
-    color: "#656565",
+    color: '#656565',
   },
   status: {
-    backgroundColor: "#D6F3E2",
+    backgroundColor: '#D6F3E2',
     borderRadius: 4,
     width: 74,
     height: 32,
-    padding: "8px 24px",
-    color: "#456078",
+    padding: '8px 24px',
+    color: '#456078',
     fontWeight: 600,
   },
   caption: {
@@ -101,39 +122,39 @@ const styles = StyleSheet.create({
     fontWeight: 600,
   },
   content: {
-    display: "flex",
-    flexDirection: "column",
+    display: 'flex',
+    flexDirection: 'column',
     marginTop: 80,
   },
   contentHeader: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     padding: 16,
-    borderBottomColor: "#050B20",
-    borderBottomStyle: "solid",
+    borderBottomColor: '#050B20',
+    borderBottomStyle: 'solid',
     borderBottomWidth: 2,
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   contentRow: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     padding: 16,
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    borderBottomColor: "#E4E4E4",
-    borderBottomStyle: "solid",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderBottomColor: '#E4E4E4',
+    borderBottomStyle: 'solid',
     borderBottomWidth: 1,
   },
   footer: {
-    alignItems: "center",
-    color: "#656565",
+    alignItems: 'center',
+    color: '#656565',
   },
   testNetwork: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    width: "110%",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    width: '110%',
     marginTop: -40,
     marginRight: -25,
     marginLeft: -25,
@@ -141,39 +162,39 @@ const styles = StyleSheet.create({
   },
   testNetworkBanner: {
     height: 4,
-    backgroundColor: "#FFB95F",
-    width: "100%",
+    backgroundColor: '#FFB95F',
+    width: '100%',
   },
   testNetworkText: {
-    backgroundColor: "#FFB95F",
-    color: "white",
+    backgroundColor: '#FFB95F',
+    color: 'white',
     height: 40,
     width: 180,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
 export const PdfReceipt = ({ request }: { request: IParsedRequest }) => {
   Font.register({
-    family: "Inter",
+    family: 'Inter',
     fonts: [
       {
-        src: "/fonts/Inter-Regular.ttf",
+        src: '/fonts/Inter-Regular.ttf',
       },
       {
-        src: "/fonts/Inter-Medium.ttf",
+        src: '/fonts/Inter-Medium.ttf',
         fontWeight: 600,
       },
     ],
   });
-  const amountAndCurrency = request.amount.toString() + " " + request.currency;
-  if (request.status !== "paid") throw new Error("Request not paid");
+  const amountAndCurrency = request.amount.toString() + ' ' + request.currency;
+  if (request.status !== 'paid') throw new Error('Request not paid');
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        {request.network !== "mainnet" && (
+        {request.network !== 'mainnet' && (
           <View style={styles.testNetwork}>
             <View style={styles.testNetworkBanner} />
             <View style={styles.testNetworkText}>
@@ -193,11 +214,11 @@ export const PdfReceipt = ({ request }: { request: IParsedRequest }) => {
           </View>
           <View
             style={{
-              alignItems: "flex-end",
+              alignItems: 'flex-end',
             }}
           >
             <Text style={styles.headerBodyText}>
-              Issued on{" "}
+              Issued on{' '}
               <Moment element={Text} format="MMMM Do, YYYY">
                 {request.createdDate}
               </Moment>
@@ -207,11 +228,11 @@ export const PdfReceipt = ({ request }: { request: IParsedRequest }) => {
                 styles.headerBodyText,
                 {
                   fontWeight: 600,
-                  color: "#050B20",
+                  color: '#050B20',
                 },
               ]}
             >
-              Paid on{" "}
+              Paid on{' '}
               <Moment element={Text} format="MMMM Do, YYYY">
                 {request.paidDate}
               </Moment>
@@ -242,14 +263,14 @@ export const PdfReceipt = ({ request }: { request: IParsedRequest }) => {
             <Text style={{ flex: 2 / 10 }}>{amountAndCurrency}</Text>
             <Text style={{ flex: 2 / 10 }}>{amountAndCurrency}</Text>
           </View>
-          <View style={{ display: "flex", flexDirection: "row" }}>
+          <View style={{ display: 'flex', flexDirection: 'row' }}>
             <Text style={{ flex: 6 / 10 }}></Text>
             <View style={[styles.contentRow, { flex: 4 / 10 }]}>
               <Text style={{ flex: 1 / 2 }}>Subtotal</Text>
               <Text style={{ flex: 1 / 2 }}>{amountAndCurrency}</Text>
             </View>
           </View>
-          <View style={{ display: "flex", flexDirection: "row" }}>
+          <View style={{ display: 'flex', flexDirection: 'row' }}>
             <Text style={{ flex: 6 / 10 }}></Text>
             <View
               style={[styles.contentRow, { flex: 4 / 10, fontWeight: 600 }]}
@@ -268,10 +289,10 @@ export const PdfReceipt = ({ request }: { request: IParsedRequest }) => {
         <View style={{ flex: 1 }} />
         <View style={styles.footer}>
           <Text>
-            You can view your request online by clicking{" "}
+            You can view your request online by clicking{' '}
             <Link
               src={`https://pay.request.network/${request.requestId}`}
-              style={{ textDecoration: "none", color: "#00CC8E" }}
+              style={{ textDecoration: 'none', color: '#00CC8E' }}
             >
               here
             </Link>

@@ -8,6 +8,7 @@ import {
   RButton,
   RequestSkeleton,
   TestnetWarning,
+  ReceiptLink,
 } from "request-ui";
 import {
   IParsedRequest,
@@ -132,9 +133,23 @@ export const RequestPage = () => {
         counterCurrency={counterCurrency}
       />
       <Spacer size={12} />
-      <ShareRequest requestId={request.requestId} />
-      <Spacer size={11} />
-      <RequestActions request={request} account={account} cancel={cancel} />
+      {request.status === "paid" ? (
+        <>
+          <ReceiptLink
+            request={request}
+            counterValue={counterValue}
+            counterCurrency={counterCurrency}
+          />
+          <Spacer size={11} />
+          <ShareRequest requestId={request.requestId} />
+        </>
+      ) : (
+        <>
+          <ShareRequest requestId={request.requestId} />
+          <Spacer size={11} />
+          <RequestActions request={request} account={account} cancel={cancel} />
+        </>
+      )}
       <Spacer size={12} />
     </RContainer>
   );

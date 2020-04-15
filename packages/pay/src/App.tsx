@@ -8,7 +8,7 @@ import DemoPage from "./containers/DemoPage";
 import ErrorPage from "./containers/ErrorPage";
 import NotFoundPage from "./containers/NotFoundPage";
 import PaymentPage from "./containers/PaymentPage";
-import { ReceiptPreview } from "./components/PdfReceipt";
+import { ReceiptPreview } from "request-ui";
 
 const useStyles = makeStyles((theme) => ({
   paper: {

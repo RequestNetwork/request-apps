@@ -17,3 +17,5 @@ export * from './ErrorBoundary';
 
 export * from './hooks';
 export * from './TestnetWarning';
+
+export * from './PdfReceipt';

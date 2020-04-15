@@ -3,20 +3,17 @@ import * as React from "react";
 import { usePayment, RequiresApprovalError } from "../contexts/PaymentContext";
 import { useWeb3React } from "@web3-react/core";
 
-import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import { useConnector } from "../contexts/ConnectorContext";
 import { Typography, Box } from "@material-ui/core";
 import { Types } from "@requestnetwork/request-client.js";
 import { getBtcPaymentUrl } from "@requestnetwork/payment-processor";
-import { useMobile } from "request-ui";
+import { useMobile, ReceiptLink, Spacer, RButton, RIcon } from "request-ui";
 import QRCode from "qrcode.react";
 import RequestIconDark from "../assets/img/Request_icon_dark.svg";
 import BtcIcon from "../assets/img/btc.png";
 import MetamaskIcon from "../assets/img/metamask.png";
 
-import { Spacer, RButton, RIcon } from "request-ui";
-import { IParsedRequest, useRequest } from "request-shared";
-import { downloadPdf } from "./PdfReceipt";
+import { useRequest } from "request-shared";
 
 const PayAction = ({
   disabled,
@@ -77,24 +74,6 @@ const ConnectAction = ({
             ? "Open with Metamask"
             : "Install Metamask"}
         </Typography>
-      </Box>
-    </RButton>
-  );
-};
-
-const ReceiptLink = (props: {
-  request: IParsedRequest;
-  counterCurrency: string;
-  counterValue?: string;
-}) => {
-  return (
-    <RButton
-      onClick={() => downloadPdf(props)}
-      startIcon={<ArrowDownward />}
-      color="default"
-    >
-      <Box color="text.primary">
-        <Typography variant="h5">Download PDF receipt</Typography>
       </Box>
     </RButton>
   );

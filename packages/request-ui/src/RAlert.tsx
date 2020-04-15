@@ -17,6 +17,11 @@ const useStyles = makeStyles<Theme, { severity: Severity }>({
     borderRadius: 0,
     width: '100%',
     padding: '0 18px',
+    display: 'flex',
+    alignItems: 'center',
+    '& .MuiAlert-icon': {
+      marginRight: 16,
+    },
   },
 });
 

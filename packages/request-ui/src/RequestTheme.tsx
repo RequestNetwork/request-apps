@@ -89,6 +89,9 @@ export const theme = createMuiTheme({
   overrides: {
     MuiCssBaseline: {
       '@global': {
+        'html, body, #root': {
+          height: '100%',
+        },
         '#root': {
           display: 'block',
           overflow: 'auto',

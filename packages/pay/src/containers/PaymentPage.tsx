@@ -163,7 +163,8 @@ export const PaymentPage = () => {
     mobile &&
     active &&
     (request?.status === "open" || request?.status === "pending");
-  const showSpinner = (approving || activating) && !web3Error && !error;
+  const showSpinner =
+    (approving || activating) && ((!web3Error && !error) || requiresApproval);
   const showFooter =
     !mobile ||
     request?.status === "paid" ||

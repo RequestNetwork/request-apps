@@ -116,7 +116,10 @@ export const theme = createMuiTheme({
         backgroundColor: '#fff',
         border: '1px solid #E4E4E4',
         boxSizing: 'border-box',
-        borderRadius: 4,
+        borderRadius: 0,
+        [defaultTheme.breakpoints.up('sm')]: {
+          borderRadius: 4,
+        },
         '&:hover': {
           backgroundColor: '#F7F7F7',
         },

@@ -1,6 +1,6 @@
 import { Web3Provider } from "ethers/providers";
 import React from "react";
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { ErrorBoundary, theme, RAlert, useMobile } from "request-ui";
 
 import {
@@ -53,7 +53,10 @@ const App: React.FC = () => {
           connect={() => activate(injected)}
         />
         {web3detected && isMetaMask && isMobile && (
-          <RAlert severity="warning" message="It looks like you are using Metamask mobile. Please be aware this app might not work properly for now." />
+          <RAlert
+            severity="warning"
+            message="It looks like you are using Metamask mobile. Please be aware this app might not work properly for now."
+          />
         )}
         {!web3detected && (
           <RAlert
@@ -81,11 +84,8 @@ const App: React.FC = () => {
         )}
         <div className={classes.paper}>
           <Switch>
-            <Route path="/" exact>
-              <Redirect to="/create" />
-            </Route>
+            <Route path="/" exact component={CreatePage} />
             <Route path="/dashboard" component={DashboardPage} />
-            <Route path="/create" component={CreatePage} />
             <Route path="/:id([0-9a-fA-F]+)" component={RequestPage} />
             <Route path="*" component={NotFoundPage} />
           </Switch>

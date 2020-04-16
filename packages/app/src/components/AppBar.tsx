@@ -142,7 +142,8 @@ export const RequestAppBar = ({
       <NavLink
         activeClassName={classes.active}
         className={className}
-        to="/create"
+        exact
+        to="/"
       >
         <Typography variant="h4">Create a request</Typography>
       </NavLink>

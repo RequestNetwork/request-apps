@@ -16,7 +16,7 @@ import {
 import { useConnectedUser } from "../contexts/UserContext";
 import NotLoggedPage from "./NotLoggedPage";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   container: {
     backgroundColor: "white",
     width: "100%",
@@ -82,7 +82,7 @@ export const Dashboard = () => {
       <Spacer size={24} />
       <Hidden smUp>
         <Fab className={classes.fab} color="secondary">
-          <IconButton onClick={() => history.push("/create")}>
+          <IconButton onClick={() => history.push("/")}>
             <AddIcon />
           </IconButton>
         </Fab>

@@ -35,13 +35,13 @@ const App: React.FC = () => {
             component={ErrorPage}
           >
             <Switch>
-              {/* There is no homepage. In Production, redirects to request website. */}
+              {/* There is no homepage. In Production, redirects to create.request.network. */}
               {window.location.hostname !== "localhost" && (
                 <Route
                   path="/"
                   exact
                   component={() => {
-                    window.location.href = "https://request.network";
+                    window.location.href = "https://create.request.network";
                     return null;
                   }}
                 />

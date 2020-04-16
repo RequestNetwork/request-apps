@@ -186,7 +186,9 @@ export const PaymentProvider: React.FC = ({ children }) => {
     if (paying && request.status === "open") {
       payRequest(request.raw, library, undefined, {
         gasPrice: ethers.utils.parseUnits(gasPrice.toString(), "gwei"),
-      }).then(txCallback);
+      })
+        .then(txCallback)
+        .catch(() => setPaying(false));
     }
     if (approving) {
       approveErc20(request.raw, library, {

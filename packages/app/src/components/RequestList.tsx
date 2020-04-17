@@ -91,8 +91,8 @@ const Amount = ({
   role?: "payee" | "payer";
 }) => {
   const displayAmount = amount.toLocaleString("en-US", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 5,
   });
   const titleAmount = amount.toLocaleString("en-US", {
     minimumFractionDigits: 2,
@@ -159,7 +159,7 @@ const useStyles = makeStyles(theme => ({
   },
   amount: {
     display: "flex",
-    justifyContent: "flex-end",
+    // justifyContent: "flex-end",
     [theme.breakpoints.down("sm")]: {
       position: "absolute",
       bottom: 0,

@@ -13,7 +13,7 @@ export default () => {
   const history = useHistory();
   const [error, setError] = useState<string>();
   const { account, chainId } = useWeb3React();
-  const { loading: web3Loading } = useConnectedUser();
+  const { loading: web3Loading, name } = useConnectedUser();
   const { report } = useErrorReporter();
 
   const submit = async (
@@ -50,7 +50,7 @@ export default () => {
   };
   return (
     <CreateRequestForm
-      account={account || undefined}
+      account={name || account || undefined}
       network={chainId}
       error={error}
       onSubmit={submit}

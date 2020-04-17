@@ -137,7 +137,6 @@ const Amount = ({ className }: { className?: string }) => {
   return (
     <TextField
       {...field}
-      autoFocus
       name="amount"
       label="Amount"
       className={className}

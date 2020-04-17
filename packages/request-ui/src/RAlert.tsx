@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Alert from '@material-ui/lab/Alert';
 import WarningRoundedIcon from '@material-ui/icons/WarningRounded';
 import ErrorRoundedIcon from '@material-ui/icons/ErrorRounded';
@@ -56,6 +56,8 @@ export const RAlert = ({
   actions?: JSX.Element;
 }) => {
   const classes = useStyles({ severity });
+  const [open, setOpen] = useState(true);
+  if (!open) return null;
   return (
     <>
       <Alert
@@ -68,16 +70,15 @@ export const RAlert = ({
           message: classes.message,
           action: classes.action,
         }}
-        onClose={() => {}}
+        onClose={() => {
+          setOpen(false);
+        }}
       >
         <Box color="text.primary">
           {title && (
             <AlertTitle>
               <Typography variant="h5">{title}</Typography>
             </AlertTitle>
-            // <Box className={classes.title}>
-            //
-            // </Box>
           )}
           <Typography variant="body2">{message}</Typography>
         </Box>

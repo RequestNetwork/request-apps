@@ -130,6 +130,12 @@ export const RequestAppBar = ({
     setDrawerOpen(false);
   }, [pathname, account]);
 
+  useEffect(() => {
+    if (!loading && !account) {
+      setConnectModalOpen(true);
+    }
+  }, [account, loading]);
+
   const Links = ({ className }: { className: string }) => (
     <>
       <NavLink

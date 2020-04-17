@@ -29,6 +29,7 @@ import { useMobile } from "request-ui";
 import ErrorPage from "./ErrorPage";
 import { ErrorMessage } from "../components/ErrorMessage";
 import { useEagerConnect } from "../hooks/useEagerConnect";
+import PendingAlert from "../components/PendingAlert";
 
 export const RequestNotFound = () => {
   return (
@@ -130,7 +131,13 @@ export const PaymentPage = () => {
     counterCurrency,
     counterValue,
   } = useRequest();
-  const { paying, approving, error, ready: paymentReady } = usePayment();
+  const {
+    paying,
+    approving,
+    error,
+    ready: paymentReady,
+    txHash,
+  } = usePayment();
   const mobile = useMobile();
   const { active, error: web3Error } = useWeb3React();
 
@@ -199,6 +206,13 @@ export const PaymentPage = () => {
             severity="info"
             message="Please approve the contract using your connected wallet."
           />
+          <Spacer size={5} />
+        </>
+      ) : request?.status === "pending" && txHash ? (
+        <>
+          <Spacer size={12} />
+
+          <PendingAlert request={request} txHash={txHash} />
           <Spacer size={5} />
         </>
       ) : (

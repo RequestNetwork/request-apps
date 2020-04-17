@@ -91,6 +91,8 @@ export interface IPaymentContext {
   approve: () => void;
   /** true if the transaction is being broadcasting */
   broadcasting: boolean;
+  /** the transaction hash of the ongoing transaction */
+  txHash?: string;
 }
 
 const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
@@ -105,6 +107,7 @@ export const PaymentProvider: React.FC = ({ children }) => {
   const [error, setError] = useState<Error>();
   const [gasPrice, setGasPrice] = useState<number>(6);
   const [autorefresh, setAutorefresh] = useState(false);
+  const [txHash, setTxHash] = useState<string>();
 
   const { account, library } = useWeb3React<Web3Provider>();
   const { request, setPending, update } = useRequest();
@@ -114,7 +117,7 @@ export const PaymentProvider: React.FC = ({ children }) => {
       if (!tx.hash) {
         throw new Error("no tx hash");
       }
-      localStorage.setItem("txhash", tx.hash);
+      setTxHash(tx.hash);
       setBroadcasting(true);
       const t = setTimeout(() => {
         setPending(true);
@@ -130,7 +133,6 @@ export const PaymentProvider: React.FC = ({ children }) => {
       } else {
         await tx.wait(1);
       }
-      localStorage.removeItem("txhash");
       clearTimeout(t);
       setAutorefresh(true);
     },
@@ -138,11 +140,20 @@ export const PaymentProvider: React.FC = ({ children }) => {
   );
 
   useEffect(() => {
+    if (txHash) {
+      localStorage.setItem("txhash", txHash);
+    } else {
+      localStorage.removeItem("txhash");
+    }
+  }, [txHash]);
+
+  useEffect(() => {
     if (!autorefresh) return;
     if (request?.status === "paid") {
       setAutorefresh(false);
       setPending(false);
       setPaying(false);
+      setTxHash(undefined);
     } else {
       const i = setInterval(update, 2000);
       return () => clearInterval(i);
@@ -161,6 +172,7 @@ export const PaymentProvider: React.FC = ({ children }) => {
       if (request?.status === "open") {
         library.getTransaction(hash).then(async tx => {
           if (tx) {
+            setTxHash(hash);
             setPending(true);
             setLoadingPendingTx(false);
             await tx.wait(1);
@@ -241,6 +253,7 @@ export const PaymentProvider: React.FC = ({ children }) => {
     approving,
     approve: () => setApproving(true),
     broadcasting,
+    txHash,
   };
   return (
     <PaymentContext.Provider value={value}>{children}</PaymentContext.Provider>

@@ -541,6 +541,7 @@ export default () => {
                   ready: true,
                   error: state.error,
                   broadcasting: state.broadcasting,
+                  txHash: "abcd",
                 }}
               >
                 <FeedbackContainer />

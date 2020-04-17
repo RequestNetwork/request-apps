@@ -70,6 +70,9 @@ const useStyles = makeStyles(theme => ({
     borderBottom: "1px solid rgba(255, 255, 255, 0.7)",
     color: "#ffffff",
     fontSize: 14,
+    "&::placeholder": {
+      color: "rgba(255, 255, 255, 0.72)",
+    },
   },
 }));
 
@@ -260,8 +263,10 @@ export default ({ open, onClose }: { open: boolean; onClose: () => void }) => {
               className={classes.textField}
               size="small"
               InputProps={{
-                className: classes.input,
                 disableUnderline: true,
+                classes: {
+                  input: classes.input,
+                },
               }}
               placeholder="Enter your comments"
             />
@@ -285,28 +290,32 @@ export default ({ open, onClose }: { open: boolean; onClose: () => void }) => {
   if (email === undefined) {
     return (
       <FeedbackWidget
-        title={"May we contact you to learn more?"}
-        actions={""}
+        title="Thanks, we have received your feedback."
         message={
-          <>
-            <TextField
-              autoFocus={true}
-              value={input}
-              placeholder="Email address"
-              onChange={val => setInput(val.target.value)}
-              className={classes.textField}
-              InputProps={{
-                className: classes.input,
-                disableUnderline: true,
-              }}
-              size="small"
-              error={invalidEmail}
-              helperText={invalidEmail ? "Invalid email" : undefined}
-            />
-            <Button onClick={submitEmail}>
-              <SendIcon style={{ color: "#ffffff" }} />
-            </Button>
-          </>
+          <Box display="flex" flexDirection="column" width="100%">
+            Can we contact you to learn more?
+            <Box display="flex" width="100%" marginTop="8px">
+              <TextField
+                autoFocus={true}
+                value={input}
+                placeholder="Email address"
+                onChange={val => setInput(val.target.value)}
+                className={classes.textField}
+                InputProps={{
+                  classes: {
+                    input: classes.input,
+                  },
+                  disableUnderline: true,
+                }}
+                size="small"
+                error={invalidEmail}
+                helperText={invalidEmail ? "Invalid email" : undefined}
+              />
+              <Button onClick={submitEmail}>
+                <SendIcon style={{ color: "#ffffff" }} />
+              </Button>
+            </Box>
+          </Box>
         }
         open={open}
         onClose={close}

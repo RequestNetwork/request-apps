@@ -33,7 +33,7 @@ const isAuthorized = async (): Promise<boolean> => {
 
 export function useEagerConnect(request?: IParsedRequest) {
   const [connector, setConnector] = useState<AbstractConnector>();
-  const { activate, active, error } = useWeb3React();
+  const { activate, active, error, setError } = useWeb3React();
 
   const [tried, setTried] = useState(false);
 
@@ -47,7 +47,8 @@ export function useEagerConnect(request?: IParsedRequest) {
     if (connector) {
       isAuthorized().then(authorized => {
         if (authorized) {
-          activate(connector, undefined, true).catch(() => {
+          activate(connector, undefined, true).catch(e => {
+            setError(e);
             setTried(true);
           });
         } else {

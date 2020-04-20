@@ -1,16 +1,25 @@
 import React, { useState } from 'react';
-import Alert from '@material-ui/lab/Alert';
 import WarningRoundedIcon from '@material-ui/icons/WarningRounded';
 import ErrorRoundedIcon from '@material-ui/icons/ErrorRounded';
 import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
 import InfoRoundedIcon from '@material-ui/icons/InfoRounded';
-import { makeStyles, Theme, Box, Typography } from '@material-ui/core';
+import { makeStyles, Theme, Box, Typography, Link } from '@material-ui/core';
 import { alertColors } from './colors';
-import { AlertTitle } from '@material-ui/lab';
+import { AlertTitle, Alert } from '@material-ui/lab';
 
 export type Severity = 'success' | 'info' | 'warning' | 'error';
 
-const useStyles = makeStyles<Theme, { severity: Severity }>(() => ({
+interface IProps {
+  severity: Severity;
+  message: string | JSX.Element;
+  title?: string;
+  actions?: JSX.Element;
+  link?: string;
+  linkText?: string;
+  onClose?: () => void;
+}
+
+const useStyles = makeStyles<Theme, IProps>(() => ({
   alert: {
     backgroundColor: ({ severity }) => alertColors[severity],
     top: 0,
@@ -22,11 +31,12 @@ const useStyles = makeStyles<Theme, { severity: Severity }>(() => ({
     // alignItems: 'center',
   },
   message: {
-    padding: '8px 0',
+    padding: ({ actions }) => (actions ? '8px 0' : 0),
   },
   icon: {
     marginRight: 10,
-    paddingTop: 4,
+    padding: 0,
+    paddingTop: ({ actions }) => (actions ? 4 : undefined),
   },
   title: {
     marginBottom: 8,
@@ -44,18 +54,9 @@ const iconMapping = {
   info: <InfoRoundedIcon style={{ color: '#2C5DE5' }} />,
 };
 
-export const RAlert = ({
-  severity,
-  message,
-  title,
-  actions,
-}: {
-  severity: Severity;
-  message: string | JSX.Element;
-  title?: string;
-  actions?: JSX.Element;
-}) => {
-  const classes = useStyles({ severity });
+export const RAlert = (props: IProps) => {
+  const { severity, message, title, actions, link, linkText, onClose } = props;
+  const classes = useStyles(props);
   const [open, setOpen] = useState(true);
   if (!open) return null;
   return (
@@ -72,6 +73,7 @@ export const RAlert = ({
         }}
         onClose={() => {
           setOpen(false);
+          if (onClose) onClose();
         }}
       >
         <Box color="text.primary">
@@ -80,7 +82,16 @@ export const RAlert = ({
               <Typography variant="h5">{title}</Typography>
             </AlertTitle>
           )}
-          <Typography variant="body2">{message}</Typography>
+          <Typography component="span" variant="body2">
+            {message}
+          </Typography>
+          {linkText && (
+            <Link style={{ marginLeft: 8 }} href={link} target="_blank">
+              <Typography component="span" variant="h5">
+                {linkText}
+              </Typography>
+            </Link>
+          )}
         </Box>
       </Alert>
       {actions && (

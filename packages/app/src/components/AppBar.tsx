@@ -131,10 +131,13 @@ export const RequestAppBar = ({
   }, [pathname, account]);
 
   useEffect(() => {
-    if (!loading && !account) {
+    if (!loading && !account && !connectModalOpen) {
       setConnectModalOpen(true);
     }
-  }, [account, loading]);
+    if (!loading && account && connectModalOpen) {
+      setConnectModalOpen(false);
+    }
+  }, [account, loading, connectModalOpen]);
 
   const Links = ({ className }: { className: string }) => (
     <>

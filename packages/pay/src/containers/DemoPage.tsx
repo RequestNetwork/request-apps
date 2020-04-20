@@ -510,7 +510,7 @@ export default () => {
             request,
             loading: !request,
             setPending: () => {},
-            update: () => {},
+            update: () => Promise.resolve(),
           }}
         >
           <web3context.Provider

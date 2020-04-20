@@ -22,7 +22,7 @@ interface IContext {
    * Pending means the payment is being processed and takes a long time.
    */
   setPending: (val: boolean) => void;
-  update: () => void;
+  update: () => Promise<void>;
 }
 
 /**
@@ -73,7 +73,6 @@ export const RequestProvider: React.FC<{ chainId?: string | number }> = ({
   const counterCurrency = "USD";
   const [counterValue, setCounterValue] = useState<string>("");
   const [pending, setPending] = useState(false);
-  const [forceUpdate, setForceUpdate] = useState(false);
 
   // gets counter currency rate
   const rate = useRate(parsedRequest?.currency, counterCurrency);
@@ -83,25 +82,31 @@ export const RequestProvider: React.FC<{ chainId?: string | number }> = ({
     setParsedRequest(undefined);
   }, [chainId]);
 
+  const fetchRequest = async (
+    id: string | undefined,
+    chainId: string | number | undefined,
+    pending: boolean
+  ) => {
+    if (!id) {
+      return;
+    }
+    const result = await loadRequest(id, chainId);
+    if (result) {
+      const parseResult = await parseRequest(
+        result.request.requestId,
+        result.request.getData(),
+        result.network,
+        pending
+      );
+      setParsedRequest(parseResult);
+    }
+    setLoading(false);
+  };
+
   // load request and handle pending state change.
   useEffect(() => {
-    if (id) {
-      loadRequest(id, chainId).then(result => {
-        if (result) {
-          parseRequest(
-            result.request.requestId,
-            result.request.getData(),
-            result.network,
-            pending
-          )
-            .then(setParsedRequest)
-            .then(() => setLoading(false));
-        } else {
-          setLoading(false);
-        }
-      });
-    }
-  }, [id, pending, forceUpdate, chainId]);
+    fetchRequest(id, chainId, pending);
+  }, [id, pending, chainId]);
 
   // handle rate conversion
   useEffect(() => {
@@ -120,7 +125,7 @@ export const RequestProvider: React.FC<{ chainId?: string | number }> = ({
         counterCurrency,
         counterValue,
         setPending,
-        update: () => setForceUpdate(!forceUpdate),
+        update: () => fetchRequest(id, chainId, pending),
       }}
     >
       {children}

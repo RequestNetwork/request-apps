@@ -108,7 +108,9 @@ export const PaymentProvider: React.FC = ({ children }) => {
   const [gasPrice, setGasPrice] = useState<number>(6);
   const [autorefresh, setAutorefresh] = useState(false);
   const [txHash, setTxHash] = useState<string>();
-
+  const [updated, setUpdated] = useState(false);
+  const [errorsChecked, setErrorsChecked] = useState(false);
+  const [active, setActive] = useState(false);
   const { account, library } = useWeb3React<Web3Provider>();
   const { request, setPending, update } = useRequest();
 
@@ -194,13 +196,17 @@ export const PaymentProvider: React.FC = ({ children }) => {
 
   // Process paying a request or approving an erc20 allowance
   useEffect(() => {
-    if (!request || !account || !library) return;
+    if (!request || !account || !library || !updated || !errorsChecked) return;
+    if (broadcasting) return;
+    if (active) return;
+    setActive(true);
     if (paying && request.status === "open") {
       payRequest(request.raw, library, undefined, {
         gasPrice: ethers.utils.parseUnits(gasPrice.toString(), "gwei"),
       })
         .then(txCallback)
-        .catch(() => setPaying(false));
+        .catch(() => setPaying(false))
+        .finally(() => setActive(false));
     }
     if (approving) {
       approveErc20(request.raw, library, {
@@ -213,7 +219,8 @@ export const PaymentProvider: React.FC = ({ children }) => {
           setBroadcasting(false);
         })
         .then(() => setError(undefined))
-        .finally(() => setApproving(false));
+        .finally(() => setApproving(false))
+        .finally(() => setActive(false));
     }
   }, [
     approving,
@@ -224,7 +231,21 @@ export const PaymentProvider: React.FC = ({ children }) => {
     txCallback,
     setPending,
     gasPrice,
+    broadcasting,
+    updated,
+    errorsChecked,
+    active,
   ]);
+
+  useEffect(() => {
+    if (paying || approving) {
+      setUpdated(false);
+      setErrorsChecked(false);
+      update().then(() => {
+        setUpdated(true);
+      });
+    }
+  }, [paying, approving]);
 
   // Run checks and show error messages if something is wrong.
   useEffect(() => {
@@ -241,6 +262,7 @@ export const PaymentProvider: React.FC = ({ children }) => {
       runChecks(request.raw, account, library).then(err => {
         setError(err);
         setReady(true);
+        setErrorsChecked(true);
       });
     }
   }, [request, approving, paying, account, library]);

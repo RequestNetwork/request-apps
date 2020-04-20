@@ -100,7 +100,7 @@ export const RequestPage = () => {
         throw e;
       }
     }
-    update();
+    await update();
   };
 
   if (loading) {

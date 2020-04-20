@@ -1,5 +1,7 @@
 export * from './colors';
 
+export * from './Analytics';
+
 export * from './RAlert';
 export * from './RButton';
 export * from './RContainer';

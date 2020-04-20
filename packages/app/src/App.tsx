@@ -1,7 +1,7 @@
 import { Web3Provider } from "ethers/providers";
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import { ErrorBoundary, theme, RAlert, useMobile } from "request-ui";
+import { ErrorBoundary, theme, RAlert, useMobile, Analytics } from "request-ui";
 
 import {
   CssBaseline,
@@ -84,10 +84,12 @@ const App: React.FC = () => {
         )}
         <div className={classes.paper}>
           <Switch>
-            <Route path="/" exact component={CreatePage} />
-            <Route path="/dashboard" component={DashboardPage} />
-            <Route path="/:id([0-9a-fA-F]+)" component={RequestPage} />
-            <Route path="*" component={NotFoundPage} />
+            <Analytics trackingId="UA-105153327-15">
+              <Route path="/" exact component={CreatePage} />
+              <Route path="/dashboard" component={DashboardPage} />
+              <Route path="/:id([0-9a-fA-F]+)" component={RequestPage} />
+              <Route path="*" component={NotFoundPage} />
+            </Analytics>
           </Switch>
         </div>
       </ThemeProvider>

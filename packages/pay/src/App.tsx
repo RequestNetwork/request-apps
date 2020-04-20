@@ -1,6 +1,6 @@
 import React from "react";
-import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
-import { ErrorBoundary, theme } from "request-ui";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { ErrorBoundary, theme, Analytics } from "request-ui";
 
 import { CssBaseline, makeStyles, ThemeProvider } from "@material-ui/core";
 
@@ -35,25 +35,28 @@ const App: React.FC = () => {
             component={ErrorPage}
           >
             <Switch>
-              {/* There is no homepage. In Production, redirects to create.request.network. */}
-              {window.location.hostname !== "localhost" && (
+              <Analytics trackingId="UA-105153327-16">
+                {/* There is no homepage. In Production, redirects to create.request.network. */}
+                {window.location.hostname !== "localhost" && (
+                  <Route
+                    path="/"
+                    exact
+                    component={() => {
+                      window.location.href = "https://create.request.network";
+                      return null;
+                    }}
+                  />
+                )}
+                {/* Demo page, for tests only */}
+                <Route path="/demo" component={DemoPage} />
+                {/* Main Payment page */}
+                <Route path="/:id([0-9a-fA-F]+)" component={PaymentPage} />
                 <Route
-                  path="/"
-                  exact
-                  component={() => {
-                    window.location.href = "https://create.request.network";
-                    return null;
-                  }}
+                  path="/pdf/:id([0-9a-fA-F]+)"
+                  component={ReceiptPreview}
                 />
-              )}
-              {/* Old URL format */}
-              <Redirect from="/pay/:id" to="/:id" />
-              {/* Demo page, for tests only */}
-              <Route path="/demo" component={DemoPage} />
-              {/* Main Payment page */}
-              <Route path="/:id([0-9a-fA-F]+)" component={PaymentPage} />
-              <Route path="/pdf/:id([0-9a-fA-F]+)" component={ReceiptPreview} />
-              <Route path="*" component={NotFoundPage} />
+                <Route path="*" component={NotFoundPage} />
+              </Analytics>
             </Switch>
           </ErrorBoundary>
         </div>

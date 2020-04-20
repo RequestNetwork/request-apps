@@ -83,14 +83,14 @@ const App: React.FC = () => {
           <RAlert severity="error" message="Network not supported" />
         )}
         <div className={classes.paper}>
-          <Switch>
-            <Analytics trackingId="UA-105153327-15">
+          <Analytics trackingId="UA-105153327-15">
+            <Switch>
               <Route path="/" exact component={CreatePage} />
               <Route path="/dashboard" component={DashboardPage} />
               <Route path="/:id([0-9a-fA-F]+)" component={RequestPage} />
               <Route path="*" component={NotFoundPage} />
-            </Analytics>
-          </Switch>
+            </Switch>
+          </Analytics>
         </div>
       </ThemeProvider>
     </BrowserRouter>

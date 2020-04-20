@@ -34,8 +34,8 @@ const App: React.FC = () => {
             service="RequestPayments"
             component={ErrorPage}
           >
-            <Switch>
-              <Analytics trackingId="UA-105153327-16">
+            <Analytics trackingId="UA-105153327-16">
+              <Switch>
                 {/* There is no homepage. In Production, redirects to create.request.network. */}
                 {window.location.hostname !== "localhost" && (
                   <Route
@@ -56,8 +56,8 @@ const App: React.FC = () => {
                   component={ReceiptPreview}
                 />
                 <Route path="*" component={NotFoundPage} />
-              </Analytics>
-            </Switch>
+              </Switch>
+            </Analytics>
           </ErrorBoundary>
         </div>
       </ThemeProvider>

@@ -100,12 +100,11 @@ export const RequestProvider: React.FC<{ chainId?: string | number }> = ({
       );
       setParsedRequest(parseResult);
     }
-    setLoading(false);
   };
 
   // load request and handle pending state change.
   useEffect(() => {
-    fetchRequest(id, chainId, pending);
+    fetchRequest(id, chainId, pending).finally(() => setLoading(false));
   }, [id, pending, chainId]);
 
   // handle rate conversion

@@ -43,17 +43,22 @@ export const ConnectorProvider: React.FC = ({ children }) => {
   //  const [walletConnectUrl, setWalletConnectUrl] = useState("");
   const [ready, setReady] = useState(false);
 
-  const { request } = useRequest();
+  const { request, loading } = useRequest();
   const { activate, deactivate, active, error } = useWeb3React();
 
   const prevActive = usePrevious(active);
 
   // load available connectors for request
   useEffect(() => {
+    if (loading) {
+      return;
+    }
     if (request) {
       setConnectors(getConnectors(request));
+    } else {
+      setConnectors({});
     }
-  }, [request]);
+  }, [request, loading]);
 
   // handle errors and connector deactivation
   useEffect(() => {

@@ -79,6 +79,9 @@ const useStyles = makeStyles(theme => ({
     borderTop: '1px solid',
     borderColor: colors.border,
   },
+  reason: {
+    wordBreak: 'break-word',
+  },
 }));
 
 interface IProps {
@@ -176,7 +179,9 @@ export const RequestView = ({
         <Box className={classes.footer} color="text.secondary">
           <CommentIcon />
           <Spacer />
-          <Typography variant="caption">{reason}</Typography>
+          <Typography variant="caption" className={classes.reason}>
+            {reason}
+          </Typography>
         </Box>
       )}
     </Box>

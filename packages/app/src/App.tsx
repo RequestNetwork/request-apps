@@ -2,6 +2,7 @@ import { Web3Provider } from "ethers/providers";
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { ErrorBoundary, theme, RAlert, useMobile, Analytics } from "request-ui";
+import Intercom from "react-intercom";
 
 import {
   CssBaseline,
@@ -46,6 +47,11 @@ const App: React.FC = () => {
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
+        <Intercom
+          appID="mmdbekc3"
+          custom_launcher_selector="#intercom-trigger"
+          hide_default_launcher={isMobile}
+        />
         <CssBaseline />
         <RequestAppBar
           network={chainId}

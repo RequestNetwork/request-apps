@@ -24,6 +24,7 @@
     "react": "^16.13.0",
     "react-copy-to-clipboard": "^5.0.1",
     "react-dom": "^16.13.0",
+    "react-intercom": "^1.0.15",
     "react-scripts": "3.4.0",
     "request-ui": "0.1.0",
     "typescript": "~3.7.2",

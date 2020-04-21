@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { RLogo } from "request-ui";
+import { Link, Hidden } from "@material-ui/core";
 
 import {
   AppBar,
@@ -156,6 +157,11 @@ export const RequestAppBar = ({
       >
         <Typography variant="h4">Create a request</Typography>
       </NavLink>
+      <Hidden smUp>
+        <Link id="intercom-trigger">
+          <Typography variant="h4">Get Help</Typography>
+        </Link>
+      </Hidden>
     </>
   );
 

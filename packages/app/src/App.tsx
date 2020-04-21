@@ -21,6 +21,7 @@ import { useEagerConnect } from "./hooks/useEagerConnect";
 import { useInactiveListener } from "./hooks/useInactiveListnerer";
 import { useConnectedUser, UserProvider } from "./contexts/UserContext";
 import { injected } from "./connectors";
+import { Announcement } from "./components/Announcement";
 
 const useStyles = makeStyles(() => ({
   paper: {
@@ -52,6 +53,13 @@ const App: React.FC = () => {
           account={name || account}
           connect={() => activate(injected)}
         />
+        <Announcement
+          id="1million"
+          message="🎉 $1'000'000 transacted through the Request network"
+          linkUrl="https://request.network/en/2020/04/22/milestone-reached-launching-request-create-and-pay"
+          linkText="Read more on our blog"
+        />
+
         {web3detected && isMetaMask && isMobile && (
           <RAlert
             severity="warning"

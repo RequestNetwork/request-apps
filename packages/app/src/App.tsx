@@ -61,9 +61,9 @@ const App: React.FC = () => {
         />
         <Announcement
           id="1million"
-          message="🎉 $1'000'000 transacted through the Request network"
+          message="🎉 $1,000,000 has been transacted through the Request network."
           link="https://request.network/en/2020/04/22/milestone-reached-launching-request-create-and-pay"
-          linkText="Read more on our blog"
+          linkText="Read more on our blog."
         />
 
         {web3detected && isMetaMask && isMobile && (

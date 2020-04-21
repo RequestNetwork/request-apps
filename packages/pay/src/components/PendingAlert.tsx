@@ -28,7 +28,7 @@ export default ({
       <RAlert
         severity="info"
         title="Why is this pending?"
-        message="Payment is processing but taking longer than expected. You can check estimated time of payment on Etherscan"
+        message="The payment is processing but taking longer than expected. You can check the estimated time remaining on Etherscan."
         actions={
           <Link
             href={`${getEtherscanUrl(request)}/tx/${txHash}`}

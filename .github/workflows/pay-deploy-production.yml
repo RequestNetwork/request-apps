@@ -22,6 +22,7 @@ jobs:
           yarn workspace pay build
         env:
           CI: false
+          PUBLIC_URL: pay.request.network
       - uses: benjlevesque/s3-sync-action@master
         env:
           CI: false

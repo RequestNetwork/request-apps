@@ -56,7 +56,7 @@ const App: React.FC = () => {
         <Announcement
           id="1million"
           message="🎉 $1'000'000 transacted through the Request network"
-          linkUrl="https://request.network/en/2020/04/22/milestone-reached-launching-request-create-and-pay"
+          link="https://request.network/en/2020/04/22/milestone-reached-launching-request-create-and-pay"
           linkText="Read more on our blog"
         />
 

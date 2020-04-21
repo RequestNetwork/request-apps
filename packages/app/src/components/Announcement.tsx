@@ -8,7 +8,7 @@ export const Announcement = ({
   id: string;
   message: string;
   linkText?: string;
-  linkUrl?: string;
+  link?: string;
 }) => {
   const [open, setOpen] = useState(false);
 

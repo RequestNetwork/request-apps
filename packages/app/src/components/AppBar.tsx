@@ -132,6 +132,9 @@ export const RequestAppBar = ({
   }, [pathname, account]);
 
   useEffect(() => {
+    if (!window.ethereum) {
+      return;
+    }
     if (!loading && !account) {
       setConnectModalOpen(true);
     }

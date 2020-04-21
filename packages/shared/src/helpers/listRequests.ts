@@ -20,11 +20,16 @@ export const listRequests = async (
     },
   });
 
-  const requests = await requestNetwork.fromIdentity({
-    type: IdentityTypes.TYPE.ETHEREUM_ADDRESS,
-
-    value: account,
-  });
+  const requests = await requestNetwork.fromIdentity(
+    {
+      type: IdentityTypes.TYPE.ETHEREUM_ADDRESS,
+      value: account,
+    },
+    undefined,
+    {
+      disablePaymentDetection: true,
+    }
+  );
 
   const list = [];
   for (const request of requests) {

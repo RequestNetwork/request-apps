@@ -26,7 +26,7 @@ jobs:
           yarn workspace pay build
         env:
           CI: false
-          PUBLIC_URL: baguette-pay.request.network
+          PUBLIC_URL: https://baguette-pay.request.network
       - uses: benjlevesque/s3-sync-action@master
         env:
           CI: false

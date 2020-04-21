@@ -26,7 +26,7 @@ jobs:
           yarn workspace app build
         env:
           CI: false
-          PUBLIC_URL: baguette-v2.request.network
+          PUBLIC_URL: https://baguette-v2.request.network
       - uses: benjlevesque/s3-sync-action@master
         env:
           CI: false

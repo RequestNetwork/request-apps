@@ -100,11 +100,13 @@ export const RequestAppBar = ({
   network,
   connect,
   loading,
+  hasError,
 }: {
   account?: string | null;
   network?: number;
   connect: () => Promise<void>;
   loading: boolean;
+  hasError?: boolean;
 }) => {
   const classes = useStyles();
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -135,11 +137,8 @@ export const RequestAppBar = ({
     if (!window.ethereum) {
       return;
     }
-    if (!loading && !account) {
-      setConnectModalOpen(true);
-    }
-    if (!loading && account) {
-      setConnectModalOpen(false);
+    if (!loading) {
+      setConnectModalOpen(!hasError && !account);
     }
   }, [account, loading]);
 
@@ -198,9 +197,19 @@ export const RequestAppBar = ({
                 boxSizing="border-box"
                 border="1px solid #E4E4E4"
               >
-                <Skeleton animation="wave" variant="circle" width={20} height={20} />
+                <Skeleton
+                  animation="wave"
+                  variant="circle"
+                  width={20}
+                  height={20}
+                />
                 <Box width={8} />
-                <Skeleton animation="wave" variant="text" width={250} height={32} />
+                <Skeleton
+                  animation="wave"
+                  variant="text"
+                  width={250}
+                  height={32}
+                />
               </Box>
             ) : account ? (
               <UserInfo

@@ -29,14 +29,17 @@ const isAuthorized = async (): Promise<boolean> => {
 };
 
 export function useEagerConnect() {
-  const { activate, active } = useWeb3React();
+  const { activate, active, setError } = useWeb3React();
 
   const [tried, setTried] = useState(false);
 
   useEffect(() => {
     isAuthorized().then(authorized => {
       if (authorized) {
-        activate(injected, undefined, true).catch(() => {
+        activate(injected, undefined, true).catch(e => {
+          if (e.name === "UnsupportedChainIdError") {
+            setError(e);
+          }
           setTried(true);
         });
       } else {

@@ -58,6 +58,7 @@ const App: React.FC = () => {
           loading={loading}
           account={name || account}
           connect={() => activate(injected)}
+          hasError={!!error}
         />
         <Announcement
           id="1million"

@@ -26,7 +26,7 @@ export default () => {
     try {
       const request = await createRequest(
         {
-          amount: amountToString(values.amount!, values.currency!),
+          amount: await amountToString(values.amount!, values.currency!),
           contentData: {
             reason: values.reason,
             builderId: "request-team",

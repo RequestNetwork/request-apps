@@ -1,9 +1,10 @@
 import { ethers } from "ethers";
 import { formatUnits, bigNumberify } from "ethers/utils";
 
-import { Utils, Types } from "@requestnetwork/request-client.js";
+import { Types } from "@requestnetwork/request-client.js";
 import { IParsedRequest } from "../";
 import { getEnsName } from "./getEnsName";
+import { getDecimalsForCurrency, getCurrencySymbol } from "./currency";
 
 /** Transforms a request to a more friendly format */
 export const parseRequest = async (
@@ -12,12 +13,8 @@ export const parseRequest = async (
   network: string,
   pending: boolean
 ): Promise<IParsedRequest> => {
-  const amount = Number(
-    formatUnits(
-      data.expectedAmount,
-      Utils.getDecimalsForCurrency(data.currencyInfo)
-    )
-  );
+  const decimals = await getDecimalsForCurrency(data.currencyInfo);
+  const amount = Number(formatUnits(data.expectedAmount, decimals));
 
   const status =
     data.state === Types.RequestLogic.STATE.CANCELED
@@ -66,7 +63,10 @@ export const parseRequest = async (
   return {
     requestId,
     amount,
-    currency: data.currency.split("-")[0],
+    currency:
+      data.currency && data.currency !== "unknown"
+        ? data.currency.split("-")[0]
+        : await getCurrencySymbol(data.currencyInfo),
     status,
     createdDate: new Date(data.timestamp * 1000),
     paidDate: paidTimestamp ? new Date(paidTimestamp * 1000) : undefined,

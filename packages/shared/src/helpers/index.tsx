@@ -1,5 +1,5 @@
 export * from "./createRequest";
-export * from "./amountToString";
+export * from "./currency";
 export * from "./parseRequest";
 export * from "./listRequests";
 export * from "./getEnsName";

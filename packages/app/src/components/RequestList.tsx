@@ -256,22 +256,22 @@ const SkeletonRow = () => {
     <Box className={classes.row}>
       <Box className={classes.rowInner}>
         <Box flex={1 / 10}>
-          <Skeleton width={100} />
+          <Skeleton animation="wave" width={100} />
         </Box>
         <Box flex={2 / 10} className={classes.payee}>
-          <Skeleton width={200} />
+          <Skeleton animation="wave" width={200} />
         </Box>
         <Box flex={2 / 10} className={classes.payer}>
-          <Skeleton width={200} />
+          <Skeleton animation="wave" width={200} />
         </Box>
         <Box flex={1 / 10}>
-          <Skeleton width={100} className={classes.amount} />
+          <Skeleton animation="wave" width={100} className={classes.amount} />
         </Box>
         <Box flex={2 / 10} className={classes.status}>
-          <Skeleton variant="rect" height={32} width={100} />
+          <Skeleton animation="wave" variant="rect" height={32} width={100} />
         </Box>
         <Box flex={1 / 10} className={classes.viewButton}>
-          <Skeleton width={100} />
+          <Skeleton animation="wave" width={100} />
         </Box>
       </Box>
     </Box>

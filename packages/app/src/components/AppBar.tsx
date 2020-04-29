@@ -198,9 +198,9 @@ export const RequestAppBar = ({
                 boxSizing="border-box"
                 border="1px solid #E4E4E4"
               >
-                <Skeleton variant="circle" width={20} height={20} />
+                <Skeleton animation="wave" variant="circle" width={20} height={20} />
                 <Box width={8} />
-                <Skeleton variant="text" width={250} height={32} />
+                <Skeleton animation="wave" variant="text" width={250} height={32} />
               </Box>
             ) : account ? (
               <UserInfo

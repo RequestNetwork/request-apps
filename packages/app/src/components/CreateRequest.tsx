@@ -99,9 +99,14 @@ const Header = ({
         <Box color="#656565" display="flex" alignItems="center">
           {loading ? (
             <>
-              <Skeleton variant="circle" height={18} width={18} />
+              <Skeleton
+                animation="wave"
+                variant="circle"
+                height={18}
+                width={18}
+              />
               <Box width={8} />
-              <Skeleton variant="text" width={200} />
+              <Skeleton animation="wave" variant="text" width={200} />
             </>
           ) : (
             <>

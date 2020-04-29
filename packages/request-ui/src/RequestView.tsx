@@ -105,15 +105,15 @@ export const RequestSkeleton = () => {
       <Box className={classes.header} color="">
         <Typography variant="h5">Request for payment from</Typography>
         <Spacer />
-        <Skeleton variant="text" width={400} />
+        <Skeleton animation="wave" variant="text" width={400} />
       </Box>
       <Box className={classes.body}>
-        <Skeleton variant="text" width={200} />
+        <Skeleton animation="wave" variant="text" width={200} />
         <Spacer size={4} />
-        <Skeleton variant="rect" width={75} height={32} />
+        <Skeleton animation="wave" variant="rect" width={75} height={32} />
         <Spacer size={3} />
-        <Skeleton variant="text" width={100} height={36} />
-        <Skeleton variant="text" width={70} height={20} />
+        <Skeleton animation="wave" variant="text" width={100} height={36} />
+        <Skeleton animation="wave" variant="text" width={70} height={20} />
       </Box>
 
       <Box className={classes.footer} color="text.secondary">

@@ -221,7 +221,7 @@ const Body = () => {
         <Box flex={0.8}>
           <Amount className={classes.field} />
         </Box>
-        <Box flex={0.2} marginTop="-4px">
+        <Box flex={0.2}>
           <Currency className={classes.field} />
         </Box>
       </Box>

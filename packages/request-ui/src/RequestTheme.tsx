@@ -161,6 +161,11 @@ export const theme = createMuiTheme({
         textTransform: 'initial',
       },
     },
+    MuiSelect: {
+      selectMenu: {
+        height: '1.1875em',
+      },
+    },
     MuiInput: {
       root: {
         fontSize: 14,

@@ -116,7 +116,7 @@ export const theme = createMuiTheme({
         backgroundColor: '#fff',
         border: '1px solid #E4E4E4',
         boxSizing: 'border-box',
-        borderRadius: 0,
+        borderRadius: 4,
         [defaultTheme.breakpoints.up('sm')]: {
           borderRadius: 4,
         },

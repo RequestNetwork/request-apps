@@ -5,7 +5,7 @@ import { usePayment, RequiresApprovalError } from "../contexts/PaymentContext";
 import { useWeb3React } from "@web3-react/core";
 
 import { useConnector } from "../contexts/ConnectorContext";
-import { Typography, Box } from "@material-ui/core";
+import { Typography, Box, makeStyles } from "@material-ui/core";
 import { Types } from "@requestnetwork/request-client.js";
 import { getBtcPaymentUrl } from "@requestnetwork/payment-processor";
 import {
@@ -21,6 +21,7 @@ import RequestIconDark from "../assets/img/Request_icon_dark.svg";
 import BtcIcon from "../assets/img/btc.png";
 import MetamaskIcon from "../assets/img/metamask.png";
 import CoinbaseIcon from "../assets/img/coinbase.png";
+import TrustIcon from "../assets/img/trust.png";
 import { useRequest } from "request-shared";
 
 import AccountBalanceWallet from "@material-ui/icons/AccountBalanceWalletOutlined";
@@ -51,9 +52,25 @@ const PayAction = ({
     </RButton>
   );
 };
+const useApproveStyles = makeStyles(theme => ({
+  square: {
+    borderRadius: 0,
+    [theme.breakpoints.up("sm")]: {
+      borderRadius: 4,
+    },
+  },
+}));
 const ApproveAction = ({ approve }: { approve: () => void }) => {
+  const classes = useApproveStyles();
   return (
-    <RButton sticky size="medium" onClick={approve} color="secondary" fullWidth>
+    <RButton
+      sticky
+      size="medium"
+      onClick={approve}
+      color="secondary"
+      fullWidth
+      className={classes.square}
+    >
       <Typography variant="caption">Approve</Typography>
     </RButton>
   );
@@ -65,47 +82,66 @@ const ConnectAction = ({
   installMetamask,
 }: {
   activate: () => void;
-  mobileRedirect: () => Promise<any>;
+  mobileRedirect: (name: string) => Promise<any>;
   installMetamask: () => void;
 }) => {
   const web3 = "ethereum" in window;
   const [active, setActive] = React.useState(false);
 
-  const mobileRedirectWrapper = async () => {
+  const mobileRedirectWrapper = async (name: string) => {
     setActive(true);
-    await mobileRedirect();
+    await mobileRedirect(name);
     setActive(false);
   };
   const mobile = useMobile();
-  return active ? (
-    <RSpinner />
-  ) : (
+  if (active) return <RSpinner />;
+
+  if (web3)
+    return (
+      <RButton
+        startIcon={<AccountBalanceWallet />}
+        color="default"
+        onClick={activate}
+      >
+        <Box color="text.primary">
+          <Typography variant="h4">Connect your wallet</Typography>
+        </Box>
+      </RButton>
+    );
+
+  if (mobile)
+    return (
+      <>
+        <RButton
+          startIcon={<img src={CoinbaseIcon} alt="" width={32} height={32} />}
+          color="default"
+          onClick={() => mobileRedirectWrapper("coinbase")}
+        >
+          <Box color="text.primary">
+            <Typography variant="h4">Open with Coinbase Wallet</Typography>
+          </Box>
+        </RButton>
+        <Spacer size={3} />
+        <RButton
+          startIcon={<img src={TrustIcon} alt="" width={32} height={32} />}
+          color="default"
+          onClick={() => mobileRedirectWrapper("trust")}
+        >
+          <Box color="text.primary">
+            <Typography variant="h4">Open with Trust Wallet</Typography>
+          </Box>
+        </RButton>
+      </>
+    );
+
+  return (
     <RButton
-      startIcon={
-        web3 ? (
-          <AccountBalanceWallet />
-        ) : (
-          <img
-            src={mobile ? CoinbaseIcon : MetamaskIcon}
-            alt=""
-            width={32}
-            height={32}
-          />
-        )
-      }
+      startIcon={<img src={MetamaskIcon} alt="" width={32} height={32} />}
       color="default"
-      onClick={
-        web3 ? activate : mobile ? mobileRedirectWrapper : installMetamask
-      }
+      onClick={installMetamask}
     >
       <Box color="text.primary">
-        <Typography variant="h4">
-          {web3
-            ? "Connect your wallet"
-            : mobile
-            ? "Open with Coinbase"
-            : "Install Metamask"}
-        </Typography>
+        <Typography variant="h4">Install Metamask</Typography>
       </Box>
     </RButton>
   );
@@ -195,9 +231,17 @@ export default () => {
     return (
       <ConnectAction
         activate={() => activateConnector("injected")}
-        mobileRedirect={() =>
-          coinbaseShare(request.requestId).then(url => window.open(url))
-        }
+        mobileRedirect={async name => {
+          let url;
+          if (name === "coinbase") {
+            url = await coinbaseShare(request.requestId);
+          } else if (name === "trust") {
+            url = `https://link.trustwallet.com/open_url?url=${window.location.toString()}`;
+          } else {
+            throw new Error(`unsupported wallet ${name}`);
+          }
+          window.open(url);
+        }}
         installMetamask={() => window.open("http://metamask.io/")}
       />
     );

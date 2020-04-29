@@ -1,16 +1,7 @@
 import React from 'react';
 import { makeStyles, Box } from '@material-ui/core';
 
-const useStyles = makeStyles((theme) => ({
-  '@global': {
-    body: {
-      background: 'linear-gradient(-68deg,#FAFAFA 35%,#ffffff 0%)',
-      backgroundRepeat: 'no-repeat',
-      [theme.breakpoints.up('sm')]: {
-        background: '#FAFAFA',
-      },
-    },
-  },
+const useStyles = makeStyles(theme => ({
   container: {
     flex: 1,
     display: 'flex',
@@ -19,8 +10,11 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     padding: 0,
     width: '100%',
+    background: 'linear-gradient(-68deg,#FAFAFA 35%,#ffffff 0%)',
+    backgroundRepeat: 'no-repeat',
     [theme.breakpoints.up('sm')]: {
       width: 532,
+      background: '#FAFAFA',
     },
   },
 }));

@@ -1,7 +1,7 @@
 {
   "name": "request-shared",
   "version": "0.1.0",
-  "author": "Benjamin LEVESQUE",
+  "author": "Request",
   "license": "MIT",
   "private": true,
   "main": "dist/index.js",

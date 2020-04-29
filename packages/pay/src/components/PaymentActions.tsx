@@ -5,7 +5,7 @@ import { usePayment, RequiresApprovalError } from "../contexts/PaymentContext";
 import { useWeb3React } from "@web3-react/core";
 
 import { useConnector } from "../contexts/ConnectorContext";
-import { Typography, Box, makeStyles } from "@material-ui/core";
+import { Typography, Box, makeStyles, Link } from "@material-ui/core";
 import { Types } from "@requestnetwork/request-client.js";
 import { getBtcPaymentUrl } from "@requestnetwork/payment-processor";
 import {
@@ -211,11 +211,38 @@ export default () => {
 
   if (request.status === "paid") {
     return (
-      <ReceiptLink
-        request={request}
-        counterCurrency={counterCurrency}
-        counterValue={counterValue}
-      />
+      <>
+        <ReceiptLink
+          request={request}
+          counterCurrency={counterCurrency}
+          counterValue={counterValue}
+        />
+        <Spacer size={16} />
+        <Box
+          color="text.secondary"
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+          padding="0 11px"
+          textAlign="center"
+        >
+          <Typography variant="caption" style={{ fontStyle: "italic" }}>
+            Want to access your dashboard or request a payment?
+          </Typography>
+          <Spacer />
+          <Link
+            href="https://create.request.network"
+            target="_blank"
+            underline="always"
+            color="secondary"
+          >
+            <Typography component="span" variant="h5">
+              Click here
+            </Typography>
+          </Link>
+        </Box>
+      </>
     );
   }
 

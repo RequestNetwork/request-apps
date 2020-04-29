@@ -99,22 +99,22 @@ declare module 'stackdriver-errors-js' {
     /**
      * Service identifier.
      */
-    service?: string = 'web';
+    service?: string;
     /**
      * Set to false to stop reporting unhandled exceptions.
      */
-    reportUncaughtExceptions?: boolean = true;
+    reportUncaughtExceptions?: boolean;
     /**
      * Set to true to not report errors when calling report(), this can be used when developping locally.
      */
-    disabled?: boolean = false;
+    disabled?: boolean;
   }
 
   class ReportOptions {
     /**
      * Omit number of frames if creating stack.
      */
-    skipLocalFrames: number = 1;
+    skipLocalFrames: number;
   }
 
   /**
@@ -125,7 +125,7 @@ declare module 'stackdriver-errors-js' {
      * Initialize the StackdriverErrorReporter object.
      * @param  config - the init configuration.
      */
-    start(config: StackdriverErrorReporterOptions);
+    start(config: StackdriverErrorReporterOptions): void;
 
     /**
      * Report an error to the Stackdriver Error Reporting API

@@ -72,7 +72,7 @@ const App: React.FC = () => {
             message="It looks like you are using Metamask mobile. Please be aware this app might not work properly for now."
           />
         )}
-        {!web3detected && (
+        {!web3detected && !isMobile && (
           <RAlert
             severity="warning"
             message={
@@ -87,6 +87,27 @@ const App: React.FC = () => {
                   href="https://metamask.io/download.html"
                 >
                   install Metamask
+                </Link>
+                .
+              </>
+            }
+          />
+        )}
+        {!web3detected && isMobile && (
+          <RAlert
+            severity="warning"
+            message={
+              <>
+                You need to open this page on an Ethereum wallet.{" "}
+                <Link
+                  underline="always"
+                  style={{
+                    color: "#656565",
+                  }}
+                  target="_blank"
+                  href="https://go.cb-w.com/PIn9piAR45"
+                >
+                  Open with Coinbase Wallet
                 </Link>
                 .
               </>

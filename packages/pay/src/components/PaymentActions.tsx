@@ -228,7 +228,13 @@ export default () => {
           textAlign="center"
         >
           <Typography variant="caption" style={{ fontStyle: "italic" }}>
-            Want to access your dashboard or request a payment?
+            {/* 2 spans to force the line break after dashboard */}
+            <span style={{ display: "inline-block" }}>
+              Want to access your dashboard
+            </span>{" "}
+            <span style={{ display: "inline-block" }}>
+              or request a payment?
+            </span>
           </Typography>
           <Spacer />
           <Link

@@ -57,6 +57,9 @@ export class ErrorBoundary extends React.Component<IProps, IState> {
     if (window.location.hostname === 'localhost') {
       console.log(error);
     }
+    if (window.location.hostname.includes('ngrok')) {
+      alert(error);
+    }
     const providerName = getProviderName();
     if (providerName) {
       error.providerName = providerName;

@@ -277,6 +277,21 @@ export const schema = Yup.object().shape<IFormData>({
     }
   ),
   currency: Yup.mixed().required("Required"),
+  reason: Yup.string().test(
+    "is-valid-reason",
+    "Reason contains unsupported characters or symbols.",
+    val => {
+      return (
+        !val ||
+        val ===
+          encodeURIComponent(val)
+            .replace("%3A", ":")
+            .replace("%2F", "/")
+            .replace("%20", " ")
+            .replace("%40", "@")
+      );
+    }
+  ),
 });
 
 const useStyles = makeStyles(theme => ({

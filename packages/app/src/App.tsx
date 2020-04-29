@@ -99,7 +99,8 @@ const App: React.FC = () => {
             severity="warning"
             message={
               <>
-                You need to open this page on an Ethereum wallet.{" "}
+                To create a request, you need to use an Ethereum wallet. We
+                recommend{" "}
                 <Link
                   underline="always"
                   style={{
@@ -108,7 +109,7 @@ const App: React.FC = () => {
                   target="_blank"
                   href="https://go.cb-w.com/PIn9piAR45"
                 >
-                  Open with Coinbase Wallet
+                  Coinbase Wallet
                 </Link>
                 .
               </>

@@ -185,7 +185,7 @@ const coinbaseShare = async (requestId: string) => {
   return data || "https://go.cb-w.com/jHZvKzZ2H5";
 };
 
-export default () => {
+const PaymentActions = () => {
   const { request, counterValue, counterCurrency } = useRequest();
   const { active, error } = useWeb3React();
   const {
@@ -212,12 +212,6 @@ export default () => {
   if (request.status === "paid") {
     return (
       <>
-        <ReceiptLink
-          request={request}
-          counterCurrency={counterCurrency}
-          counterValue={counterValue}
-        />
-        <Spacer size={16} />
         <Box
           color="text.secondary"
           display="flex"
@@ -248,6 +242,12 @@ export default () => {
             </Typography>
           </Link>
         </Box>
+        <Spacer size={8} />
+        <ReceiptLink
+          request={request}
+          counterCurrency={counterCurrency}
+          counterValue={counterValue}
+        />
       </>
     );
   }
@@ -293,3 +293,5 @@ export default () => {
     />
   );
 };
+
+export default PaymentActions;

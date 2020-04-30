@@ -35,12 +35,6 @@ export const RFooter = () => {
           <Typography variant="caption">Request</Typography>
         </Link>
       </Box>
-      <Spacer />
-      <Box fontStyle="italic">
-        <Typography variant="caption">
-          Take control of your financial data
-        </Typography>
-      </Box>
       <Spacer size={15} xs={10} />
     </Box>
   );

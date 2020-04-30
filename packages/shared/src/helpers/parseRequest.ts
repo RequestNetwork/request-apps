@@ -7,12 +7,19 @@ import { getEnsName } from "./getEnsName";
 import { getDecimalsForCurrency, getCurrencySymbol } from "./currency";
 
 /** Transforms a request to a more friendly format */
-export const parseRequest = async (
-  requestId: string,
-  data: Types.IRequestData,
-  network: string,
-  pending: boolean
-): Promise<IParsedRequest> => {
+export const parseRequest = async ({
+  requestId,
+  data,
+  network,
+  pending,
+  disableEns,
+}: {
+  requestId: string;
+  data: Types.IRequestData;
+  network: string;
+  pending: boolean;
+  disableEns?: boolean;
+}): Promise<IParsedRequest> => {
   const decimals = await getDecimalsForCurrency(data.currencyInfo);
   const amount = Number(formatUnits(data.expectedAmount, decimals));
 
@@ -56,9 +63,12 @@ export const parseRequest = async (
       paymentFrom = tx.from;
     }
   }
-  // Try to get the payee ENS address
-  const payeeName = await getEnsName(data.payee?.value);
-  const payerName = await getEnsName(data.payer?.value);
+  let payeeName, payerName;
+  if (!disableEns) {
+    // Try to get the payee ENS address
+    payeeName = await getEnsName(data.payee?.value);
+    payerName = await getEnsName(data.payer?.value);
+  }
 
   return {
     requestId,

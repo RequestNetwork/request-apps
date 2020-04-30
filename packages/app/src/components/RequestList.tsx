@@ -63,7 +63,7 @@ const Address = ({
           <Box width={40}>{text}</Box>
         </Hidden>
       )}
-      <Tooltip title={address}>
+      <Tooltip title={address || ""}>
         <Typography variant={currentUser ? "h5" : "body2"}>
           {display || short(address)}
         </Typography>
@@ -219,10 +219,19 @@ const Row = React.memo(
             />
           </Box>
           <Box flex={2 / 10} className={classes.status}>
-            <RStatusBadge status={request.status} />
+            {request.loaded ? (
+              <RStatusBadge status={request.status} />
+            ) : (
+              <Skeleton
+                animation="wave"
+                variant="rect"
+                height={32}
+                width={100}
+              />
+            )}
           </Box>
           <Box flex={1 / 10} className={classes.viewButton}>
-            {request.status !== "open" || isPayee ? (
+            {request.status !== "open" || isPayee || !request.loaded ? (
               <Link
                 to={`/${request.requestId}`}
                 style={{ textDecoration: "none" }}

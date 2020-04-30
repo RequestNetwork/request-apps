@@ -92,12 +92,13 @@ export const RequestProvider: React.FC<{ chainId?: string | number }> = ({
     }
     const result = await loadRequest(id, chainId);
     if (result) {
-      const parseResult = await parseRequest(
-        result.request.requestId,
-        result.request.getData(),
-        result.network,
-        pending
-      );
+      const parseResult = await parseRequest({
+        requestId: result.request.requestId,
+        data: result.request.getData(),
+        network: result.network,
+        pending,
+      });
+      parseResult.loaded = true;
       setParsedRequest(parseResult);
     }
   };

@@ -32,19 +32,30 @@ export const RequestListProvider: React.FC = ({ children }) => {
   const [filteredRequests, setFilteredRequests] = useState<IParsedRequest[]>();
 
   useEffect(() => {
-    setFilteredRequests(undefined);
-    setTimeout(() => {
-      setFilteredRequests(applyFilter(requests, filter));
-    }, 100);
+    setFilteredRequests(applyFilter(requests, filter));
   }, [filter, requests]);
+
+  useEffect(() => {
+    setFilteredRequests(undefined);
+  }, [account, chainId]);
 
   useEffect(() => {
     let canceled = false;
     if (chainId && account) {
       setRequests(undefined);
-      listRequests(account, chainId).then(newRequests => {
+      listRequests(account, chainId).then(result => {
         if (!canceled) {
-          setRequests(newRequests);
+          setRequests(result.requests);
+          result.on("update", newRequest => {
+            setRequests(prevRequests =>
+              prevRequests?.map(request =>
+                request.requestId === newRequest.requestId
+                  ? newRequest
+                  : request
+              )
+            );
+          });
+          result.loadBalances();
         }
       });
     }

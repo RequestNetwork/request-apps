@@ -23,6 +23,7 @@ export interface IParsedRequest {
   payerName?: string;
   raw: ClientTypes.IRequestData;
   network: string;
+  loaded?: boolean;
 }
 
 export * from "./contexts/RequestContext";

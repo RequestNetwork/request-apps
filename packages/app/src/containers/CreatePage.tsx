@@ -1,7 +1,12 @@
 import { FormikHelpers } from "formik";
 import React, { useState } from "react";
 import { useHistory } from "react-router";
-import { amountToString, createRequest, isCancelError } from "request-shared";
+import {
+  amountToString,
+  createRequest,
+  isCancelError,
+  parseCurrency,
+} from "request-shared";
 import { useErrorReporter } from "request-ui";
 
 import { useWeb3React } from "@web3-react/core";
@@ -23,16 +28,19 @@ export default () => {
     if (!account || !chainId) {
       throw new Error("not connected");
     }
+
+    const currency = parseCurrency(values.currency!, chainId);
+
     try {
       const request = await createRequest(
         {
-          amount: await amountToString(values.amount!, values.currency!),
+          amount: await amountToString(values.amount!, currency),
           contentData: {
             reason: values.reason,
             builderId: "request-team",
             createdWith: window.location.hostname,
           },
-          currency: values.currency!,
+          currency,
           payer: values.payer,
           paymentAddress: account,
         },

@@ -1,4 +1,8 @@
-import { IdentityTypes, PaymentTypes } from "@requestnetwork/types";
+import {
+  IdentityTypes,
+  PaymentTypes,
+  RequestLogicTypes,
+} from "@requestnetwork/types";
 import { RequestNetwork, Request } from "@requestnetwork/request-client.js";
 import { Web3Provider } from "ethers/providers";
 import WalletAddressValidator from "wallet-address-validator";
@@ -10,7 +14,7 @@ import { CustomSignatureProvider } from "./CustomSignatureProvider";
 export interface ICreateRequestArgs {
   payer?: string;
   amount: string;
-  currency: string;
+  currency: RequestLogicTypes.ICurrency;
   paymentAddress?: string;
   contentData: any;
 }
@@ -43,23 +47,9 @@ export const createRequest = async (
   });
 
   const paymentNetworkType =
-    currency!.split("-")[0] === "ETH"
+    currency.type === RequestLogicTypes.CURRENCY.ETH
       ? PaymentTypes.PAYMENT_NETWORK_ID.ETH_INPUT_DATA
       : PaymentTypes.PAYMENT_NETWORK_ID.ERC20_PROXY_CONTRACT;
-
-  if (network === "rinkeby") {
-    switch (currency) {
-      case "FAU":
-        currency = "FAU-rinkeby";
-        break;
-      case "CTBK":
-        currency = "CTBK-rinkeby";
-        break;
-      case "ETH":
-        currency = "ETH-rinkeby";
-        break;
-    }
-  }
 
   if (payer) {
     if (isValidEns(payer)) {

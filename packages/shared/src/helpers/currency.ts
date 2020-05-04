@@ -3,6 +3,7 @@ import { Currency } from "@requestnetwork/request-client.js";
 import { parseUnits } from "ethers/utils";
 import { getDefaultProvider, Contract, Signer } from "ethers";
 import { Provider } from "ethers/providers";
+import { chainIdToName } from "./chainIdToName";
 
 abstract class ERC20Contract extends Contract {
   private static abi = [
@@ -55,14 +56,29 @@ export const getCurrencySymbol = async (
 
 export const amountToString = async (
   value: number,
-  currency: RequestLogicTypes.ICurrency | string
+  currency: RequestLogicTypes.ICurrency
 ): Promise<string> => {
-  if (typeof currency === "string") {
-    currency = Currency.stringToCurrency(currency);
-  }
-
   const base = await getDecimalsForCurrency(currency);
 
   const amount = parseUnits(value.toString(), base).toString();
   return amount;
+};
+
+export const parseCurrency = (
+  currency: string,
+  network: string | number
+): RequestLogicTypes.ICurrency => {
+  network = chainIdToName(network);
+
+  if (network === "rinkeby") {
+    return Currency.stringToCurrency(`${currency}-rinkeby`);
+  }
+  if (network === "mainnet" && currency === "BUSD") {
+    return {
+      type: RequestLogicTypes.CURRENCY.ERC20,
+      value: "0x4Fabb145d64652a948d72533023f6E7A623C7C53",
+      network: "mainnet",
+    };
+  }
+  return Currency.stringToCurrency(currency);
 };

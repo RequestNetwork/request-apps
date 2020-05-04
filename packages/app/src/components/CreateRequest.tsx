@@ -26,6 +26,12 @@ import {
 import Dot from "./Dot";
 import { DaiIcon } from "./currencies/DaiIcon";
 import { EthIcon } from "./currencies/EthIcon";
+import { UsdtIcon } from "./currencies/UsdtIcon";
+import { UsdcIcon } from "./currencies/UsdcIcon";
+import { TusdIcon } from "./currencies/TusdIcon";
+import { BusdIcon } from "./currencies/BusdIcon";
+import { PaxIcon } from "./currencies/PaxIcon";
+import { CtbkIcon } from "./currencies/CtbkIcon";
 
 export interface IFormData {
   amount?: number;
@@ -154,7 +160,32 @@ const Amount = ({ className }: { className?: string }) => {
   );
 };
 
-const Currency = ({ className }: { className?: string }) => {
+const getCurrencies = (network?: number): Record<string, React.FC> => {
+  if (network === 1) {
+    return {
+      DAI: DaiIcon,
+      ETH: EthIcon,
+      USDT: UsdtIcon,
+      USDC: UsdcIcon,
+      PAX: PaxIcon,
+      BUSD: BusdIcon,
+      TUSD: TusdIcon,
+    };
+  }
+  return {
+    FAU: DaiIcon,
+    ETH: EthIcon,
+    CTBK: CtbkIcon,
+  };
+};
+
+const Currency = ({
+  className,
+  currencies,
+}: {
+  className?: string;
+  currencies: Record<string, React.FC>;
+}) => {
   const [field, meta] = useField("currency");
 
   const CurrencyIcon = ({ text, icon: Icon }: any) => (
@@ -174,12 +205,11 @@ const Currency = ({ className }: { className?: string }) => {
       error={Boolean(meta.error && meta.touched)}
       helperText={Boolean(meta.error && meta.touched) ? meta.error : " "}
     >
-      <MenuItem value="DAI">
-        <CurrencyIcon text="DAI" icon={DaiIcon} />
-      </MenuItem>
-      <MenuItem value="ETH">
-        <CurrencyIcon text="ETH" icon={EthIcon} />
-      </MenuItem>
+      {Object.keys(currencies).map(currency => (
+        <MenuItem value={currency}>
+          <CurrencyIcon text={currency} icon={currencies[currency]} />
+        </MenuItem>
+      ))}
     </TextField>
   );
 };
@@ -218,7 +248,7 @@ const Reason = ({ className }: { className?: string }) => {
   );
 };
 
-const Body = () => {
+const Body = ({ currencies }: { currencies: Record<string, React.FC> }) => {
   const classes = useBodyStyles();
   return (
     <Box className={classes.container}>
@@ -227,7 +257,7 @@ const Body = () => {
           <Amount className={classes.field} />
         </Box>
         <Box flex={0.2}>
-          <Currency className={classes.field} />
+          <Currency className={classes.field} currencies={currencies} />
         </Box>
       </Box>
 
@@ -318,6 +348,7 @@ export const CreateRequestForm = ({
   loading,
 }: IProps) => {
   const classes = useStyles();
+  const currencies = getCurrencies(network);
   return (
     <RContainer>
       <Spacer size={15} xs={8} />
@@ -326,8 +357,9 @@ export const CreateRequestForm = ({
       <Formik<IFormData>
         validationSchema={schema}
         onSubmit={onSubmit}
+        enableReinitialize
         initialValues={{
-          currency: "DAI",
+          currency: !network || network === 1 ? "DAI" : "FAU",
           amount: "" as any,
           payer: "",
           reason: "",
@@ -336,7 +368,7 @@ export const CreateRequestForm = ({
         <>
           <Box className={classes.container}>
             <Header account={account} network={network} loading={loading} />
-            <Body />
+            <Body currencies={currencies} />
           </Box>
           {error && (
             <>

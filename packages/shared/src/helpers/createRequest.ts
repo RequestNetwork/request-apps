@@ -49,8 +49,11 @@ export const createRequest = async (
 
   if (network === "rinkeby") {
     switch (currency) {
-      case "DAI":
+      case "FAU":
         currency = "FAU-rinkeby";
+        break;
+      case "CTBK":
+        currency = "CTBK-rinkeby";
         break;
       case "ETH":
         currency = "ETH-rinkeby";

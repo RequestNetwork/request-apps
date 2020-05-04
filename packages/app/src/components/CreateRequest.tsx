@@ -94,7 +94,7 @@ const Header = ({
       >
         <Box textAlign="right" color="#656565">
           <Typography variant="body1">
-            <Moment format="MMM Do, YYYY">{Date.now()}</Moment>
+            <Moment format="ll">{Date.now()}</Moment>
           </Typography>
         </Box>
         <Box color={theme.palette.common.black}>

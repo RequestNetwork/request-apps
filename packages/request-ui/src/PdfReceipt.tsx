@@ -219,7 +219,7 @@ export const PdfReceipt = ({ request }: { request: IParsedRequest }) => {
           >
             <Text style={styles.headerBodyText}>
               Issued on{' '}
-              <Moment element={Text} format="MMMM Do, YYYY">
+              <Moment element={Text} format="ll">
                 {request.createdDate}
               </Moment>
             </Text>
@@ -233,7 +233,7 @@ export const PdfReceipt = ({ request }: { request: IParsedRequest }) => {
               ]}
             >
               Paid on{' '}
-              <Moment element={Text} format="MMMM Do, YYYY">
+              <Moment element={Text} format="ll">
                 {request.paidDate}
               </Moment>
             </Text>

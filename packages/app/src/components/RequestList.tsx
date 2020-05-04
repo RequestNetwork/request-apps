@@ -189,7 +189,7 @@ const Row = React.memo(
         <Box className={classes.rowInner}>
           <Box flex={1 / 10}>
             <Spacer size={0} xs={1} />
-            <Moment format="YYYY/MM/DD">{request.createdDate}</Moment>
+            <Moment format="ll">{request.createdDate}</Moment>
           </Box>
           <Box flex={2 / 10} className={classes.payee}>
             <Box display="flex">

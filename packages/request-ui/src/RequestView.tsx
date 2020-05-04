@@ -154,7 +154,7 @@ export const RequestView = ({
         <Box color="text.secondary">
           <Typography variant="body2">
             {paidDate ? 'Paid' : canceledDate ? 'Canceled' : 'Created'} on{' '}
-            <Moment format="LL">
+            <Moment format="ll">
               {paidDate || canceledDate || createdDate}
             </Moment>
           </Typography>

@@ -1,5 +1,14 @@
 import React, { useState } from "react";
-import { makeStyles, Typography } from "@material-ui/core";
+import {
+  makeStyles,
+  Typography,
+  Button,
+  MenuItem,
+  Menu,
+  Divider,
+  Box,
+} from "@material-ui/core";
+import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import { useWeb3React } from "@web3-react/core";
 import {
   RContainer,
@@ -9,6 +18,7 @@ import {
   RequestSkeleton,
   TestnetWarning,
   ReceiptLink,
+  RSpinner,
 } from "request-ui";
 import {
   IParsedRequest,
@@ -18,7 +28,7 @@ import {
   isCancelError,
 } from "request-shared";
 
-import ShareRequest from "../components/ShareRequest";
+import { ShareRequest } from "../components/ShareRequest";
 import ErrorPage from "./ErrorPage";
 import { useConnectedUser } from "../contexts/UserContext";
 import NotLoggedPage from "./NotLoggedPage";
@@ -26,7 +36,22 @@ import NotLoggedPage from "./NotLoggedPage";
 const useStyles = makeStyles(() => ({
   cancel: {
     color: "#DE1C22",
-    border: "1px solid #E4E4E4",
+  },
+  menuList: {
+    padding: 0,
+  },
+  menuItem: {
+    height: 48,
+    justifyContent: "center",
+  },
+  actionButton: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    marginRight: -50,
+    minWidth: 0,
+    minHeight: 0,
+    padding: 3,
   },
 }));
 
@@ -39,46 +64,13 @@ export const RequestNotFound = () => {
   );
 };
 
-const RequestActions = ({
-  request,
-  account,
-  cancel,
-}: {
-  request: IParsedRequest;
-  account?: string | null;
-  cancel: () => Promise<void>;
-}) => {
-  const [cancelling, setCancelling] = useState(false);
-  const onCancelClick = async () => {
-    setCancelling(true);
-    await cancel();
-    setCancelling(false);
-  };
-  const classes = useStyles();
-  account = account?.toLowerCase();
-  if (
-    request.status === "open" &&
-    account &&
-    [request.payer, request.payee].includes(account)
-  ) {
-    return (
-      <RButton
-        color="default"
-        className={classes.cancel}
-        onClick={onCancelClick}
-        disabled={cancelling}
-      >
-        <Typography variant="h4">
-          {request.payer === account ? "Decline request" : "Cancel request"}
-        </Typography>
-      </RButton>
-    );
-  }
-  return <></>;
-};
-
 export const RequestPage = () => {
+  const classes = useStyles();
+
   const { account, chainId } = useWeb3React();
+  const [shareOpen, setShareOpen] = useState(false);
+  const [menuAnchor, setMenuAnchor] = React.useState<HTMLElement>();
+  const [cancelling, setCancelling] = useState(false);
 
   const {
     request,
@@ -89,18 +81,27 @@ export const RequestPage = () => {
   } = useRequest();
 
   const cancel = async () => {
+    setMenuAnchor(undefined);
+    setCancelling(true);
     if (!request || !account || !chainId) {
       throw new Error("cannot cancel because page is not ready");
     }
     try {
       await cancelRequest(request.requestId, account, chainId);
+      await update();
     } catch (e) {
-      if (!isCancelError(e)) {
+      if (isCancelError(e)) {
+        setCancelling(false);
       } else {
         throw e;
       }
     }
-    await update();
+    setCancelling(false);
+  };
+
+  const share = () => {
+    setMenuAnchor(undefined);
+    setShareOpen(true);
   };
 
   if (loading) {
@@ -118,43 +119,80 @@ export const RequestPage = () => {
     <RContainer>
       <Spacer size={15} xs={8} />
       {request && request.network !== "mainnet" && <TestnetWarning />}
-      <RequestView
-        payee={request.payeeName || request.payee}
-        createdDate={request.createdDate}
-        paidDate={request.paidDate}
-        canceledDate={request.canceledDate}
-        status={request.status}
-        amount={request.amount.toLocaleString("en-US", {
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 5,
-        })}
-        overpaid={(request.balance - request.amount).toLocaleString("en-US", {
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 5,
-        })}
-        currency={request.currency}
-        reason={request.reason}
-        counterValue={counterValue}
-        counterCurrency={counterCurrency}
+      <Box position="relative" width="100%">
+        <RequestView
+          payee={request.payeeName || request.payee}
+          createdDate={request.createdDate}
+          paidDate={request.paidDate}
+          canceledDate={request.canceledDate}
+          status={request.status}
+          amount={request.amount.toLocaleString("en-US", {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 5,
+          })}
+          overpaid={(request.balance - request.amount).toLocaleString("en-US", {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 5,
+          })}
+          currency={request.currency}
+          reason={request.reason}
+          counterValue={counterValue}
+          counterCurrency={counterCurrency}
+        />
+        <Button
+          variant="contained"
+          color="default"
+          className={classes.actionButton}
+          onClick={e => setMenuAnchor(e.currentTarget)}
+        >
+          <MoreHorizIcon />
+        </Button>
+      </Box>
+      <Menu
+        anchorEl={menuAnchor}
+        keepMounted
+        open={Boolean(menuAnchor)}
+        onClose={() => setMenuAnchor(undefined)}
+        classes={{
+          list: classes.menuList,
+        }}
+      >
+        <MenuItem className={classes.menuItem} onClick={share}>
+          <Typography variant="h4">Share request</Typography>
+        </MenuItem>
+
+        {request.status === "open" &&
+          account &&
+          [request.payer, request.payee].includes(account.toLowerCase()) && (
+            <>
+              <Divider />
+              <MenuItem className={classes.menuItem} onClick={cancel}>
+                <Typography className={classes.cancel} variant="h4">
+                  Cancel request
+                </Typography>
+              </MenuItem>
+            </>
+          )}
+      </Menu>
+      <ShareRequest
+        requestId={request.requestId}
+        open={shareOpen}
+        close={() => setShareOpen(false)}
       />
+
       <Spacer size={12} />
-      {request.status === "paid" || request.status === "overpaid" ? (
-        <>
-          <ReceiptLink
-            request={request}
-            counterValue={counterValue}
-            counterCurrency={counterCurrency}
-          />
-          <Spacer size={11} />
-          <ShareRequest requestId={request.requestId} />
-        </>
-      ) : (
-        <>
-          <ShareRequest requestId={request.requestId} />
-          <Spacer size={11} />
-          <RequestActions request={request} account={account} cancel={cancel} />
-        </>
-      )}
+      {cancelling && <RSpinner />}
+      {request.status === "paid" ||
+        (request.status === "overpaid" && (
+          <>
+            <ReceiptLink
+              request={request}
+              counterValue={counterValue}
+              counterCurrency={counterCurrency}
+            />
+            <Spacer size={11} />
+          </>
+        ))}
       <Spacer size={12} />
     </RContainer>
   );

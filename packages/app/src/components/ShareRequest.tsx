@@ -5,6 +5,9 @@ import {
   TextField,
   Box,
   Button,
+  Dialog,
+  DialogContent,
+  Link,
 } from "@material-ui/core";
 import CopyToClipboard from "react-copy-to-clipboard";
 
@@ -58,7 +61,15 @@ export const getPayUrl = (requestId: string) =>
     ? `https://baguette-pay.request.network/${requestId}`
     : `https://pay.request.network/${requestId}`;
 
-export default ({ requestId }: { requestId: string }) => {
+export const ShareRequest = ({
+  requestId,
+  open,
+  close,
+}: {
+  requestId: string;
+  open: boolean;
+  close: () => void;
+}) => {
   const classes = useStyles();
   const [copied, setCopied] = useState(false);
 
@@ -70,31 +81,44 @@ export default ({ requestId }: { requestId: string }) => {
 
   const url = getPayUrl(requestId);
   return (
-    <>
-      <Typography variant="h5">Share Request</Typography>
-      <Spacer size={3} />
-      <Box display="flex" className={classes.wrapper}>
-        <TextField
-          variant="outlined"
-          value={url}
-          InputProps={{
-            className: classes.inputBase,
-            classes: {
-              notchedOutline: classes.notchedOutline,
-            },
-          }}
-        />
-        <CopyToClipboard text={url} onCopy={() => setCopied(true)}>
-          <Button
-            variant="contained"
-            color="secondary"
-            className={classes.button}
-            size="small"
+    <Dialog open={open} onClose={close}>
+      <DialogContent>
+        <Box textAlign="center">
+          <Spacer size={7} />
+          <Typography variant="h5">Share your request</Typography>
+          <Spacer size={3} />
+          <Box display="flex" className={classes.wrapper}>
+            <TextField
+              variant="outlined"
+              value={url}
+              InputProps={{
+                className: classes.inputBase,
+                classes: {
+                  notchedOutline: classes.notchedOutline,
+                },
+              }}
+            />
+            <CopyToClipboard text={url} onCopy={() => setCopied(true)}>
+              <Button
+                variant="contained"
+                color="secondary"
+                className={classes.button}
+                size="small"
+              >
+                {copied ? "COPIED!" : "COPY LINK"}
+              </Button>
+            </CopyToClipboard>
+          </Box>
+          <Spacer size={10} />
+          <Link
+            underline="always"
+            onClick={close}
+            style={{ cursor: "pointer" }}
           >
-            {copied ? "COPIED!" : "COPY LINK"}
-          </Button>
-        </CopyToClipboard>
-      </Box>
-    </>
+            I will share later
+          </Link>
+        </Box>
+      </DialogContent>
+    </Dialog>
   );
 };

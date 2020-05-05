@@ -49,10 +49,10 @@ export const NoRequests = () => {
       <Dot size={8} />
       <Spacer size={3} />
       <Typography variant="h4">
-        There are no requests associated with your wallet address
+        There are no requests associated with your wallet address.
       </Typography>
       <Spacer size={2} />
-      <Typography variant="caption">You can create one here</Typography>
+      <Typography variant="caption">You can create one here:</Typography>
       <Spacer size={12} />
       <Link to="/" style={{ textDecoration: "none " }}>
         <RButton sticky size="medium" color="secondary" style={{ width: 315 }}>

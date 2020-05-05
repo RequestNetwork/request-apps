@@ -3,6 +3,7 @@ import * as React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box, Typography } from "@material-ui/core";
 import { RContainer, RFooter, Spacer, colors } from "request-ui";
+import Dot from "../components/Dot";
 
 const useStyles = makeStyles(theme => ({
   box: {
@@ -17,13 +18,6 @@ const useStyles = makeStyles(theme => ({
       borderRadius: 4,
       boxSizing: "border-box",
     },
-  },
-  dot: {
-    height: 8,
-    width: 8,
-    backgroundColor: "#DE1C22",
-    borderRadius: "50%",
-    display: "inline-block",
   },
 }));
 
@@ -40,7 +34,7 @@ export default ({
       <Spacer size={10} xs={5} />
       <Box className={classes.box}>
         <Spacer size={40} xs={20} />
-        <div className={classes.dot} />
+        <Dot size={8} />
         <Spacer size={10} xs={3} />
         <Typography variant="h5">
           {topText ? topText : "An error occured..."}

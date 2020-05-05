@@ -4,6 +4,7 @@ import { makeStyles, Box, Theme, Tooltip } from "@material-ui/core";
 interface IProps {
   account?: string;
   network?: number;
+  size?: number;
 }
 
 const dotColors: Record<number, string> = {
@@ -18,8 +19,8 @@ const names: Record<number, string> = {
 
 const useStyles = makeStyles<Theme, IProps>(theme => ({
   dot: {
-    height: 18,
-    width: 18,
+    height: ({ size }) => size ?? 18,
+    width: ({ size }) => size ?? 18,
     backgroundColor: ({ account, network }) =>
       account && network ? dotColors[network] || "#DE1C22" : "#DE1C22",
     borderRadius: "50%",
@@ -30,8 +31,12 @@ const useStyles = makeStyles<Theme, IProps>(theme => ({
 export default (props: IProps) => {
   const classes = useStyles(props);
 
+  const title = props.network
+    ? names[props.network] || "Unsupported network"
+    : "";
+
   return (
-    <Tooltip title={names[props.network || -1] || "Unsupported network"}>
+    <Tooltip title={title}>
       <Box className={classes.dot} />
     </Tooltip>
   );

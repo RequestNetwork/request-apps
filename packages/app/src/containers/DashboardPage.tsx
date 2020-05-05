@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Spacer, TestnetWarning } from "request-ui";
+import { Spacer, TestnetWarning, RButton } from "request-ui";
 
-import { Box, Hidden, makeStyles, Fab, IconButton } from "@material-ui/core";
+import {
+  Box,
+  Hidden,
+  makeStyles,
+  Fab,
+  IconButton,
+  Typography,
+} from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import { useWeb3React } from "@web3-react/core";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 
 import CsvExport from "../components/CsvExport";
 import { Filter } from "../components/Filter";
@@ -15,6 +22,7 @@ import {
 } from "../contexts/RequestListContext";
 import { useConnectedUser } from "../contexts/UserContext";
 import NotLoggedPage from "./NotLoggedPage";
+import Dot from "../components/Dot";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -34,11 +42,39 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+export const NoRequests = () => {
+  return (
+    <>
+      <Spacer size={35} />
+      <Dot size={8} />
+      <Spacer size={3} />
+      <Typography variant="h4">
+        There are no requests associated with your wallet address
+      </Typography>
+      <Spacer size={2} />
+      <Typography variant="caption">You can create one here</Typography>
+      <Spacer size={12} />
+      <Link to="/" style={{ textDecoration: "none " }}>
+        <RButton sticky size="medium" color="secondary" style={{ width: 315 }}>
+          <Box color="white">
+            <Typography variant="h4">Create a request</Typography>
+          </Box>
+        </RButton>
+      </Link>
+    </>
+  );
+};
+
 export const Dashboard = () => {
   const classes = useStyles();
   const { account, chainId } = useWeb3React();
   const { loading: web3Loading } = useConnectedUser();
-  const { requests, filter, setFilter } = useRequestList();
+  const {
+    loading: requestsLoading,
+    requests,
+    filter,
+    setFilter,
+  } = useRequestList();
   const [firstLoad, setFirstLoad] = useState(true);
   const history = useHistory();
 
@@ -55,6 +91,11 @@ export const Dashboard = () => {
   if (!web3Loading && (!account || !chainId)) {
     return <NotLoggedPage />;
   }
+
+  if (!requestsLoading && requests?.length === 0 && filter === "all") {
+    return <NoRequests />;
+  }
+
   return (
     <Box className={classes.container}>
       <Spacer size={24} xs={5} />

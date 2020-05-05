@@ -44,8 +44,8 @@ const useStyles = makeStyles(theme => ({
 
 export const NoRequests = () => {
   return (
-    <>
-      <Spacer size={35} />
+    <Box textAlign="center" padding="16px">
+      <Spacer size={31} xs={12} />
       <Dot size={8} />
       <Spacer size={3} />
       <Typography variant="h4">
@@ -61,7 +61,7 @@ export const NoRequests = () => {
           </Box>
         </RButton>
       </Link>
-    </>
+    </Box>
   );
 };
 

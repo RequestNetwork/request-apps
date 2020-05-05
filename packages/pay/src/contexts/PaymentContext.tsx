@@ -151,7 +151,7 @@ export const PaymentProvider: React.FC = ({ children }) => {
 
   useEffect(() => {
     if (!autorefresh) return;
-    if (request?.status === "paid") {
+    if (request?.status === "paid" || request?.status === "overpaid") {
       setAutorefresh(false);
       setPending(false);
       setPaying(false);
@@ -168,7 +168,7 @@ export const PaymentProvider: React.FC = ({ children }) => {
     const hash = localStorage.getItem("txhash");
     if (hash) {
       if (!library) return;
-      if (request?.status === "paid") {
+      if (request?.status === "paid" || request?.status === "overpaid") {
         localStorage.removeItem("txhash");
       }
       if (request?.status === "open") {

@@ -209,7 +209,7 @@ const PaymentActions = () => {
     return <></>;
   }
 
-  if (request.status === "paid") {
+  if (request.status === "paid" || request.status === "overpaid") {
     return (
       <>
         <Box

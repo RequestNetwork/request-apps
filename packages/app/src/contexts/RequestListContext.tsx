@@ -20,7 +20,8 @@ const applyFilter = (
   if (filter === "all") return requests;
   if (filter === "outstanding")
     return requests.filter(x => x.status === "open");
-  if (filter === "paid") return requests.filter(x => x.status === "paid");
+  if (filter === "paid")
+    return requests.filter(x => x.status === "paid" || x.status === "overpaid");
 };
 
 export const RequestListProvider: React.FC = ({ children }) => {

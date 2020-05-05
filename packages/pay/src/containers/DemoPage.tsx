@@ -119,11 +119,15 @@ const getRequest = async (state: IState): Promise<IParsedRequest> => {
   return {
     requestId: "0x000000000000000000000000000000000000000",
     amount: Number(state.amount),
+    balance: Number(state.amount) + 1,
     currency: currencies[state.currencyType],
     currencyType: state.currencyType,
     status: state.status,
     createdDate: new Date(),
-    paidDate: state.status === "paid" ? new Date() : undefined,
+    paidDate:
+      state.status === "paid" || state.status === "overpaid"
+        ? new Date()
+        : undefined,
     canceledDate: state.status === "canceled" ? new Date() : undefined,
     paymentAddress: "0x000000000000000000000000000000000000000",
     reason: await getReason(state.reasonLength),
@@ -255,15 +259,17 @@ const DemoSettings = ({
           <Box className={classes.field} alignItems="center">
             <FormLabel>Status</FormLabel>
             <ButtonGroup size="small" variant="contained">
-              {["open", "pending", "paid", "canceled"].map(status => (
-                <Button
-                  key={status}
-                  onClick={() => set({ status: status as RequestStatus })}
-                  color={state.status === status ? "primary" : undefined}
-                >
-                  {status}
-                </Button>
-              ))}
+              {["open", "pending", "paid", "overpaid", "canceled"].map(
+                status => (
+                  <Button
+                    key={status}
+                    onClick={() => set({ status: status as RequestStatus })}
+                    color={state.status === status ? "primary" : undefined}
+                  >
+                    {status}
+                  </Button>
+                )
+              )}
             </ButtonGroup>
           </Box>
 
@@ -420,7 +426,7 @@ const DemoSettings = ({
 
 const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
 
-export default () => {
+const DemoPage = () => {
   const web3context = getWeb3ReactContext();
   const [request, setRequest] = useState<IParsedRequest>();
   const [state, setState] = useState<IState>();
@@ -556,3 +562,5 @@ export default () => {
     </>
   );
 };
+
+export default DemoPage;

@@ -17,6 +17,9 @@ export const StatusStory = () => {
           <RStatusBadge status="paid" />
         </p>
         <p>
+          <RStatusBadge status="overpaid" />
+        </p>
+        <p>
           <RStatusBadge status="canceled" />
         </p>
         <p style={{ marginTop: 100 }}>

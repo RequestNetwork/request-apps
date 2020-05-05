@@ -22,6 +22,7 @@ const label = {
   paid: 'Paid',
   pending: 'Pending',
   canceled: 'Canceled',
+  overpaid: 'Overpaid',
 };
 
 export const RStatusBadge = (props: IProps) => {

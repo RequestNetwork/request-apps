@@ -112,7 +112,7 @@ export const FeedbackContainer = () => {
     if (
       prevStatus &&
       prevStatus !== request?.status &&
-      request?.status === "paid"
+      (request?.status === "paid" || request?.status === "overpaid")
     ) {
       setFeedbackOpen(true);
     }
@@ -176,6 +176,7 @@ export const PaymentPage = () => {
   const showFooter =
     !mobile ||
     request?.status === "paid" ||
+    request?.status === "overpaid" ||
     request?.status === "canceled" ||
     (request?.status === "pending" && !paying);
   return (
@@ -183,6 +184,10 @@ export const PaymentPage = () => {
       {request ? (
         <RequestView
           amount={request.amount.toLocaleString("en-US", {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 5,
+          })}
+          overpaid={(request.balance - request.amount).toLocaleString("en-US", {
             minimumFractionDigits: 0,
             maximumFractionDigits: 5,
           })}

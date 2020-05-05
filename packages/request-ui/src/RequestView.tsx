@@ -91,6 +91,7 @@ interface IProps {
   canceledDate?: Date;
   status: RequestStatus;
   amount: string;
+  overpaid: string;
   currency: string;
   reason?: string;
   counterValue?: string;
@@ -134,6 +135,7 @@ export const RequestView = ({
   canceledDate,
   status,
   amount,
+  overpaid,
   currency,
   reason,
   counterValue,
@@ -170,6 +172,14 @@ export const RequestView = ({
           <Box color="text.secondary">
             <Typography variant="body2">
               {counterCurrency} {counterValue}
+            </Typography>
+          </Box>
+        )}
+        {status === 'overpaid' && (
+          <Box fontStyle="italic" color="text.primary">
+            <Spacer size={2} />
+            <Typography variant="body2">
+              This request has been overpaid by {overpaid} {currency}
             </Typography>
           </Box>
         )}

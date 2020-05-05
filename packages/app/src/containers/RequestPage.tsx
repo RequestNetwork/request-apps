@@ -128,13 +128,17 @@ export const RequestPage = () => {
           minimumFractionDigits: 0,
           maximumFractionDigits: 5,
         })}
+        overpaid={(request.balance - request.amount).toLocaleString("en-US", {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 5,
+        })}
         currency={request.currency}
         reason={request.reason}
         counterValue={counterValue}
         counterCurrency={counterCurrency}
       />
       <Spacer size={12} />
-      {request.status === "paid" ? (
+      {request.status === "paid" || request.status === "overpaid" ? (
         <>
           <ReceiptLink
             request={request}

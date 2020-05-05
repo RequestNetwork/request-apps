@@ -1,10 +1,16 @@
 import { RequestLogicTypes, ClientTypes } from "@requestnetwork/types";
-export type RequestStatus = "paid" | "open" | "pending" | "canceled";
+export type RequestStatus =
+  | "paid"
+  | "open"
+  | "pending"
+  | "canceled"
+  | "overpaid";
 
 /** Formatted request */
 export interface IParsedRequest {
   requestId: string;
   amount: number;
+  balance: number;
   currency: string;
   status: RequestStatus;
   createdDate: Date;

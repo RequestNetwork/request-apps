@@ -1,10 +1,24 @@
 import { ethers } from "ethers";
-import { formatUnits, bigNumberify } from "ethers/utils";
+import { formatUnits, bigNumberify, BigNumber } from "ethers/utils";
 
 import { Types } from "@requestnetwork/request-client.js";
 import { IParsedRequest } from "../";
 import { getEnsName } from "./getEnsName";
 import { getDecimalsForCurrency, getCurrencySymbol } from "./currency";
+
+const getStatus = (
+  state: Types.RequestLogic.STATE,
+  expectedAmount: BigNumber,
+  balance: BigNumber,
+  pending: boolean
+) => {
+  if (state === Types.RequestLogic.STATE.CANCELED) return "canceled";
+
+  if (balance.eq(expectedAmount)) return "paid";
+  if (balance.gt(expectedAmount)) return "overpaid";
+  if (pending) return "pending";
+  return "open";
+};
 
 /** Transforms a request to a more friendly format */
 export const parseRequest = async ({
@@ -23,16 +37,17 @@ export const parseRequest = async ({
   const decimals = await getDecimalsForCurrency(data.currencyInfo);
   const amount = Number(formatUnits(data.expectedAmount, decimals));
 
-  const status =
-    data.state === Types.RequestLogic.STATE.CANCELED
-      ? "canceled"
-      : bigNumberify(data.balance?.balance ?? 0).gte(
-          bigNumberify(data.expectedAmount)
-        )
-      ? "paid"
-      : pending
-      ? "pending"
-      : "open";
+  let balance = 0;
+  if (data.balance?.balance !== null && data.balance?.balance !== undefined) {
+    balance = Number(formatUnits(data.balance.balance, decimals));
+  }
+
+  const status = getStatus(
+    data.state,
+    bigNumberify(data.expectedAmount),
+    bigNumberify(data.balance?.balance || 0),
+    pending
+  );
 
   const paidTimestamp = data.balance?.events.reverse()[0]?.timestamp;
   const canceledTimestamp = data.events.find(
@@ -73,6 +88,7 @@ export const parseRequest = async ({
   return {
     requestId,
     amount,
+    balance,
     currency:
       data.currency && data.currency !== "unknown"
         ? data.currency.split("-")[0]

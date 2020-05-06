@@ -21,6 +21,8 @@ export const UserProvider: React.FC = ({ children }) => {
       if (ens) {
         setName(ens.name);
       }
+      // const t = setTimeout(() => setLoading(false), 200);
+      // return () => clearTimeout(t);
       setLoading(false);
     }
   };
@@ -32,6 +34,7 @@ export const UserProvider: React.FC = ({ children }) => {
       }, 500);
       return () => clearTimeout(t);
     } else {
+      setName(undefined);
       load(account);
     }
   }, [account]);

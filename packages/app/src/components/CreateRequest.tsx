@@ -308,11 +308,10 @@ export const schema = Yup.object().shape<IFormData>({
     "is-valid-recipient",
     "Please enter a valid ENS or ETH address",
     async (value: string) => {
-      const ens = new ENS(value);
       return (
         !value ||
         WalletAddressValidator.validate(value, "ethereum") ||
-        (isValidEns(value) && !!(await ens.addr()))
+        (isValidEns(value) && !!(await new ENS(value).addr()))
       );
     }
   ),

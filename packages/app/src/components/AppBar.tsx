@@ -138,7 +138,11 @@ export const RequestAppBar = ({
       return;
     }
     if (!loading) {
-      setConnectModalOpen(!hasError && !account);
+      const t = setTimeout(
+        () => setConnectModalOpen(!hasError && !account),
+        500
+      );
+      return () => clearTimeout(t);
     }
   }, [account, loading]);
 

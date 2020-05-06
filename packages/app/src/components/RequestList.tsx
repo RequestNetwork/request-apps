@@ -8,6 +8,7 @@ import {
   IconButton,
 } from "@material-ui/core";
 import CheckIcon from "@material-ui/icons/Check";
+import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
 import { IParsedRequest } from "request-shared";
 import { Link } from "react-router-dom";
 import { RStatusBadge, Spacer } from "request-ui";
@@ -204,12 +205,28 @@ const Row = React.memo(
           <Box flex={2 / 10} className={classes.payer}>
             <Spacer size={0} xs={2} />
 
-            <Address
-              address={request.payer}
-              display={request.payerName}
-              currentUser={isPayer}
-              text={"To"}
-            />
+            {request.payer ? (
+              <Address
+                address={request.payer}
+                display={request.payerName}
+                currentUser={isPayer}
+                text={"To"}
+              />
+            ) : (
+              <Box display="flex">
+                <Hidden mdUp>
+                  <Box width={40}>To</Box>
+                </Hidden>
+                <Box display="flex" alignItems="center" fontStyle="italic">
+                  <Tooltip title="This request did not specify a payer.">
+                    <InfoOutlinedIcon
+                      style={{ fontSize: 20, marginRight: 4 }}
+                    />
+                  </Tooltip>
+                  <Typography>Open</Typography>
+                </Box>
+              </Box>
+            )}
           </Box>
           <Box flex={1 / 10} className={classes.amount}>
             <Amount

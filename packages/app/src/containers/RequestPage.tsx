@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   makeStyles,
   Typography,
@@ -14,14 +14,12 @@ import {
   RContainer,
   RequestView,
   Spacer,
-  RButton,
   RequestSkeleton,
   TestnetWarning,
   ReceiptLink,
   RSpinner,
 } from "request-ui";
 import {
-  IParsedRequest,
   RequestProvider,
   useRequest,
   cancelRequest,
@@ -39,6 +37,10 @@ const useStyles = makeStyles(() => ({
   },
   menuList: {
     padding: 0,
+  },
+  menuPaper: {
+    border: "1px solid #E4E4E4",
+    marginTop: 38,
   },
   menuItem: {
     height: 48,
@@ -69,6 +71,7 @@ export const RequestPage = () => {
 
   const { account, chainId } = useWeb3React();
   const [shareOpen, setShareOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [menuAnchor, setMenuAnchor] = React.useState<HTMLElement>();
   const [cancelling, setCancelling] = useState(false);
 
@@ -80,8 +83,11 @@ export const RequestPage = () => {
     counterValue,
   } = useRequest();
 
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [cancelling, shareOpen]);
+
   const cancel = async () => {
-    setMenuAnchor(undefined);
     setCancelling(true);
     if (!request || !account || !chainId) {
       throw new Error("cannot cancel because page is not ready");
@@ -97,11 +103,6 @@ export const RequestPage = () => {
       }
     }
     setCancelling(false);
-  };
-
-  const share = () => {
-    setMenuAnchor(undefined);
-    setShareOpen(true);
   };
 
   if (loading) {
@@ -143,21 +144,29 @@ export const RequestPage = () => {
           variant="contained"
           color="default"
           className={classes.actionButton}
-          onClick={e => setMenuAnchor(e.currentTarget)}
+          onClick={e => {
+            setMenuAnchor(e.currentTarget);
+            setMenuOpen(true);
+          }}
         >
           <MoreHorizIcon />
         </Button>
       </Box>
       <Menu
         anchorEl={menuAnchor}
+        elevation={0}
         keepMounted
-        open={Boolean(menuAnchor)}
-        onClose={() => setMenuAnchor(undefined)}
+        open={menuOpen}
+        onClose={() => setMenuOpen(false)}
         classes={{
           list: classes.menuList,
+          paper: classes.menuPaper,
         }}
       >
-        <MenuItem className={classes.menuItem} onClick={share}>
+        <MenuItem
+          className={classes.menuItem}
+          onClick={() => setShareOpen(true)}
+        >
           <Typography variant="h4">Share request</Typography>
         </MenuItem>
 

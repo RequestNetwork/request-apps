@@ -13,11 +13,17 @@ import {
 } from '@react-pdf/renderer';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import { Box, Typography } from '@material-ui/core';
-import { IParsedRequest, RequestProvider, useRequest } from 'request-shared';
+import {
+  IParsedRequest,
+  RequestProvider,
+  useRequest,
+  getEtherscanUrl,
+} from 'request-shared';
 
 import { RButton } from './RButton';
 import { statusLabels } from './RStatusBadge';
 import { statusColors } from './colors';
+import moment from 'moment';
 
 interface IProps {
   request: IParsedRequest;
@@ -41,7 +47,8 @@ const downloadFile = (function() {
 export const downloadPdf = async (props: IProps) => {
   const blob = await pdf(<PdfReceipt {...props} />).toBlob();
 
-  downloadFile(blob, 'receipt.pdf');
+  const date = moment(new Date()).format('YYYY.MM.DD');
+  downloadFile(blob, `${date} RequestReceipt.pdf`);
 };
 
 export const ReceiptLink = (props: {
@@ -72,12 +79,16 @@ export const ReceiptPreview = () => {
 
 const RequestPreview = () => {
   const { request } = useRequest();
+
+  const transactionUrl = request?.txHash
+    ? getEtherscanUrl(request) + '/tx/' + request.txHash
+    : '';
   if (!request) {
     return null;
   }
   return (
     <PDFViewer style={{ width: '100%', height: '100vh' }}>
-      <PdfReceipt request={request} />
+      <PdfReceipt request={request} transactionUrl={transactionUrl} />
     </PDFViewer>
   );
 };
@@ -178,7 +189,13 @@ const styles = StyleSheet.create({
   },
 });
 
-export const PdfReceipt = ({ request }: { request: IParsedRequest }) => {
+export const PdfReceipt = ({
+  request,
+  transactionUrl,
+}: {
+  request: IParsedRequest;
+  transactionUrl?: string;
+}) => {
   Font.register({
     family: 'Inter',
     fonts: [
@@ -262,6 +279,12 @@ export const PdfReceipt = ({ request }: { request: IParsedRequest }) => {
             </Text>
           </View>
         </View>
+        <View style={styles.headerRow}>
+          <View>
+            <Text style={styles.caption}>Payed by</Text>
+            <Text style={styles.headerBodyText}>{request.paymentFrom}</Text>
+          </View>
+        </View>
         <View style={styles.content}>
           <View style={styles.contentHeader}>
             <Text style={{ flex: 5 / 10 }}>Description</Text>
@@ -310,6 +333,18 @@ export const PdfReceipt = ({ request }: { request: IParsedRequest }) => {
             </Link>
             .
           </Text>
+          {transactionUrl && (
+            <Text style={{ marginTop: 4 }}>
+              View your transaction on Etherscan{' '}
+              <Link
+                src={transactionUrl}
+                style={{ textDecoration: 'none', color: '#00CC8E' }}
+              >
+                here
+              </Link>
+              .
+            </Text>
+          )}
         </View>
       </Page>
     </Document>

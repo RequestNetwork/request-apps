@@ -1,8 +1,7 @@
 import React from "react";
 import { makeStyles, Box, Link, Typography } from "@material-ui/core";
 import { RAlert } from "request-ui";
-import { getEtherscanUrl } from "../etherscan";
-import { IParsedRequest } from "request-shared";
+import { IParsedRequest, getEtherscanUrl } from "request-shared";
 
 const useStyles = makeStyles(theme => ({
   root: {

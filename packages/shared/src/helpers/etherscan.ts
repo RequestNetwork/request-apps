@@ -1,12 +1,14 @@
-import { IRequestData } from "@requestnetwork/request-client.js/dist/types";
-import { IParsedRequest } from "request-shared";
+import { ClientTypes } from "@requestnetwork/types";
+import { IParsedRequest } from "../";
 
 const etherscanDomain: Record<string, string> = {
   rinkeby: "https://rinkeby.etherscan.io",
   mainnet: "https://etherscan.io",
 };
 
-export const getEtherscanUrl = (request?: IRequestData | IParsedRequest) => {
+export const getEtherscanUrl = (
+  request?: ClientTypes.IRequestData | IParsedRequest
+) => {
   if (!request) {
     return "";
   }

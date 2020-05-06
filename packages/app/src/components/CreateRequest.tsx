@@ -13,7 +13,7 @@ import Moment from "react-moment";
 import * as Yup from "yup";
 import { Skeleton } from "@material-ui/lab";
 import WalletAddressValidator from "wallet-address-validator";
-import { isValidEns, getAddressFromEns } from "request-shared";
+import { isValidEns, ENS } from "request-shared";
 
 import {
   RIcon,
@@ -302,10 +302,11 @@ export const schema = Yup.object().shape<IFormData>({
     "is-valid-recipient",
     "Please enter a valid ENS or ETH address",
     async (value: string) => {
+      const ens = new ENS(value);
       return (
         !value ||
         WalletAddressValidator.validate(value, "ethereum") ||
-        (isValidEns(value) && !!(await getAddressFromEns(value)))
+        (isValidEns(value) && !!(await ens.addr()))
       );
     }
   ),

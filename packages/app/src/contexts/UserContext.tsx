@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useWeb3React } from "@web3-react/core";
-import { getEnsName } from "request-shared";
+import { ENS } from "request-shared";
 
 interface IContext {
   loading: boolean;
@@ -17,8 +17,10 @@ export const UserProvider: React.FC = ({ children }) => {
 
   const load = async (account?: string) => {
     if (account) {
-      const ens = await getEnsName(account);
-      setName(ens);
+      const ens = await ENS.fromAddress(account);
+      if (ens) {
+        setName(ens.name);
+      }
       setLoading(false);
     }
   };

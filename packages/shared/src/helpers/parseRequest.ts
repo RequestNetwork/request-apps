@@ -3,7 +3,7 @@ import { formatUnits, bigNumberify, BigNumber } from "ethers/utils";
 
 import { Types } from "@requestnetwork/request-client.js";
 import { IParsedRequest } from "../";
-import { getEnsName } from "./getEnsName";
+import { ENS } from "./ens";
 import { getDecimalsForCurrency, getCurrencySymbol } from "./currency";
 
 const getStatus = (
@@ -81,8 +81,12 @@ export const parseRequest = async ({
   let payeeName, payerName;
   if (!disableEns) {
     // Try to get the payee ENS address
-    payeeName = await getEnsName(data.payee?.value);
-    payerName = await getEnsName(data.payer?.value);
+    payeeName = data.payee?.value
+      ? await ENS.resolve(data.payee?.value)
+      : undefined;
+    payerName = data.payer?.value
+      ? await ENS.resolve(data.payer?.value)
+      : undefined;
   }
 
   return {

@@ -8,7 +8,7 @@ import { Web3Provider } from "ethers/providers";
 import WalletAddressValidator from "wallet-address-validator";
 
 import { chainIdToName } from "./chainIdToName";
-import { getAddressFromEns, isValidEns } from "./getEnsName";
+import { ENS, isValidEns } from "./ens";
 import { CustomSignatureProvider } from "./CustomSignatureProvider";
 
 export interface ICreateRequestArgs {
@@ -53,7 +53,7 @@ export const createRequest = async (
 
   if (payer) {
     if (isValidEns(payer)) {
-      payer = await getAddressFromEns(payer);
+      payer = await new ENS(payer).addr();
     } else if (!WalletAddressValidator.validate(payer, "ethereum")) {
       throw new Error("invalid ethereum address");
     }

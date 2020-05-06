@@ -12,9 +12,12 @@ import {
   PDFViewer,
 } from '@react-pdf/renderer';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
-import { IParsedRequest, RequestProvider, useRequest } from 'request-shared';
-import { RButton } from './RButton';
 import { Box, Typography } from '@material-ui/core';
+import { IParsedRequest, RequestProvider, useRequest } from 'request-shared';
+
+import { RButton } from './RButton';
+import { statusLabels } from './RStatusBadge';
+import { statusColors } from './colors';
 
 interface IProps {
   request: IParsedRequest;
@@ -109,9 +112,8 @@ const styles = StyleSheet.create({
     color: '#656565',
   },
   status: {
-    backgroundColor: '#D6F3E2',
     borderRadius: 4,
-    width: 74,
+    minWidth: 74,
     height: 32,
     padding: '8px 24px',
     color: '#456078',
@@ -190,7 +192,10 @@ export const PdfReceipt = ({ request }: { request: IParsedRequest }) => {
     ],
   });
   const amountAndCurrency = request.amount.toString() + ' ' + request.currency;
-  if (request.status !== 'paid') throw new Error('Request not paid');
+  if (!['paid', 'overpaid', 'canceled'].includes(request.status))
+    throw new Error(
+      `Cannot download a receipt when request is ${request.status}`
+    );
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -247,7 +252,14 @@ export const PdfReceipt = ({ request }: { request: IParsedRequest }) => {
             </Text>
           </View>
           <View>
-            <Text style={styles.status}>Paid</Text>
+            <Text
+              style={{
+                ...styles.status,
+                backgroundColor: statusColors[request.status],
+              }}
+            >
+              {statusLabels[request.status]}
+            </Text>
           </View>
         </View>
         <View style={styles.content}>

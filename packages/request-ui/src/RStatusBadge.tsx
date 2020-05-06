@@ -17,7 +17,7 @@ const useStyles = makeStyles<Theme, IProps>({
   },
 });
 
-const label = {
+export const statusLabels = {
   open: 'Awaiting Payment',
   paid: 'Paid',
   pending: 'Pending',
@@ -36,7 +36,7 @@ export const RStatusBadge = (props: IProps) => {
       position="relative"
     >
       <div className={classes.status}>
-        <Typography variant="h6">{label[props.status]}</Typography>
+        <Typography variant="h6">{statusLabels[props.status]}</Typography>
       </div>
     </Box>
   );

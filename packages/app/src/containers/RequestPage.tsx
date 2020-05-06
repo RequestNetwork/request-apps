@@ -9,6 +9,7 @@ import {
   Box,
 } from "@material-ui/core";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
+import OpenInNewIcon from "@material-ui/icons/OpenInNew";
 import { useWeb3React } from "@web3-react/core";
 import {
   RContainer,
@@ -24,8 +25,8 @@ import {
   useRequest,
   cancelRequest,
   isCancelError,
+  getEtherscanUrl,
 } from "request-shared";
-
 import { ShareRequest } from "../components/ShareRequest";
 import ErrorPage from "./ErrorPage";
 import { useConnectedUser } from "../contexts/UserContext";
@@ -105,6 +106,11 @@ export const RequestPage = () => {
     setCancelling(false);
   };
 
+  const openEtherscanUrl = () => {
+    setMenuOpen(false);
+    window.open(getEtherscanUrl(request) + "/tx/" + request!.txHash, "_blank");
+  };
+
   if (loading) {
     return (
       <RContainer>
@@ -169,6 +175,16 @@ export const RequestPage = () => {
         >
           <Typography variant="h4">Share request</Typography>
         </MenuItem>
+
+        {request.txHash && (
+          <>
+            <Divider />
+            <MenuItem className={classes.menuItem} onClick={openEtherscanUrl}>
+              <Typography variant="h4">See on Etherscan</Typography>
+              <OpenInNewIcon fontSize="small" style={{ marginLeft: 4 }} />
+            </MenuItem>
+          </>
+        )}
 
         {request.status === "open" &&
           account &&

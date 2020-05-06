@@ -31,7 +31,6 @@ import { UsdcIcon } from "./currencies/UsdcIcon";
 import { TusdIcon } from "./currencies/TusdIcon";
 import { BusdIcon } from "./currencies/BusdIcon";
 import { PaxIcon } from "./currencies/PaxIcon";
-import { CtbkIcon } from "./currencies/CtbkIcon";
 
 export interface IFormData {
   amount?: number;
@@ -175,7 +174,6 @@ const getCurrencies = (network?: number): Record<string, React.FC> => {
   return {
     FAU: DaiIcon,
     ETH: EthIcon,
-    CTBK: CtbkIcon,
   };
 };
 

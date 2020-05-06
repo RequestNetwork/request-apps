@@ -45,7 +45,13 @@ const downloadFile = (function() {
 })();
 
 export const downloadPdf = async (props: IProps) => {
-  const blob = await pdf(<PdfReceipt {...props} />).toBlob();
+  const transactionUrl = props.request?.txHash
+    ? getEtherscanUrl(props.request) + '/tx/' + props.request.txHash
+    : '';
+
+  const blob = await pdf(
+    <PdfReceipt transactionUrl={transactionUrl} {...props} />
+  ).toBlob();
 
   const date = moment(new Date()).format('YYYY.MM.DD');
   downloadFile(blob, `${date} RequestReceipt.pdf`);
@@ -261,24 +267,26 @@ export const PdfReceipt = ({
             </Text>
           </View>
         </View>
-        <View style={styles.headerRow}>
-          <View>
-            <Text style={styles.caption}>Billed to</Text>
-            <Text style={styles.headerBodyText}>
-              {request.payerName || request.payer}
-            </Text>
+        {request.payer && (
+          <View style={styles.headerRow}>
+            <View>
+              <Text style={styles.caption}>Billed to</Text>
+              <Text style={styles.headerBodyText}>
+                {request.payerName || request.payer}
+              </Text>
+            </View>
+            <View>
+              <Text
+                style={{
+                  ...styles.status,
+                  backgroundColor: statusColors[request.status],
+                }}
+              >
+                {statusLabels[request.status]}
+              </Text>
+            </View>
           </View>
-          <View>
-            <Text
-              style={{
-                ...styles.status,
-                backgroundColor: statusColors[request.status],
-              }}
-            >
-              {statusLabels[request.status]}
-            </Text>
-          </View>
-        </View>
+        )}
         <View style={styles.headerRow}>
           <View>
             <Text style={styles.caption}>Payed by</Text>

@@ -3,14 +3,45 @@ import { SvgIcon, SvgIconProps } from "@material-ui/core";
 
 export const EthIcon: React.FC<SvgIconProps> = props => {
   return (
-    <SvgIcon viewBox="0 0 1920 1920" {...props}>
-      <circle cx="961" cy="960" fill="#151c2f" r="953.1" />
-      <path d="m959.9 209.9-419.9 764 419.9-209.3z" fill="#8a92b2" />
-      <path d="m959.9 764.7-419.9 209.2 419.9 272.2z" fill="#62688f" />
-      <path d="m1379.8 973.9-419.9-764v554.7z" fill="#62688f" />
-      <path d="m959.9 1246.1 419.9-272.2-419.9-209.2z" fill="#454a75" />
-      <path d="m540 1061.3 419.9 648.8v-376.8z" fill="#8a92b2" />
-      <path d="m959.9 1333.3v376.8l420.1-648.8z" fill="#62688f" />
+    <SvgIcon viewBox="0 0 28 28" {...props}>
+      <circle id="Oval-2" fill="#7986CB" cx="14" cy="14" r="14"></circle>
+      <g
+        id="ethereum"
+        stroke-width="1"
+        transform="translate(8.166667, 4.277778)"
+        fill="#FFFFFF"
+      >
+        <polygon
+          id="Shape"
+          fill-rule="nonzero"
+          opacity="0.688616071"
+          points="0.0343894477 9.58247421 5.80975415 12.9945706 5.80975415 0"
+        />
+        <polygon
+          id="Shape"
+          fill-rule="nonzero"
+          opacity="0.686328125"
+          points="5.80975415 0 5.80975415 12.9945706 11.5828487 9.58247421"
+        />
+        <polygon
+          id="Shape"
+          fill-rule="nonzero"
+          opacity="0.800000012"
+          points="0.0343894477 10.676706 5.80975415 18.8130689 5.80975415 14.0888024"
+        />
+        <polygon
+          id="Shape"
+          fill-rule="nonzero"
+          opacity="0.900000036"
+          points="5.80975415 14.0888024 5.80975415 18.8130689 11.587389 10.676706"
+        />
+        <polygon
+          id="Shape"
+          fill-rule="nonzero"
+          opacity="0.698270089"
+          points="5.80975415 6.95586377 0.0343894477 9.58247421 5.80975415 12.9945706 11.5828487 9.58247421"
+        />
+      </g>
     </SvgIcon>
   );
 };

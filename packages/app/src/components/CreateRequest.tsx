@@ -8,6 +8,7 @@ import {
   useTheme,
   MenuItem,
   Hidden,
+  Tooltip,
 } from "@material-ui/core";
 import Moment from "react-moment";
 import * as Yup from "yup";
@@ -46,6 +47,7 @@ export interface IProps {
     formikActions: FormikHelpers<IFormData>
   ) => void;
   account?: string;
+  address?: string;
   network?: number;
   loading: boolean;
 }
@@ -67,10 +69,12 @@ const useHeaderStyles = makeStyles(theme => ({
 
 const Header = ({
   account,
+  address,
   network,
   loading,
 }: {
   account?: string;
+  address?: string;
   network?: number;
   loading: boolean;
 }) => {
@@ -117,9 +121,11 @@ const Header = ({
             <>
               <Dot account={account} network={network} />
               <Box width={8} />
-              <Typography variant="body2">
-                {displayName ? displayName : "no wallet connected"}
-              </Typography>
+              <Tooltip title={address || ""}>
+                <Typography variant="body2">
+                  {displayName ? displayName : "no wallet connected"}
+                </Typography>
+              </Tooltip>
             </>
           )}
         </Box>
@@ -188,7 +194,7 @@ const Currency = ({
 
   const CurrencyIcon = ({ text, icon: Icon }: any) => (
     <Box display="flex" alignItems="center">
-      <Icon style={{ width: 18, height: 18, marginRight: 4 }} /> {text}
+      <Icon style={{ width: 18, height: 18, marginRight: 8 }} /> {text}
     </Box>
   );
 
@@ -343,6 +349,7 @@ export const CreateRequestForm = ({
   error,
   onSubmit,
   account,
+  address,
   network,
   loading,
 }: IProps) => {
@@ -366,7 +373,12 @@ export const CreateRequestForm = ({
       >
         <>
           <Box className={classes.container}>
-            <Header account={account} network={network} loading={loading} />
+            <Header
+              address={address}
+              account={account}
+              network={network}
+              loading={loading}
+            />
             <Body currencies={currencies} />
           </Box>
           {error && (

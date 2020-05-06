@@ -59,6 +59,7 @@ export default () => {
   return (
     <CreateRequestForm
       account={name || account || undefined}
+      address={account || undefined}
       network={chainId}
       error={error}
       onSubmit={submit}

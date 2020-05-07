@@ -116,6 +116,7 @@ const ConnectAction = ({
           startIcon={<img src={CoinbaseIcon} alt="" width={32} height={32} />}
           color="default"
           onClick={() => mobileRedirectWrapper("coinbase")}
+          style={{ minWidth: 300 }}
         >
           <Box color="text.primary">
             <Typography variant="h4">Open with Coinbase Wallet</Typography>
@@ -126,6 +127,7 @@ const ConnectAction = ({
           startIcon={<img src={TrustIcon} alt="" width={32} height={32} />}
           color="default"
           onClick={() => mobileRedirectWrapper("trust")}
+          style={{ minWidth: 300 }}
         >
           <Box color="text.primary">
             <Typography variant="h4">Open with Trust Wallet</Typography>

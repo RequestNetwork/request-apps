@@ -44,7 +44,8 @@ export class FiatRequestNotSupportedError extends Error {
 const runChecks = async (
   request: Types.IRequestData,
   account: string,
-  library: Web3Provider
+  library: Web3Provider,
+  approved: boolean
 ) => {
   switch (request.currencyInfo.type) {
     case "ERC20":
@@ -56,10 +57,11 @@ const runChecks = async (
       if (ethBalance.isZero()) {
         return new NotEnoughForGasError();
       }
-
-      const approval = await hasErc20Approval(request, account, library);
-      if (!approval) {
-        return new RequiresApprovalError();
+      if (!approved) {
+        const approval = await hasErc20Approval(request, account, library);
+        if (!approval) {
+          return new RequiresApprovalError();
+        }
       }
 
       break;
@@ -207,6 +209,7 @@ export const PaymentProvider: React.FC = ({ children }) => {
 
     payRequest(request.raw, library, undefined, {
       gasPrice: ethers.utils.parseUnits(gasPrice.toString(), "gwei"),
+      gasLimit: 100000,
     })
       .then(txCallback)
       .catch(e => {
@@ -242,10 +245,8 @@ export const PaymentProvider: React.FC = ({ children }) => {
     approveErc20(request!.raw, library, {
       gasPrice: ethers.utils.parseUnits(gasPrice.toString(), "gwei"),
     })
-      .then(async tx => {
+      .then(async () => {
         setBroadcasting(true);
-        await tx.wait(1);
-        await sleep(5000);
         setApproved(true);
         setBroadcasting(false);
       })
@@ -291,7 +292,7 @@ export const PaymentProvider: React.FC = ({ children }) => {
       setReady(true);
     } else {
       if (!account || !request || !library) return;
-      runChecks(request.raw, account, library).then(err => {
+      runChecks(request.raw, account, library, approved).then(err => {
         setError(err);
         setReady(true);
         setErrorsChecked(true);

@@ -101,6 +101,7 @@ const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
 export const PaymentProvider: React.FC = ({ children }) => {
   const [paying, setPaying] = useState(false);
   const [approving, setApproving] = useState(false);
+  const [approved, setApproved] = useState(false);
   const [broadcasting, setBroadcasting] = useState(false);
   const [loadingPendingTx, setLoadingPendingTx] = useState(true);
   const [ready, setReady] = useState(false);
@@ -194,36 +195,26 @@ export const PaymentProvider: React.FC = ({ children }) => {
       .then(res => setGasPrice(res.data.average / 10 + 1));
   }, []);
 
-  // Process paying a request or approving an erc20 allowance
+  // Process paying a request or
   useEffect(() => {
     if (!request || !account || !library || !updated || !errorsChecked) return;
     if (broadcasting) return;
+    if (!paying) return;
+    if (request.status !== "open") return;
+
     if (active) return;
     setActive(true);
-    if (paying && request.status === "open") {
-      payRequest(request.raw, library, undefined, {
-        gasPrice: ethers.utils.parseUnits(gasPrice.toString(), "gwei"),
+
+    payRequest(request.raw, library, undefined, {
+      gasPrice: ethers.utils.parseUnits(gasPrice.toString(), "gwei"),
+    })
+      .then(txCallback)
+      .catch(e => {
+        setPaying(false);
+        console.log(e);
       })
-        .then(txCallback)
-        .catch(() => setPaying(false))
-        .finally(() => setActive(false));
-    }
-    if (approving) {
-      approveErc20(request.raw, library, {
-        gasPrice: ethers.utils.parseUnits(gasPrice.toString(), "gwei"),
-      })
-        .then(async tx => {
-          setBroadcasting(true);
-          await tx.wait(1);
-          await sleep(5000);
-          setBroadcasting(false);
-        })
-        .then(() => setError(undefined))
-        .finally(() => setApproving(false))
-        .finally(() => setActive(false));
-    }
+      .finally(() => setActive(false));
   }, [
-    approving,
     paying,
     request,
     account,
@@ -235,6 +226,47 @@ export const PaymentProvider: React.FC = ({ children }) => {
     updated,
     errorsChecked,
     active,
+  ]);
+
+  // Process approving an erc20 allowance
+  useEffect(() => {
+    if (!request || !account || !library || !updated || !errorsChecked) return;
+    if (!approving) return;
+    if (approved) return;
+    if (broadcasting) return;
+    if (request.status !== "open") return;
+
+    if (active) return;
+    setActive(true);
+
+    approveErc20(request!.raw, library, {
+      gasPrice: ethers.utils.parseUnits(gasPrice.toString(), "gwei"),
+    })
+      .then(async tx => {
+        setBroadcasting(true);
+        await tx.wait(1);
+        await sleep(5000);
+        setApproved(true);
+        setBroadcasting(false);
+      })
+      .then(() => {
+        setError(undefined);
+      })
+      .finally(() => {
+        setApproving(false);
+        setActive(false);
+      });
+  }, [
+    request,
+    account,
+    library,
+    update,
+    errorsChecked,
+    broadcasting,
+    approving,
+    updated,
+    gasPrice,
+    approved,
   ]);
 
   useEffect(() => {

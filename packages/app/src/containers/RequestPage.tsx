@@ -180,7 +180,7 @@ export const RequestPage = () => {
           <>
             <Divider />
             <MenuItem className={classes.menuItem} onClick={openEtherscanUrl}>
-              <Typography variant="h4">See on Etherscan</Typography>
+              <Typography variant="h4">View on Etherscan</Typography>
               <OpenInNewIcon fontSize="small" style={{ marginLeft: 4 }} />
             </MenuItem>
           </>

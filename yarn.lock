@@ -1204,6 +1204,10 @@
     "@ethersproject/constants" ">=5.0.0-beta.128"
     "@ethersproject/logger" ">=5.0.0-beta.129"
 
+"@gnosis.pm/safe-apps-sdk@https://github.com/gnosis/safe-apps-sdk":
+  version "0.1.0"
+  resolved "https://github.com/gnosis/safe-apps-sdk#dfaa31b45b0a65a12aa59fd50e95c918d41a191e"
+
 "@hapi/address@2.x.x":
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/@hapi/address/-/address-2.1.4.tgz#5d67ed43f3fd41a69d4b9ff7b56e7c0d1d0a81e5"

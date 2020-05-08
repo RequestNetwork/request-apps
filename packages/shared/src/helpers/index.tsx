@@ -4,6 +4,7 @@ export * from "./parseRequest";
 export * from "./listRequests";
 export * from "./ens";
 export * from "./etherscan";
+export * from "./listRequestsForSmartContract";
 export * from "./cancelRequest";
 export * from "./getProviderName";
 export * from "./isCancelError";

@@ -1,0 +1,5 @@
+{
+  "name": "Request localhost",
+  "description": "Request integration in Gnosis Safe",
+  "iconPath": "request_icon_green.svg"
+}

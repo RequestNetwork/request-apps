@@ -1,18 +1,16 @@
 import { Web3Provider } from "ethers/providers";
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import { ErrorBoundary, theme, RAlert, useMobile, Analytics } from "request-ui";
-import Intercom from "react-intercom";
+import { ErrorBoundary, Analytics } from "request-ui";
 
 import {
   CssBaseline,
   makeStyles,
   ThemeProvider,
-  Link,
+  createMuiTheme,
 } from "@material-ui/core";
-import { useWeb3React, Web3ReactProvider } from "@web3-react/core";
+import { Web3ReactProvider } from "@web3-react/core";
 
-import { RequestAppBar } from "./components/AppBar";
 import CreatePage from "./containers/CreatePage";
 import ErrorPage from "./containers/ErrorPage";
 import NotFoundPage from "./containers/NotFoundPage";
@@ -20,106 +18,91 @@ import RequestPage from "./containers/RequestPage";
 import DashboardPage from "./containers/DashboardPage";
 import { useEagerConnect } from "./hooks/useEagerConnect";
 import { useInactiveListener } from "./hooks/useInactiveListnerer";
-import { useConnectedUser, UserProvider } from "./contexts/UserContext";
+import { UserProvider } from "./contexts/UserContext";
 import { GnosisSafeProvider } from "./contexts/GnosisSafeContext";
-import { injected } from "./connectors";
-import { Announcement } from "./components/Announcement";
 
 const useStyles = makeStyles(() => ({
   paper: {
     display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    minHeight: "calc(100% - 80px)",
-    maxWidth: "100vw",
+    flexDirection: "row",
+    height: "100%",
+    maxWidth: "100%",
+    padding: 24,
+    background: "white",
   },
 }));
+
+const theme = createMuiTheme({
+  overrides: {
+    MuiFilledInput: {
+      root: {
+        fontSize: 12,
+        lineHeight: "14px",
+        "& input::-webkit-clear-button, & input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
+          display: "none",
+          margin: 80,
+        },
+      },
+      input: {
+        fontSize: 12,
+        lineHeight: "14px",
+        "&::placeholder": {
+          color: "#656565",
+          fontSize: 12,
+          lineHeight: "14px",
+        },
+      },
+    },
+    MuiSelect: {
+      selectMenu: {
+        fontSize: 12,
+        lineHeight: "14px",
+      },
+    },
+    MuiInputLabel: {
+      root: {
+        fontSize: 12,
+        lineHeight: "14px",
+        "&::placeholder": {
+          color: "#656565",
+          fontSize: 12,
+          lineHeight: "14px",
+        },
+      },
+      asterisk: {
+        display: "none",
+      },
+    },
+    MuiFormHelperText: {
+      contained: {
+        fontSize: 12,
+        lineHeight: "16px",
+      },
+      root: {
+        "&$error": {
+          fontSize: 12,
+          lineHeight: "16px",
+          color: "#DE1C22",
+        },
+      },
+    },
+    MuiButton: {
+      root: {
+        textTransform: "none",
+      },
+    },
+  },
+});
 
 const App: React.FC = () => {
   const classes = useStyles();
   const tried = useEagerConnect();
   useInactiveListener(!tried);
-  const { account, activate, chainId, error } = useWeb3React();
-  const { name, loading } = useConnectedUser();
-  const web3detected = !!window.ethereum;
-  const isMetaMask = window.ethereum?.isMetaMask || false;
-  const isMobile = useMobile();
 
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
-        <Intercom
-          appID="mmdbekc3"
-          custom_launcher_selector="#intercom-trigger"
-          hide_default_launcher={isMobile}
-        />
         <CssBaseline />
-        <RequestAppBar
-          network={chainId}
-          loading={loading}
-          account={name || account}
-          connect={() => activate(injected)}
-          hasError={!!error}
-        />
-        <Announcement
-          id="1million"
-          message="🎉 $1,000,000 has been transacted through the Request network."
-          link="https://request.network/en/2020/04/22/milestone-reached-launching-request-create-and-pay"
-          linkText="Read more on our blog."
-        />
-
-        {web3detected && isMetaMask && isMobile && (
-          <RAlert
-            severity="warning"
-            message="It looks like you are using Metamask mobile. Please be aware this app might not work properly for now."
-          />
-        )}
-        {!web3detected && !isMobile && (
-          <RAlert
-            severity="warning"
-            message={
-              <>
-                No compatible wallet detected. Please{" "}
-                <Link
-                  underline="always"
-                  style={{
-                    color: "#656565",
-                  }}
-                  target="_blank"
-                  href="https://metamask.io/download.html"
-                >
-                  install Metamask
-                </Link>
-                .
-              </>
-            }
-          />
-        )}
-        {!web3detected && isMobile && (
-          <RAlert
-            severity="warning"
-            message={
-              <>
-                To create a request, you need to use an Ethereum wallet. We
-                recommend{" "}
-                <Link
-                  underline="always"
-                  style={{
-                    color: "#656565",
-                  }}
-                  target="_blank"
-                  href="https://go.cb-w.com/PIn9piAR45"
-                >
-                  Coinbase Wallet
-                </Link>
-                .
-              </>
-            }
-          />
-        )}
-        {web3detected && error && error.name === "UnsupportedChainIdError" && (
-          <RAlert severity="error" message="Network not supported" />
-        )}
         <div className={classes.paper}>
           <Analytics trackingId="UA-105153327-15">
             <Switch>
@@ -140,7 +123,7 @@ export default () => {
     <ErrorBoundary
       stackdriverErrorReporterApiKey="AIzaSyBr5Ix9knr8FPzOmkB6QmcEs-E9fjReZj8"
       projectId="request-240714"
-      service="RequestApp"
+      service="RequestGnosisSafeApp"
       component={ErrorPage}
     >
       <Web3ReactProvider getLibrary={provider => new Web3Provider(provider)}>

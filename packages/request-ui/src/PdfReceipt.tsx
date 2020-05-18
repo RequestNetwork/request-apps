@@ -271,11 +271,10 @@ export const PdfReceipt = ({
         <View style={styles.headerRow}>
           <View>
             <Text style={styles.caption}>Billed to</Text>
-            {request.payer && (
-              <Text style={styles.headerBodyText}>
-                {request.payerName || request.payer}
-              </Text>
-            )}
+
+            <Text style={styles.headerBodyText}>
+              {request.payerName || request.payer || 'Open'}
+            </Text>
           </View>
 
           <View>

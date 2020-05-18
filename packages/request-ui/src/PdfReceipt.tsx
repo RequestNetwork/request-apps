@@ -267,26 +267,28 @@ export const PdfReceipt = ({
             </Text>
           </View>
         </View>
-        {request.payer && (
-          <View style={styles.headerRow}>
-            <View>
-              <Text style={styles.caption}>Billed to</Text>
+
+        <View style={styles.headerRow}>
+          <View>
+            <Text style={styles.caption}>Billed to</Text>
+            {request.payer && (
               <Text style={styles.headerBodyText}>
                 {request.payerName || request.payer}
               </Text>
-            </View>
-            <View>
-              <Text
-                style={{
-                  ...styles.status,
-                  backgroundColor: statusColors[request.status],
-                }}
-              >
-                {statusLabels[request.status]}
-              </Text>
-            </View>
+            )}
           </View>
-        )}
+
+          <View>
+            <Text
+              style={{
+                ...styles.status,
+                backgroundColor: statusColors[request.status],
+              }}
+            >
+              {statusLabels[request.status]}
+            </Text>
+          </View>
+        </View>
         <View style={styles.headerRow}>
           <View>
             <Text style={styles.caption}>Payed by</Text>

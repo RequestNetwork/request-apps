@@ -1,8 +1,9 @@
-import React, { useState } from "react";
-import { makeStyles, Typography, Box, Button, Link } from "@material-ui/core";
+import React from "react";
+import { makeStyles, Typography, Box, Link } from "@material-ui/core";
+import { Skeleton } from "@material-ui/lab";
 import { useWeb3React } from "@web3-react/core";
 import { Link as RouterLink } from "react-router-dom";
-import { Spacer, RStatusBadge, downloadPdf } from "request-ui";
+import { RStatusBadge, downloadPdf } from "request-ui";
 import Moment from "react-moment";
 
 import {
@@ -16,16 +17,6 @@ import { getPayUrl } from "../components/ShareRequest";
 import { useClipboard } from "use-clipboard-copy";
 
 import ErrorPage from "./ErrorPage";
-import { useConnectedUser } from "../contexts/UserContext";
-import NotLoggedPage from "./NotLoggedPage";
-import { Skeleton } from "@material-ui/lab";
-
-const useStyles = makeStyles(() => ({
-  cancel: {
-    color: "#DE1C22",
-    border: "1px solid #E4E4E4",
-  },
-}));
 
 export const RequestNotFound = () => {
   return (
@@ -173,12 +164,16 @@ const ActionsHeader = () => {
 
 const Actions = ({
   request,
+  pay,
   cancel,
   download,
+  account,
 }: {
   request?: IParsedRequest;
+  pay: () => void;
   cancel: () => void;
   download: () => void;
+  account?: string;
 }) => {
   const { copied, copy } = useClipboard({
     copiedTimeout: 1000,
@@ -240,6 +235,26 @@ const Actions = ({
     );
   }
 
+  if (
+    request.payer &&
+    request.payer?.toLowerCase() === account?.toLowerCase()
+  ) {
+    return (
+      <Box display="flex" flexDirection="column">
+        <Box className={classes.line}>
+          <Link className={classes.primaryLink} onClick={pay}>
+            Pay now
+          </Link>
+        </Box>
+        <Box className={classes.line}>
+          <Link className={classes.link} onClick={share}>
+            {copied ? "Copied!" : "Share this request"}
+          </Link>
+        </Box>
+      </Box>
+    );
+  }
+
   return (
     <Box display="flex" flexDirection="column">
       <Box className={classes.line}>
@@ -269,6 +284,10 @@ export const RequestPage = () => {
   const downloadReceipt = () =>
     downloadPdf({ request: request!, counterCurrency, counterValue });
 
+  const pay = () => {
+    alert("not implemented");
+  };
+
   const cancel = async () => {
     if (!request || !account || !chainId) {
       throw new Error("cannot cancel because page is not ready");
@@ -285,7 +304,7 @@ export const RequestPage = () => {
   };
 
   if (!loading && !request) {
-    return <Box>Your request has not been found, sorry!</Box>;
+    return <RequestNotFound />;
   }
   return (
     <>
@@ -295,19 +314,21 @@ export const RequestPage = () => {
       </Box>
       <Box flex={1}>
         <ActionsHeader />
-        <Actions request={request} cancel={cancel} download={downloadReceipt} />
+        <Actions
+          account={account || undefined}
+          request={request}
+          pay={pay}
+          cancel={cancel}
+          download={downloadReceipt}
+        />
       </Box>
     </>
   );
 };
 
 export default () => {
-  const { chainId, account } = useWeb3React();
-  const { loading: web3Loading } = useConnectedUser();
+  const { chainId } = useWeb3React();
 
-  if (!web3Loading && (!account || !chainId)) {
-    return <NotLoggedPage />;
-  }
   return (
     <RequestProvider chainId={chainId}>
       <RequestPage />

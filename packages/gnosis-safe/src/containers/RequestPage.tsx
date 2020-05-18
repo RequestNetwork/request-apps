@@ -1,15 +1,11 @@
-import React, { useState } from "react";
-import { makeStyles, Typography } from "@material-ui/core";
+import React from "react";
+import { makeStyles, Typography, Box, Link } from "@material-ui/core";
+import { Skeleton } from "@material-ui/lab";
 import { useWeb3React } from "@web3-react/core";
-import {
-  RContainer,
-  RequestView,
-  Spacer,
-  RButton,
-  RequestSkeleton,
-  TestnetWarning,
-  ReceiptLink,
-} from "request-ui";
+import { Link as RouterLink } from "react-router-dom";
+import { RStatusBadge, downloadPdf } from "request-ui";
+import Moment from "react-moment";
+
 import {
   IParsedRequest,
   RequestProvider,
@@ -17,18 +13,10 @@ import {
   cancelRequest,
   isCancelError,
 } from "request-shared";
+import { getPayUrl } from "../components/ShareRequest";
+import { useClipboard } from "use-clipboard-copy";
 
-import ShareRequest from "../components/ShareRequest";
 import ErrorPage from "./ErrorPage";
-import { useConnectedUser } from "../contexts/UserContext";
-import NotLoggedPage from "./NotLoggedPage";
-
-const useStyles = makeStyles(() => ({
-  cancel: {
-    color: "#DE1C22",
-    border: "1px solid #E4E4E4",
-  },
-}));
 
 export const RequestNotFound = () => {
   return (
@@ -39,44 +27,241 @@ export const RequestNotFound = () => {
   );
 };
 
-const RequestActions = ({
-  request,
-  account,
-  cancel,
-}: {
-  request: IParsedRequest;
-  account?: string | null;
-  cancel: () => Promise<void>;
-}) => {
-  const [cancelling, setCancelling] = useState(false);
-  const onCancelClick = async () => {
-    setCancelling(true);
-    await cancel();
-    setCancelling(false);
-  };
-  const classes = useStyles();
-  account = account?.toLowerCase();
-  if (
-    request.status === "open" &&
-    account &&
-    [request.payer, request.payee].includes(account)
-  ) {
-    return (
-      <RButton
-        color="default"
-        className={classes.cancel}
-        onClick={onCancelClick}
-        disabled={cancelling}
-      >
-        <Typography variant="h4">
-          {request.payer === account ? "Decline request" : "Cancel request"}
-        </Typography>
-      </RButton>
-    );
-  }
-  return <></>;
+const Header = () => {
+  return (
+    <Box padding="24px" paddingBottom={0}>
+      <Box display="flex" justifyContent="space-between" alignItems="center">
+        <Typography variant="subtitle1">Your request details</Typography>
+        <RouterLink to="/dashboard" style={{ color: "#001428" }}>
+          <Typography variant="caption">Go to my dashboard</Typography>
+        </RouterLink>
+      </Box>
+    </Box>
+  );
 };
 
+const useBodyStyles = makeStyles({
+  line: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    borderBottom: "1px solid #E8E7E6",
+    padding: "16px 24px",
+    "&:last-child": {
+      borderBottom: "none",
+    },
+  },
+
+  status: {
+    padding: "4px 12px",
+  },
+  link: {
+    fontSize: 12,
+    lineHeight: "14px",
+    textDecoration: "underline",
+    color: "#001428",
+    fontWeight: 600,
+    cursor: "pointer",
+  },
+  primaryLink: {
+    cursor: "pointer",
+    fontSize: 12,
+    lineHeight: "14px",
+    color: "#008C73",
+    textDecoration: "underline",
+    fontWeight: 600,
+  },
+});
+
+const Body = ({ request }: { request?: IParsedRequest }) => {
+  const classes = useBodyStyles();
+  return (
+    <Box display="flex" flexDirection="column">
+      <Box className={classes.line}>
+        <Box>
+          <Typography variant="h5">Date</Typography>
+        </Box>
+        <Box>
+          {request ? (
+            <Typography>
+              <Moment format="YYYY/MM/DD">{request.createdDate}</Moment>
+            </Typography>
+          ) : (
+            <Skeleton animation="wave" variant="text" width={50} />
+          )}
+        </Box>
+      </Box>
+      <Box className={classes.line}>
+        <Box>
+          <Typography variant="h5">Amount</Typography>
+        </Box>
+        <Box>
+          {request ? (
+            <Typography>
+              {request.amount} {request.currency}
+            </Typography>
+          ) : (
+            <Skeleton animation="wave" variant="text" width={50} />
+          )}
+        </Box>
+      </Box>
+      <Box className={classes.line}>
+        <Box>
+          <Typography variant="h5">From</Typography>
+        </Box>
+        <Box>
+          {request ? (
+            <Typography>{request.payee}</Typography>
+          ) : (
+            <Skeleton animation="wave" variant="text" width={200} />
+          )}
+        </Box>
+      </Box>
+      {(!request || request.payer) && (
+        <Box className={classes.line}>
+          <Box>
+            <Typography variant="h5">To</Typography>
+          </Box>
+          <Box>
+            {request ? (
+              <Typography>{request.payer}</Typography>
+            ) : (
+              <Skeleton animation="wave" variant="text" width={200} />
+            )}
+          </Box>
+        </Box>
+      )}
+      {(!request || request.reason) && (
+        <Box className={classes.line}>
+          <Box>
+            <Typography variant="h5">Reason</Typography>
+          </Box>
+          <Box>
+            {request ? (
+              <Typography>{request.reason}</Typography>
+            ) : (
+              <Skeleton animation="wave" variant="text" width={150} />
+            )}
+          </Box>
+        </Box>
+      )}
+
+      <Box className={classes.line}>
+        <Box>
+          <Typography variant="h5">Status</Typography>
+        </Box>
+        <Box>
+          {request ? (
+            <RStatusBadge status={request.status} className={classes.status} />
+          ) : (
+            <Skeleton animation="wave" variant="rect" width={75} height={24} />
+          )}
+        </Box>
+      </Box>
+    </Box>
+  );
+};
+
+const ActionsHeader = () => {
+  return (
+    <Box padding="24px" paddingBottom={0}>
+      <Typography variant="subtitle1">Action</Typography>
+    </Box>
+  );
+};
+
+const Actions = ({
+  request,
+  pay,
+  cancel,
+  download,
+  account,
+}: {
+  request?: IParsedRequest;
+  pay: () => void;
+  cancel: () => void;
+  download: () => void;
+  account?: string;
+}) => {
+  const { copied, copy } = useClipboard({
+    copiedTimeout: 1000,
+  });
+  const classes = useBodyStyles();
+  const share = () => {
+    copy(getPayUrl(request!.requestId));
+  };
+
+  if (!request) {
+    return (
+      <Box display="flex" flexDirection="column">
+        <Box className={classes.line}>
+          <Skeleton animation="wave" variant="text" width={100} />
+        </Box>
+        <Box className={classes.line}>
+          <Skeleton animation="wave" variant="text" width={100} />
+        </Box>
+      </Box>
+    );
+  }
+  if (request.status === "canceled") {
+    return (
+      <Box className={classes.line}>
+        No action to take here. This request has been canceled.
+      </Box>
+    );
+  }
+  if (request.status === "paid") {
+    return (
+      <Box display="flex" flexDirection="column">
+        <Box className={classes.line}>
+          <Link className={classes.primaryLink} onClick={download}>
+            Download PDF receipt
+          </Link>
+        </Box>
+        <Box className={classes.line}>
+          <Link className={classes.link} onClick={share}>
+            {copied ? "Copied!" : "Share this request"}
+          </Link>
+        </Box>
+      </Box>
+    );
+  }
+
+  if (
+    request.payer &&
+    request.payer?.toLowerCase() === account?.toLowerCase()
+  ) {
+    return (
+      <Box display="flex" flexDirection="column">
+        <Box className={classes.line}>
+          <Link className={classes.primaryLink} onClick={pay}>
+            Pay now
+          </Link>
+        </Box>
+        <Box className={classes.line}>
+          <Link className={classes.link} onClick={share}>
+            {copied ? "Copied!" : "Share this request"}
+          </Link>
+        </Box>
+      </Box>
+    );
+  }
+
+  return (
+    <Box display="flex" flexDirection="column">
+      <Box className={classes.line}>
+        <Link className={classes.primaryLink} onClick={share}>
+          {copied ? "Copied!" : "Copy link to share this request"}
+        </Link>
+      </Box>
+      <Box className={classes.line}>
+        <Link className={classes.link} onClick={cancel}>
+          Cancel this request
+        </Link>
+      </Box>
+    </Box>
+  );
+};
 export const RequestPage = () => {
   const { account, chainId } = useWeb3React();
 
@@ -87,6 +272,13 @@ export const RequestPage = () => {
     counterCurrency,
     counterValue,
   } = useRequest();
+
+  const downloadReceipt = () =>
+    downloadPdf({ request: request!, counterCurrency, counterValue });
+
+  const pay = () => {
+    alert("not implemented");
+  };
 
   const cancel = async () => {
     if (!request || !account || !chainId) {
@@ -103,66 +295,32 @@ export const RequestPage = () => {
     await update();
   };
 
-  if (loading) {
-    return (
-      <RContainer>
-        <Spacer size={15} xs={8} />
-        <RequestSkeleton />
-      </RContainer>
-    );
-  }
-  if (!request) {
+  if (!loading && !request) {
     return <RequestNotFound />;
   }
   return (
-    <RContainer>
-      <Spacer size={15} xs={8} />
-      {request && request.network !== "mainnet" && <TestnetWarning />}
-      <RequestView
-        payee={request.payeeName || request.payee}
-        createdDate={request.createdDate}
-        paidDate={request.paidDate}
-        canceledDate={request.canceledDate}
-        status={request.status}
-        amount={request.amount.toLocaleString("en-US", {
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 5,
-        })}
-        currency={request.currency}
-        reason={request.reason}
-        counterValue={counterValue}
-        counterCurrency={counterCurrency}
-      />
-      <Spacer size={12} />
-      {request.status === "paid" ? (
-        <>
-          <ReceiptLink
-            request={request}
-            counterValue={counterValue}
-            counterCurrency={counterCurrency}
-          />
-          <Spacer size={11} />
-          <ShareRequest requestId={request.requestId} />
-        </>
-      ) : (
-        <>
-          <ShareRequest requestId={request.requestId} />
-          <Spacer size={11} />
-          <RequestActions request={request} account={account} cancel={cancel} />
-        </>
-      )}
-      <Spacer size={12} />
-    </RContainer>
+    <>
+      <Box flex={1} borderRight="1px solid #E8E7E6;">
+        <Header />
+        <Body request={request} />
+      </Box>
+      <Box flex={1}>
+        <ActionsHeader />
+        <Actions
+          account={account || undefined}
+          request={request}
+          pay={pay}
+          cancel={cancel}
+          download={downloadReceipt}
+        />
+      </Box>
+    </>
   );
 };
 
 export default () => {
-  const { chainId, account } = useWeb3React();
-  const { loading: web3Loading } = useConnectedUser();
+  const { chainId } = useWeb3React();
 
-  if (!web3Loading && (!account || !chainId)) {
-    return <NotLoggedPage />;
-  }
   return (
     <RequestProvider chainId={chainId}>
       <RequestPage />

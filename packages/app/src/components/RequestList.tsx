@@ -218,7 +218,7 @@ const Row = React.memo(
                   <Box width={40}>To</Box>
                 </Hidden>
                 <Box display="flex" alignItems="center" fontStyle="italic">
-                  <Tooltip title="This request did not specify a payer.">
+                  <Tooltip title="This request did not specify a payer. It can be paid by anybody using the payment link.">
                     <InfoOutlinedIcon
                       style={{ fontSize: 20, marginRight: 4 }}
                     />

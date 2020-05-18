@@ -324,10 +324,10 @@ export const schema = Yup.object().shape<IFormData>({
         !val ||
         val ===
           encodeURIComponent(val)
-            .replace("%3A", ":")
-            .replace("%2F", "/")
-            .replace("%20", " ")
-            .replace("%40", "@")
+            .replace(/%3A/g, ":")
+            .replace(/%2F/g, "/")
+            .replace(/%20/g, " ")
+            .replace(/%40/g, "@")
       );
     }
   ),

@@ -1,7 +1,12 @@
 import { FormikHelpers } from "formik";
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router";
-import { amountToString, createRequest, isCancelError } from "request-shared";
+import {
+  amountToString,
+  createRequest,
+  isCancelError,
+  parseCurrency,
+} from "request-shared";
 import { useErrorReporter } from "request-ui";
 
 import { useWeb3React } from "@web3-react/core";
@@ -31,15 +36,17 @@ export default () => {
       throw new Error("Safe not connected");
     }
     try {
+      const currency = parseCurrency(values.currency!, chainId);
+
       const request = await createRequest(
         {
-          amount: await amountToString(values.amount!, values.currency!),
+          amount: await amountToString(values.amount!, currency),
           contentData: {
             reason: values.reason,
             builderId: "request-team-gnosis-safe",
             createdWith: window.location.hostname,
           },
-          currency: values.currency!,
+          currency,
           payer: values.payer,
           paymentAddress: safeInfo!.safeAddress,
           // add the safeAddress in the topics to link it to the gnosis multisig

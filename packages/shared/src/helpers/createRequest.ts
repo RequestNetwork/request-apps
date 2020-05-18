@@ -18,7 +18,7 @@ export interface ICreateRequestArgs {
   currency: RequestLogicTypes.ICurrency;
   paymentAddress?: string;
   contentData: any;
-  topics: any[];
+  topics?: string[];
 }
 
 export const createRequest = async (
@@ -28,7 +28,7 @@ export const createRequest = async (
     payer,
     paymentAddress,
     contentData,
-    topics = [],
+    topics,
   }: ICreateRequestArgs,
   account: string,
   network: string | number

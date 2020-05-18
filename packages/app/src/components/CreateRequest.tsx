@@ -23,15 +23,9 @@ import {
   RButton,
   TestnetWarning,
   RAlert,
+  currencies,
 } from "request-ui";
 import Dot from "./Dot";
-import { DaiIcon } from "./currencies/DaiIcon";
-import { EthIcon } from "./currencies/EthIcon";
-// import { UsdtIcon } from "./currencies/UsdtIcon";
-import { UsdcIcon } from "./currencies/UsdcIcon";
-import { TusdIcon } from "./currencies/TusdIcon";
-// import { BusdIcon } from "./currencies/BusdIcon";
-import { PaxIcon } from "./currencies/PaxIcon";
 
 export interface IFormData {
   amount?: number;
@@ -172,18 +166,18 @@ const Amount = ({ className }: { className?: string }) => {
 const getCurrencies = (network?: number): Record<string, React.FC> => {
   if (network === 1) {
     return {
-      DAI: DaiIcon,
-      ETH: EthIcon,
+      DAI: currencies.DaiIcon,
+      ETH: currencies.EthIcon,
       // USDT: UsdtIcon,
-      USDC: UsdcIcon,
-      PAX: PaxIcon,
+      USDC: currencies.UsdcIcon,
+      PAX: currencies.PaxIcon,
       // BUSD: BusdIcon,
-      TUSD: TusdIcon,
+      TUSD: currencies.TusdIcon,
     };
   }
   return {
-    FAU: DaiIcon,
-    ETH: EthIcon,
+    FAU: currencies.DaiIcon,
+    ETH: currencies.EthIcon,
   };
 };
 
@@ -214,7 +208,7 @@ const Currency = ({
       helperText={Boolean(meta.error) ? meta.error : " "}
     >
       {Object.keys(currencies).map(currency => (
-        <MenuItem value={currency}>
+        <MenuItem key={currency} value={currency}>
           <CurrencyIcon text={currency} icon={currencies[currency]} />
         </MenuItem>
       ))}

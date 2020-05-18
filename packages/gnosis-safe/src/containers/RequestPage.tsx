@@ -84,7 +84,7 @@ const Body = ({ request }: { request?: IParsedRequest }) => {
         <Box>
           {request ? (
             <Typography>
-              <Moment format="YYYY/MM/DD">{request.createdDate}</Moment>
+              <Moment format="ll">{request.createdDate}</Moment>
             </Typography>
           ) : (
             <Skeleton animation="wave" variant="text" width={50} />
@@ -210,7 +210,7 @@ const Actions = ({
       </Box>
     );
   }
-  if (request.status === "paid") {
+  if (request.status === "paid" || request.status === "overpaid") {
     return (
       <Box display="flex" flexDirection="column">
         <Box className={classes.line}>

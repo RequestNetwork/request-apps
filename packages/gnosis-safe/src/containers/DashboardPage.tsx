@@ -1,6 +1,7 @@
 import React from "react";
+import { Spacer } from "request-ui";
 
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography, Button } from "@material-ui/core";
 import { useWeb3React } from "@web3-react/core";
 import { Link as RouterLink } from "react-router-dom";
 
@@ -12,6 +13,21 @@ import {
 import { useConnectedUser } from "../contexts/UserContext";
 import { useGnosisSafe } from "../contexts/GnosisSafeContext";
 import NotLoggedPage from "./NotLoggedPage";
+
+export const NoRequests = () => {
+  return (
+    <Box textAlign="center" padding="16px" width="100%">
+      <Spacer size={4} xs={12} />
+      <Typography variant="h5">
+        There are no requests associated with your wallet address.
+      </Typography>
+      <Spacer size={12} />
+      <RouterLink to="/" style={{ color: "#001428" }}>
+        <Typography variant="caption">Create a Request</Typography>
+      </RouterLink>
+    </Box>
+  );
+};
 
 const Header = () => {
   return (
@@ -30,11 +46,16 @@ export const Dashboard = () => {
   const { account, chainId } = useWeb3React();
   const { loading: web3Loading } = useConnectedUser();
   const { safeInfo } = useGnosisSafe();
-  const { requests } = useRequestList();
+  const { requests, loading: requestsLoading } = useRequestList();
 
   if (!web3Loading && (!account || !chainId)) {
     return <NotLoggedPage />;
   }
+
+  if (!requestsLoading && requests?.length === 0) {
+    return <NoRequests />;
+  }
+
   return (
     <Box flex={1} borderRight="1px solid #E8E7E6;">
       <Header />

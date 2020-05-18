@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useWeb3React } from "@web3-react/core";
-import { getEnsName } from "request-shared";
+import { ENS } from "request-shared";
 
 import initSdk, { SafeInfo } from "@gnosis.pm/safe-apps-sdk";
 
@@ -28,8 +27,10 @@ export const GnosisSafeProvider: React.FC = ({ children }) => {
 
   const load = async (address?: string) => {
     if (address) {
-      const ens = await getEnsName(address);
-      setName(ens);
+      const ens = await ENS.fromAddress(address);
+      if (ens) {
+        setName(ens.name);
+      }
       setLoading(false);
     }
   };

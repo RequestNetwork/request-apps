@@ -25,7 +25,8 @@ export class BalanceEventEmitter extends EventEmitter {
 
 export const listRequests = async (
   account: string,
-  network: string | number
+  network: string | number,
+  isSmartContract: boolean = false
 ) => {
   network = chainIdToName(network);
   if (!account) {
@@ -50,6 +51,10 @@ export const listRequests = async (
       disablePaymentDetection: true,
     }
   );
+
+  if (isSmartContract) {
+    // TODO @VRO
+  }
 
   const list = [];
   for (const request of requests) {

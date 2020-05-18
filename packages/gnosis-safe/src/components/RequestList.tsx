@@ -8,6 +8,7 @@ import {
   IconButton,
 } from "@material-ui/core";
 import CheckIcon from "@material-ui/icons/Check";
+import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
 import { IParsedRequest } from "request-shared";
 import { Link } from "react-router-dom";
 import { RStatusBadge, Spacer } from "request-ui";
@@ -63,7 +64,7 @@ const Address = ({
           <Box width={40}>{text}</Box>
         </Hidden>
       )}
-      <Tooltip title={address}>
+      <Tooltip title={address || ""}>
         <Typography variant={currentUser ? "h5" : "body2"}>
           {display || short(address)}
         </Typography>
@@ -205,7 +206,7 @@ const Row = React.memo(
         <Box className={classes.rowInner}>
           <Box flex={1 / 10}>
             <Spacer size={0} xs={1} />
-            <Moment format="YYYY/MM/DD">{request.createdDate}</Moment>
+            <Moment format="ll">{request.createdDate}</Moment>
           </Box>
           <Box flex={2 / 10} className={classes.payee}>
             <Box display="flex">
@@ -220,12 +221,28 @@ const Row = React.memo(
           <Box flex={2 / 10} className={classes.payer}>
             <Spacer size={0} xs={2} />
 
-            <Address
-              address={request.payer}
-              display={request.payerName}
-              currentUser={isAccountPayer || isSmartContractPayer}
-              text={"To"}
-            />
+            {request.payer ? (
+              <Address
+                address={request.payer}
+                display={request.payerName}
+                currentUser={isAccountPayer || isSmartContractPayer}
+                text="To"
+              />
+            ) : (
+              <Box display="flex">
+                <Hidden mdUp>
+                  <Box width={40}>To</Box>
+                </Hidden>
+                <Box display="flex" alignItems="center" fontStyle="italic">
+                  <Tooltip title="This request did not specify a payer. It can be paid by anybody using the payment link.">
+                    <InfoOutlinedIcon
+                      style={{ fontSize: 20, marginRight: 4 }}
+                    />
+                  </Tooltip>
+                  <Typography>Open</Typography>
+                </Box>
+              </Box>
+            )}
           </Box>
           <Box flex={1 / 10} className={classes.amount}>
             <Amount
@@ -241,10 +258,21 @@ const Row = React.memo(
             />
           </Box>
           <Box flex={2 / 10} className={classes.status}>
-            <RStatusBadge status={request.status} />
+            {request.loaded ? (
+              <RStatusBadge status={request.status} />
+            ) : (
+              <Skeleton
+                animation="wave"
+                variant="rect"
+                height={32}
+                width={100}
+              />
+            )}
           </Box>
           <Box flex={1 / 10} className={classes.viewButton}>
-            {request.status !== "open" || !isSmartContractPayer ? (
+            {request.status !== "open" ||
+            isSmartContractPayee ||
+            !request.loaded ? (
               <Link
                 to={`/${request.requestId}`}
                 style={{ textDecoration: "none" }}

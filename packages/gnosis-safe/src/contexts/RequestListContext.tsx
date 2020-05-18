@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { listRequestsForSmartContract, IParsedRequest } from "request-shared";
+import { listRequests, IParsedRequest } from "request-shared";
 import { useWeb3React } from "@web3-react/core";
-import { useGnosisSafe } from "../contexts/GnosisSafeContext";
 
 interface IContext {
   requests?: IParsedRequest[];
@@ -28,9 +27,19 @@ export const RequestListProvider: React.FC = ({ children }) => {
     let canceled = false;
     if (chainId && account) {
       setRequests(undefined);
-      listRequestsForSmartContract(account, chainId).then(newRequests => {
+      listRequests(account, chainId, true).then(result => {
         if (!canceled) {
-          setRequests(newRequests);
+          setRequests(result.requests);
+          result.on("update", newRequest => {
+            setRequests(prevRequests =>
+              prevRequests?.map(request =>
+                request.requestId === newRequest.requestId
+                  ? newRequest
+                  : request
+              )
+            );
+          });
+          result.loadBalances();
         }
       });
     }

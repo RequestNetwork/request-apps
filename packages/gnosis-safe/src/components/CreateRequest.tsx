@@ -13,11 +13,9 @@ import { Link } from "react-router-dom";
 import * as Yup from "yup";
 import ArrowDropDownRoundedIcon from "@material-ui/icons/ArrowDropDownRounded";
 import WalletAddressValidator from "wallet-address-validator";
-import { isValidEns, getAddressFromEns } from "request-shared";
+import { isValidEns, ENS } from "request-shared";
 
-import { Spacer, RAlert } from "request-ui";
-import { DaiIcon } from "./currencies/DaiIcon";
-import { EthIcon } from "./currencies/EthIcon";
+import { Spacer, RAlert, currencies } from "request-ui";
 
 export interface IFormData {
   amount?: number;
@@ -99,7 +97,31 @@ const useCurrencyStyles = makeStyles(() => ({
   },
 }));
 
-const Currency = ({ className }: { className?: string }) => {
+const getCurrencies = (network?: number): Record<string, React.FC> => {
+  if (network === 1) {
+    return {
+      DAI: currencies.DaiIcon,
+      ETH: currencies.EthIcon,
+      // USDT: UsdtIcon,
+      USDC: currencies.UsdcIcon,
+      PAX: currencies.PaxIcon,
+      // BUSD: BusdIcon,
+      TUSD: currencies.TusdIcon,
+    };
+  }
+  return {
+    FAU: currencies.DaiIcon,
+    ETH: currencies.EthIcon,
+  };
+};
+
+const Currency = ({
+  className,
+  currencies,
+}: {
+  className?: string;
+  currencies: Record<string, React.FC>;
+}) => {
   const [field, meta] = useField("currency");
   const classes = useCurrencyStyles();
 
@@ -141,12 +163,11 @@ const Currency = ({ className }: { className?: string }) => {
         },
       }}
     >
-      <MenuItem value="DAI">
-        <CurrencyIcon text="DAI" icon={DaiIcon} />
-      </MenuItem>
-      <MenuItem value="ETH">
-        <CurrencyIcon text="ETH" icon={EthIcon} />
-      </MenuItem>
+      {Object.keys(currencies).map(currency => (
+        <MenuItem key={currency} value={currency}>
+          <CurrencyIcon text={currency} icon={currencies[currency]} />
+        </MenuItem>
+      ))}
     </TextField>
   );
 };
@@ -204,7 +225,7 @@ const Reason = ({ className }: { className?: string }) => {
   );
 };
 
-const Body = () => {
+const Body = ({ currencies }: { currencies: Record<string, React.FC> }) => {
   const classes = useBodyStyles();
   return (
     <Box className={classes.container}>
@@ -213,7 +234,7 @@ const Body = () => {
           <Amount className={classes.field} />
         </Box>
         <Box flex={0.2}>
-          <Currency className={classes.field} />
+          <Currency className={classes.field} currencies={currencies} />
         </Box>
       </Box>
 
@@ -259,7 +280,7 @@ export const schema = Yup.object().shape<IFormData>({
       return (
         !value ||
         WalletAddressValidator.validate(value, "ethereum") ||
-        (isValidEns(value) && !!(await getAddressFromEns(value)))
+        (isValidEns(value) && !!(await new ENS(value).addr()))
       );
     }
   ),
@@ -272,10 +293,10 @@ export const schema = Yup.object().shape<IFormData>({
         !val ||
         val ===
           encodeURIComponent(val)
-            .replace("%3A", ":")
-            .replace("%2F", "/")
-            .replace("%20", " ")
-            .replace("%40", "@")
+            .replace(/%3A/g, ":")
+            .replace(/%2F/g, "/")
+            .replace(/%20/g, " ")
+            .replace(/%40/g, "@")
       );
     }
   ),
@@ -291,14 +312,22 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export const CreateRequestForm = ({ error, onSubmit, account }: IProps) => {
+export const CreateRequestForm = ({
+  error,
+  onSubmit,
+  account,
+  network,
+}: IProps) => {
   const classes = useStyles();
+  const currencies = getCurrencies(network);
+
   return (
     <>
       <Box flex={1} padding="24px" paddingBottom={0}>
         <Formik<IFormData>
           validationSchema={schema}
           onSubmit={onSubmit}
+          enableReinitialize
           initialValues={{
             currency: "DAI",
             amount: "" as any,
@@ -310,7 +339,7 @@ export const CreateRequestForm = ({ error, onSubmit, account }: IProps) => {
             <Box>
               <Box className={classes.container}>
                 <Header />
-                <Body />
+                <Body currencies={currencies} />
               </Box>
 
               {error && (

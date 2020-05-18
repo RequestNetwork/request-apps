@@ -1687,6 +1687,14 @@
     "@requestnetwork/types" "0.15.0"
     "@requestnetwork/utils" "0.14.0"
 
+"@requestnetwork/types@0.14.0":
+  version "0.14.0"
+  resolved "https://registry.yarnpkg.com/@requestnetwork/types/-/types-0.14.0.tgz#fde2320dd69f99992254cbda6a199495691a7891"
+  integrity sha512-67IcwFRuonWMCLMrNNGhaBu5LPWRmFV3eLonQibrMaBJ6LYIZ8P9zl9ctIy1t6faG8W2g2NT2uF/OnOQyoZD4Q==
+  dependencies:
+    bn.js "4.11.8"
+    events "3.1.0"
+
 "@requestnetwork/types@0.15.0":
   version "0.15.0"
   resolved "https://registry.yarnpkg.com/@requestnetwork/types/-/types-0.15.0.tgz#9cddc3997007001514f3e5c577110902b244ef57"

@@ -27,10 +27,10 @@ import {
 import Dot from "./Dot";
 import { DaiIcon } from "./currencies/DaiIcon";
 import { EthIcon } from "./currencies/EthIcon";
-import { UsdtIcon } from "./currencies/UsdtIcon";
+// import { UsdtIcon } from "./currencies/UsdtIcon";
 import { UsdcIcon } from "./currencies/UsdcIcon";
 import { TusdIcon } from "./currencies/TusdIcon";
-import { BusdIcon } from "./currencies/BusdIcon";
+// import { BusdIcon } from "./currencies/BusdIcon";
 import { PaxIcon } from "./currencies/PaxIcon";
 
 export interface IFormData {
@@ -170,10 +170,10 @@ const getCurrencies = (network?: number): Record<string, React.FC> => {
     return {
       DAI: DaiIcon,
       ETH: EthIcon,
-      USDT: UsdtIcon,
+      // USDT: UsdtIcon,
       USDC: UsdcIcon,
       PAX: PaxIcon,
-      BUSD: BusdIcon,
+      // BUSD: BusdIcon,
       TUSD: TusdIcon,
     };
   }

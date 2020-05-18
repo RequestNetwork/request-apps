@@ -45,7 +45,7 @@ abstract class EnsRegistryContract extends Contract {
 
 const getResolver = async (nodehash: string, provider?: Provider) => {
   if (!provider) {
-    provider = ethers.getDefaultProvider("rinkeby");
+    provider = ethers.getDefaultProvider();
   }
   const registryContract = EnsRegistryContract.connect(
     ENS.registryAddress,

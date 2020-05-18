@@ -151,7 +151,7 @@ export const ApprovalList = () => {
               <td>
                 <a
                   href={`https://${
-                    chainId === 4 ? "rinkeby." : 1
+                    chainId === 4 ? "rinkeby." : ""
                   }etherscan.io/token/${c.address}`}
                 >
                   {c.address}

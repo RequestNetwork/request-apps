@@ -9,15 +9,12 @@ import {
 } from "@material-ui/core";
 import CheckIcon from "@material-ui/icons/Check";
 import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
-import { IParsedRequest } from "request-shared";
+import { IParsedRequest, getPayUrl } from "request-shared";
 import { Link } from "react-router-dom";
-import { RStatusBadge, Spacer } from "request-ui";
+import { RStatusBadge, Spacer, CopyIcon } from "request-ui";
 import Moment from "react-moment";
 import { Skeleton } from "@material-ui/lab";
 import { useClipboard } from "use-clipboard-copy";
-
-import { CopyIcon } from "./CopyIcon";
-import { getPayUrl } from "./ShareRequest";
 
 const short = (val?: string) =>
   val

@@ -1,5 +1,5 @@
 import { FormikHelpers } from "formik";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router";
 import {
   amountToString,
@@ -10,7 +10,6 @@ import {
 import { useErrorReporter } from "request-ui";
 
 import { useWeb3React } from "@web3-react/core";
-import initSdk from "@gnosis.pm/safe-apps-sdk";
 
 import { CreateRequestForm, IFormData } from "../components/CreateRequest";
 import { useConnectedUser } from "../contexts/UserContext";
@@ -18,7 +17,7 @@ import { useConnectedUser } from "../contexts/UserContext";
 import { useGnosisSafe } from "../contexts/GnosisSafeContext";
 
 export default () => {
-  const { loading, name: ensSafeName, safeInfo } = useGnosisSafe();
+  const { safeInfo } = useGnosisSafe();
   const history = useHistory();
   const [error, setError] = useState<string>();
   const { account, chainId } = useWeb3React();

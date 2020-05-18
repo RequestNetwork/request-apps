@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { Box, Typography } from "@material-ui/core";
-import { Spacer, colors } from "request-ui";
+import { Spacer } from "request-ui";
 import { Link as RouterLink } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({

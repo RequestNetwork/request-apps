@@ -12,8 +12,9 @@ import {
   useRequest,
   cancelRequest,
   isCancelError,
+  getPayUrl,
 } from "request-shared";
-import { getPayUrl } from "../components/ShareRequest";
+
 import { useClipboard } from "use-clipboard-copy";
 
 import ErrorPage from "./ErrorPage";

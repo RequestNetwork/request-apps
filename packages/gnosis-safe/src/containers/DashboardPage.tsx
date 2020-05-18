@@ -1,7 +1,7 @@
 import React from "react";
 import { Spacer } from "request-ui";
 
-import { Box, Typography, Button } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import { useWeb3React } from "@web3-react/core";
 import { Link as RouterLink } from "react-router-dom";
 
@@ -12,7 +12,6 @@ import {
 } from "../contexts/RequestListContext";
 import { useConnectedUser } from "../contexts/UserContext";
 import { useGnosisSafe } from "../contexts/GnosisSafeContext";
-import NotLoggedPage from "./NotLoggedPage";
 
 export const NoRequests = () => {
   return (
@@ -43,14 +42,10 @@ const Header = () => {
 };
 
 export const Dashboard = () => {
-  const { account, chainId } = useWeb3React();
+  const { account } = useWeb3React();
   const { loading: web3Loading } = useConnectedUser();
   const { safeInfo } = useGnosisSafe();
   const { requests, loading: requestsLoading } = useRequestList();
-
-  if (!web3Loading && (!account || !chainId)) {
-    return <NotLoggedPage />;
-  }
 
   if (!requestsLoading && requests?.length === 0) {
     return <NoRequests />;

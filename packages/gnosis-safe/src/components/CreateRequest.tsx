@@ -51,12 +51,9 @@ const Header = () => {
 
 const useBodyStyles = makeStyles(() => ({
   container: {
-    // height: 290,
     width: "100%",
     display: "flex",
     flexDirection: "column",
-    //justifyContent: "space-around",
-    // padding: "20px 32px",
   },
   field: {
     marginBottom: 8,

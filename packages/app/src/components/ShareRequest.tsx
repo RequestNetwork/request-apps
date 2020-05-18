@@ -9,6 +9,7 @@ import {
 import CopyToClipboard from "react-copy-to-clipboard";
 
 import { Spacer } from "request-ui";
+import { getPayUrl } from "request-shared";
 
 const useStyles = makeStyles(theme => ({
   wrapper: {
@@ -50,13 +51,6 @@ const useStyles = makeStyles(theme => ({
     minWidth: "unset",
   },
 }));
-
-export const getPayUrl = (requestId: string) =>
-  window.location.hostname === "localhost"
-    ? `http://localhost:3001/${requestId}`
-    : window.location.hostname.startsWith("baguette")
-    ? `https://baguette-pay.request.network/${requestId}`
-    : `https://pay.request.network/${requestId}`;
 
 export default ({ requestId }: { requestId: string }) => {
   const classes = useStyles();

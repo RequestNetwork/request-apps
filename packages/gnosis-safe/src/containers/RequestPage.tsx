@@ -1,15 +1,10 @@
 import React, { useState } from "react";
-import { makeStyles, Typography } from "@material-ui/core";
+import { makeStyles, Typography, Box } from "@material-ui/core";
 import { useWeb3React } from "@web3-react/core";
-import {
-  RContainer,
-  RequestView,
-  Spacer,
-  RButton,
-  RequestSkeleton,
-  TestnetWarning,
-  ReceiptLink,
-} from "request-ui";
+import { Link } from "react-router-dom";
+import { Spacer, RStatusBadge } from "request-ui";
+import Moment from "react-moment";
+
 import {
   IParsedRequest,
   RequestProvider,
@@ -39,42 +34,86 @@ export const RequestNotFound = () => {
   );
 };
 
-const RequestActions = ({
-  request,
-  account,
-  cancel,
-}: {
-  request: IParsedRequest;
-  account?: string | null;
-  cancel: () => Promise<void>;
-}) => {
-  const [cancelling, setCancelling] = useState(false);
-  const onCancelClick = async () => {
-    setCancelling(true);
-    await cancel();
-    setCancelling(false);
-  };
-  const classes = useStyles();
-  account = account?.toLowerCase();
-  if (
-    request.status === "open" &&
-    account &&
-    [request.payer, request.payee].includes(account)
-  ) {
-    return (
-      <RButton
-        color="default"
-        className={classes.cancel}
-        onClick={onCancelClick}
-        disabled={cancelling}
-      >
-        <Typography variant="h4">
-          {request.payer === account ? "Decline request" : "Cancel request"}
-        </Typography>
-      </RButton>
-    );
-  }
-  return <></>;
+const Header = () => {
+  return (
+    <Box padding="24px">
+      <Box display="flex" justifyContent="space-between" alignItems="center">
+        <Typography variant="subtitle1">You request details</Typography>
+        <Link to="/dashboard" style={{ color: "#001428" }}>
+          <Typography variant="caption">Go to my dashboard</Typography>
+        </Link>
+      </Box>
+    </Box>
+  );
+};
+
+const useBodyStyles = makeStyles({
+  line: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    borderBottom: "1px solid #E8E7E6",
+    padding: "16px 24px",
+    "&:last-child": {
+      borderBottom: "none",
+    },
+  },
+  title: {
+    fontWeight: "bold",
+    fontSize: 12,
+    lineHeight: "14px",
+  },
+  value: {
+    fontSize: 12,
+    lineHeight: "14px",
+  },
+  status: {
+    padding: "4px 12px",
+  },
+});
+
+const Body = ({ request }: { request: IParsedRequest }) => {
+  const classes = useBodyStyles();
+  return (
+    <Box display="flex" flexDirection="column">
+      <Box className={classes.line}>
+        <Box className={classes.title}>Date</Box>
+        <Box className={classes.value}>
+          <Moment format="YYYY/MM/DD">{request.createdDate}</Moment>
+        </Box>
+      </Box>
+      <Box className={classes.line}>
+        <Box className={classes.title}>Amount</Box>
+        <Box className={classes.value}>
+          {request.amount} {request.currency}
+        </Box>
+      </Box>
+      <Box className={classes.line}>
+        <Box className={classes.title}>From</Box>
+        <Box className={classes.value}>{request.payee}</Box>
+      </Box>
+      {request.payer && (
+        <Box className={classes.line}>
+          <Box className={classes.title}>To</Box>
+          <Box className={classes.value}>{request.payer}</Box>
+        </Box>
+      )}
+      {request.reason && (
+        <Box className={classes.line}>
+          <Box className={classes.title}>Reason</Box>
+          <Box className={classes.value}>{request.reason}</Box>
+        </Box>
+      )}
+      {request.status && (
+        <Box className={classes.line}>
+          <Box className={classes.title}>Status</Box>
+          <Box className={classes.value}>
+            <RStatusBadge status={request.status} className={classes.status} />
+          </Box>
+        </Box>
+      )}
+    </Box>
+  );
 };
 
 export const RequestPage = () => {
@@ -103,56 +142,17 @@ export const RequestPage = () => {
     await update();
   };
 
-  if (loading) {
-    return (
-      <RContainer>
-        <Spacer size={15} xs={8} />
-        <RequestSkeleton />
-      </RContainer>
-    );
-  }
-  if (!request) {
-    return <RequestNotFound />;
+  if (loading || !request) {
+    return null;
   }
   return (
-    <RContainer>
-      <Spacer size={15} xs={8} />
-      {request && request.network !== "mainnet" && <TestnetWarning />}
-      <RequestView
-        payee={request.payeeName || request.payee}
-        createdDate={request.createdDate}
-        paidDate={request.paidDate}
-        canceledDate={request.canceledDate}
-        status={request.status}
-        amount={request.amount.toLocaleString("en-US", {
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 5,
-        })}
-        currency={request.currency}
-        reason={request.reason}
-        counterValue={counterValue}
-        counterCurrency={counterCurrency}
-      />
-      <Spacer size={12} />
-      {request.status === "paid" ? (
-        <>
-          <ReceiptLink
-            request={request}
-            counterValue={counterValue}
-            counterCurrency={counterCurrency}
-          />
-          <Spacer size={11} />
-          <ShareRequest requestId={request.requestId} />
-        </>
-      ) : (
-        <>
-          <ShareRequest requestId={request.requestId} />
-          <Spacer size={11} />
-          <RequestActions request={request} account={account} cancel={cancel} />
-        </>
-      )}
-      <Spacer size={12} />
-    </RContainer>
+    <>
+      <Box flex={1}>
+        <Header />
+        <Body request={request} />
+      </Box>
+      <Box flex={1}></Box>
+    </>
   );
 };
 

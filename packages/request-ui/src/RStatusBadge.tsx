@@ -6,6 +6,7 @@ import { RequestStatus } from 'request-shared';
 
 interface IProps {
   status: RequestStatus;
+  className?: string;
 }
 
 const useStyles = makeStyles<Theme, IProps>({
@@ -34,7 +35,7 @@ export const RStatusBadge = (props: IProps) => {
       alignItems="center"
       position="relative"
     >
-      <div className={classes.status}>
+      <div className={[classes.status, props.className].join(' ')}>
         <Typography variant="h6">{label[props.status]}</Typography>
       </div>
     </Box>

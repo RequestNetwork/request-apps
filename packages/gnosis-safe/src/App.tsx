@@ -27,12 +27,17 @@ const useStyles = makeStyles(() => ({
     flexDirection: "row",
     height: "100%",
     maxWidth: "100%",
-    padding: 24,
     background: "white",
   },
 }));
 
 const theme = createMuiTheme({
+  typography: {
+    h6: {
+      fontSize: 12,
+      lineHeight: "16px",
+    },
+  },
   overrides: {
     MuiFilledInput: {
       root: {

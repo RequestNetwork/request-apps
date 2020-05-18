@@ -33,9 +33,27 @@ const useStyles = makeStyles(() => ({
 
 const theme = createMuiTheme({
   typography: {
+    body1: {
+      fontSize: 12,
+      lineHeight: "14px",
+    },
+    body2: {
+      fontSize: 12,
+      lineHeight: "14px",
+    },
+    subtitle1: {
+      fontSize: 16,
+      lineHeight: "19px",
+    },
+    h5: {
+      fontSize: 12,
+      lineHeight: "14px",
+      fontWeight: 600,
+    },
     h6: {
       fontSize: 12,
       lineHeight: "16px",
+      fontWeight: 600,
     },
   },
   overrides: {

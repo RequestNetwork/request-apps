@@ -295,7 +295,7 @@ export const CreateRequestForm = ({ error, onSubmit, account }: IProps) => {
   const classes = useStyles();
   return (
     <>
-      <Box flex={1} padding="24px">
+      <Box flex={1} padding="24px" paddingBottom={0}>
         <Formik<IFormData>
           validationSchema={schema}
           onSubmit={onSubmit}

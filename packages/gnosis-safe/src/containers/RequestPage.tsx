@@ -29,9 +29,9 @@ export const RequestNotFound = () => {
 
 const Header = () => {
   return (
-    <Box padding="24px">
+    <Box padding="24px" paddingBottom={0}>
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Typography variant="subtitle1">You request details</Typography>
+        <Typography variant="subtitle1">Your request details</Typography>
         <RouterLink to="/dashboard" style={{ color: "#001428" }}>
           <Typography variant="caption">Go to my dashboard</Typography>
         </RouterLink>
@@ -51,15 +51,7 @@ const useBodyStyles = makeStyles({
       borderBottom: "none",
     },
   },
-  title: {
-    fontWeight: "bold",
-    fontSize: 12,
-    lineHeight: "14px",
-  },
-  value: {
-    fontSize: 12,
-    lineHeight: "14px",
-  },
+
   status: {
     padding: "4px 12px",
   },
@@ -86,30 +78,40 @@ const Body = ({ request }: { request?: IParsedRequest }) => {
   return (
     <Box display="flex" flexDirection="column">
       <Box className={classes.line}>
-        <Box className={classes.title}>Date</Box>
-        <Box className={classes.value}>
+        <Box>
+          <Typography variant="h5">Date</Typography>
+        </Box>
+        <Box>
           {request ? (
-            <Moment format="YYYY/MM/DD">{request.createdDate}</Moment>
+            <Typography>
+              <Moment format="YYYY/MM/DD">{request.createdDate}</Moment>
+            </Typography>
           ) : (
             <Skeleton animation="wave" variant="text" width={50} />
           )}
         </Box>
       </Box>
       <Box className={classes.line}>
-        <Box className={classes.title}>Amount</Box>
-        <Box className={classes.value}>
+        <Box>
+          <Typography variant="h5">Amount</Typography>
+        </Box>
+        <Box>
           {request ? (
-            `${request.amount} ${request.currency}`
+            <Typography>
+              {request.amount} {request.currency}
+            </Typography>
           ) : (
             <Skeleton animation="wave" variant="text" width={50} />
           )}
         </Box>
       </Box>
       <Box className={classes.line}>
-        <Box className={classes.title}>From</Box>
-        <Box className={classes.value}>
+        <Box>
+          <Typography variant="h5">From</Typography>
+        </Box>
+        <Box>
           {request ? (
-            request.payee
+            <Typography>{request.payee}</Typography>
           ) : (
             <Skeleton animation="wave" variant="text" width={200} />
           )}
@@ -117,10 +119,12 @@ const Body = ({ request }: { request?: IParsedRequest }) => {
       </Box>
       {(!request || request.payer) && (
         <Box className={classes.line}>
-          <Box className={classes.title}>To</Box>
-          <Box className={classes.value}>
+          <Box>
+            <Typography variant="h5">To</Typography>
+          </Box>
+          <Box>
             {request ? (
-              request.payer
+              <Typography>{request.payer}</Typography>
             ) : (
               <Skeleton animation="wave" variant="text" width={200} />
             )}
@@ -129,10 +133,12 @@ const Body = ({ request }: { request?: IParsedRequest }) => {
       )}
       {(!request || request.reason) && (
         <Box className={classes.line}>
-          <Box className={classes.title}>Reason</Box>
-          <Box className={classes.value}>
+          <Box>
+            <Typography variant="h5">Reason</Typography>
+          </Box>
+          <Box>
             {request ? (
-              request.reason
+              <Typography>{request.reason}</Typography>
             ) : (
               <Skeleton animation="wave" variant="text" width={150} />
             )}
@@ -141,12 +147,14 @@ const Body = ({ request }: { request?: IParsedRequest }) => {
       )}
 
       <Box className={classes.line}>
-        <Box className={classes.title}>Status</Box>
-        <Box className={classes.value}>
+        <Box>
+          <Typography variant="h5">Status</Typography>
+        </Box>
+        <Box>
           {request ? (
             <RStatusBadge status={request.status} className={classes.status} />
           ) : (
-            <Skeleton animation="wave" variant="rect" width={75} height={32} />
+            <Skeleton animation="wave" variant="rect" width={75} height={24} />
           )}
         </Box>
       </Box>
@@ -156,7 +164,7 @@ const Body = ({ request }: { request?: IParsedRequest }) => {
 
 const ActionsHeader = () => {
   return (
-    <Box padding="24px">
+    <Box padding="24px" paddingBottom={0}>
       <Typography variant="subtitle1">Action</Typography>
     </Box>
   );
@@ -187,26 +195,10 @@ const Actions = ({
     return (
       <Box display="flex" flexDirection="column">
         <Box className={classes.line}>
-          <Skeleton
-            style={{
-              fontSize: 12,
-              lineHeight: "14px",
-            }}
-            animation="wave"
-            variant="text"
-            width={100}
-          />
+          <Skeleton animation="wave" variant="text" width={100} />
         </Box>
         <Box className={classes.line}>
-          <Skeleton
-            style={{
-              fontSize: 12,
-              lineHeight: "14px",
-            }}
-            animation="wave"
-            variant="text"
-            width={100}
-          />
+          <Skeleton animation="wave" variant="text" width={100} />
         </Box>
       </Box>
     );

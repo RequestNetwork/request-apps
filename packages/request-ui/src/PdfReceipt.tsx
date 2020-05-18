@@ -291,7 +291,7 @@ export const PdfReceipt = ({
         </View>
         <View style={styles.headerRow}>
           <View>
-            <Text style={styles.caption}>Payed by</Text>
+            <Text style={styles.caption}>Paid by</Text>
             <Text style={styles.headerBodyText}>{request.paymentFrom}</Text>
           </View>
         </View>

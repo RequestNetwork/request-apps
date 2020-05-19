@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { listRequests, IParsedRequest } from "request-shared";
+
 import { useWeb3React } from "@web3-react/core";
+import { useGnosisSafe } from "./GnosisSafeContext";
 
 interface IContext {
   requests?: IParsedRequest[];
@@ -14,14 +16,12 @@ export const RequestListProvider: React.FC = ({ children }) => {
   const [forceUpdate, setForceUpdate] = useState(false);
   const [requests, setRequests] = useState<IParsedRequest[]>();
 
-  // without safe
-  const { account, chainId } = useWeb3React();
-  // with safe
-  //const { loading, name, safeInfo } = useGnosisSafe();
-  // const [account, setAccount] = useState<string>();
-  // useEffect(()=>{
-  //   setAccount(safeInfo?.safeAddress);
-  // },[safeInfo])
+  const { chainId } = useWeb3React();
+  const { loading, name, safeInfo } = useGnosisSafe();
+  const [account, setAccount] = useState<string>();
+  useEffect(() => {
+    setAccount(safeInfo?.safeAddress);
+  }, [safeInfo]);
 
   useEffect(() => {
     let canceled = false;

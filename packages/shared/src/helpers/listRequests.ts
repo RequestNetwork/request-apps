@@ -54,6 +54,7 @@ export const listRequests = async (
 
   if (isSmartContract) {
     // TODO @VRO
+    console.log("Nothing to do, yet.");
   }
 
   const list = [];

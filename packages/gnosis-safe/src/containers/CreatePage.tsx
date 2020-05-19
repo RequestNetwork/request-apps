@@ -15,6 +15,7 @@ import { CreateRequestForm, IFormData } from "../components/CreateRequest";
 import { useConnectedUser } from "../contexts/UserContext";
 
 import { useGnosisSafe } from "../contexts/GnosisSafeContext";
+import { IdentityTypes } from "@requestnetwork/types";
 
 export default () => {
   const { safeInfo } = useGnosisSafe();
@@ -49,7 +50,13 @@ export default () => {
           payer: values.payer,
           paymentAddress: safeInfo!.safeAddress,
           // add the safeAddress in the topics to link it to the gnosis multisig
-          topics: [safeInfo!.safeAddress],
+          topics: [
+            {
+              type: IdentityTypes.TYPE.ETHEREUM_ADDRESS,
+              value: safeInfo!.safeAddress,
+              // TODO: mistake in the interface topics should be any[] instead of string[]
+            } as any,
+          ],
         },
         account,
         chainId

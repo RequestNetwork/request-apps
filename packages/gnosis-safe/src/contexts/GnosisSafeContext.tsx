@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { ENS } from "request-shared";
 
-import initSdk, { SafeInfo } from "@gnosis.pm/safe-apps-sdk";
+import initSdk, { SafeInfo, SdkInstance } from "@gnosis.pm/safe-apps-sdk";
 
 interface IGnosisSafeInfo {
   loading: boolean;
   name?: string;
   safeInfo?: SafeInfo;
+  appsSdk?: SdkInstance;
 }
 
 const GnosisSafeContext = React.createContext<IGnosisSafeInfo | null>(null);
@@ -48,7 +49,7 @@ export const GnosisSafeProvider: React.FC = ({ children }) => {
   }, [safeInfo]);
 
   return (
-    <GnosisSafeContext.Provider value={{ loading, name, safeInfo }}>
+    <GnosisSafeContext.Provider value={{ loading, name, safeInfo, appsSdk }}>
       {children}
     </GnosisSafeContext.Provider>
   );

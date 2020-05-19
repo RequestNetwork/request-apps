@@ -7,6 +7,15 @@ import { RStatusBadge, downloadPdf } from "request-ui";
 import Moment from "react-moment";
 
 import {
+  encodeApproveErc20,
+  encodePayErc20Request,
+  hasSufficientFunds,
+  hasErc20Approval,
+  utils,
+} from "@requestnetwork/payment-processor";
+import { erc20ProxyArtifact } from "@requestnetwork/smart-contracts";
+
+import {
   IParsedRequest,
   RequestProvider,
   useRequest,
@@ -18,6 +27,7 @@ import {
 import { useClipboard } from "use-clipboard-copy";
 
 import ErrorPage from "./ErrorPage";
+import { useGnosisSafe } from "../contexts/GnosisSafeContext";
 
 export const RequestNotFound = () => {
   return (
@@ -177,12 +187,14 @@ const Actions = ({
   cancel,
   download,
   account,
+  smartContractAddress,
 }: {
   request?: IParsedRequest;
   pay: () => void;
   cancel: () => void;
   download: () => void;
   account?: string;
+  smartContractAddress?: string;
 }) => {
   const { copied, copy } = useClipboard({
     copiedTimeout: 1000,
@@ -230,7 +242,7 @@ const Actions = ({
 
   if (
     request.payer &&
-    request.payer?.toLowerCase() === account?.toLowerCase()
+    request.payer?.toLowerCase() === smartContractAddress?.toLowerCase()
   ) {
     return (
       <Box display="flex" flexDirection="column">
@@ -265,6 +277,7 @@ const Actions = ({
 };
 export const RequestPage = () => {
   const { account, chainId } = useWeb3React();
+  const { safeInfo, appsSdk } = useGnosisSafe();
 
   const {
     request,
@@ -277,8 +290,71 @@ export const RequestPage = () => {
   const downloadReceipt = () =>
     downloadPdf({ request: request!, counterCurrency, counterValue });
 
-  const pay = () => {
-    alert("not implemented");
+  const pay = async () => {
+    const txs: any[] = [];
+
+    if (!request) {
+      // TODO
+      alert("Request not found");
+      return;
+    }
+    if (!safeInfo) {
+      // TODO
+      alert("Safe Info not found");
+      return;
+    }
+
+    if (request.raw.currencyInfo.type === "ERC20") {
+      console.log("request.raw, safeInfo.safeAddress");
+      console.log(request.raw, safeInfo.safeAddress);
+      console.log(await hasSufficientFunds(request.raw, safeInfo.safeAddress));
+      if (!(await hasSufficientFunds(request.raw, safeInfo.safeAddress))) {
+        // TODO
+        alert("Insufficient funds");
+        return;
+      }
+      if (!(await hasErc20Approval(request.raw, safeInfo.safeAddress))) {
+        // approve if needed
+        txs.push({
+          to: request.raw.currencyInfo.value,
+          value: 0,
+          data: encodeApproveErc20(request.raw),
+        });
+      }
+      // the payment through the smart contract
+      txs.push({
+        to: erc20ProxyArtifact.getAddress(request.raw.currencyInfo.network!),
+        value: 0,
+        data: encodePayErc20Request(request.raw),
+      });
+    }
+
+    if (request.raw.currencyInfo.type === "ETH") {
+      // if (! (await hasSufficientFunds(request.raw, safeInfo.safeAddress))) {
+      //   // TODO
+      //   alert("Insufficient funds");
+      //   return;
+      // }
+
+      // TODO
+      alert("not implemented");
+      return;
+    }
+
+    if (request.raw.currencyInfo.type === "BTC") {
+      // TODO
+      alert("not implemented");
+      return;
+    }
+
+    if (request.raw.currencyInfo.type === "ISO4217") {
+      // TODO
+      alert("not implemented");
+      return;
+    }
+
+    // send the transactions to the gnosis multisig
+    appsSdk?.sendTransactions(txs);
   };
 
   const cancel = async () => {
@@ -313,6 +389,7 @@ export const RequestPage = () => {
           pay={pay}
           cancel={cancel}
           download={downloadReceipt}
+          smartContractAddress={safeInfo?.safeAddress}
         />
       </Box>
     </>

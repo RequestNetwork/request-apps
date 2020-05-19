@@ -268,6 +268,7 @@ const Row = React.memo(
           </Box>
           <Box flex={1 / 10} className={classes.viewButton}>
             {request.status !== "open" ||
+            isAccountPayee ||
             isSmartContractPayee ||
             !request.loaded ? (
               <Link
@@ -280,10 +281,8 @@ const Row = React.memo(
               </Link>
             ) : (
               <a
-                href={getPayUrl(request.requestId)}
+                href={`/${request.requestId}`}
                 style={{ textDecoration: "none" }}
-                target="_blank"
-                rel="noopener noreferrer"
               >
                 <Typography variant="h5" style={{ color: "#00CC8E" }}>
                   Pay now

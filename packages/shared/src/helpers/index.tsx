@@ -8,3 +8,4 @@ export * from "./cancelRequest";
 export * from "./getProviderName";
 export * from "./isCancelError";
 export * from "./chainIdToName";
+export * from "./stringUtils";

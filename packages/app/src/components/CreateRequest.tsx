@@ -14,7 +14,7 @@ import Moment from "react-moment";
 import * as Yup from "yup";
 import { Skeleton } from "@material-ui/lab";
 import WalletAddressValidator from "wallet-address-validator";
-import { isValidEns, ENS } from "request-shared";
+import { isValidEns, ENS, isSimpleAscii } from "request-shared";
 
 import {
   RIcon,
@@ -159,8 +159,12 @@ const Amount = ({ className }: { className?: string }) => {
       type="number"
       fullWidth
       required
-      error={Boolean(meta.error && meta.touched)}
-      helperText={Boolean(meta.error && meta.touched) ? meta.error : " "}
+      error={Boolean(meta.error && (meta.touched || !!field.value))}
+      helperText={
+        Boolean(meta.error && (meta.touched || !!field.value))
+          ? meta.error
+          : " "
+      }
     />
   );
 };
@@ -206,8 +210,8 @@ const Currency = ({
       label=" "
       fullWidth
       className={className}
-      error={Boolean(meta.error && meta.touched)}
-      helperText={Boolean(meta.error && meta.touched) ? meta.error : " "}
+      error={Boolean(meta.error)}
+      helperText={Boolean(meta.error) ? meta.error : " "}
     >
       {Object.keys(currencies).map(currency => (
         <MenuItem value={currency}>
@@ -230,8 +234,8 @@ const Payer = ({ className }: { className?: string }) => {
       className={className}
       fullWidth
       size="medium"
-      error={Boolean(meta.error && meta.touched)}
-      helperText={Boolean(meta.error && meta.touched) ? meta.error : " "}
+      error={Boolean(meta.error)}
+      helperText={Boolean(meta.error) ? meta.error : " "}
     />
   );
 };
@@ -246,8 +250,8 @@ const Reason = ({ className }: { className?: string }) => {
       label="Reason (optional)"
       fullWidth
       className={className}
-      error={Boolean(meta.error && meta.touched)}
-      helperText={Boolean(meta.error && meta.touched) ? meta.error : " "}
+      error={Boolean(meta.error)}
+      helperText={Boolean(meta.error) ? meta.error : " "}
     />
   );
 };
@@ -320,15 +324,7 @@ export const schema = Yup.object().shape<IFormData>({
     "is-valid-reason",
     "Reason contains unsupported characters or symbols.",
     val => {
-      return (
-        !val ||
-        val ===
-          encodeURIComponent(val)
-            .replace(/%3A/g, ":")
-            .replace(/%2F/g, "/")
-            .replace(/%20/g, " ")
-            .replace(/%40/g, "@")
-      );
+      return !val || isSimpleAscii(val);
     }
   ),
 });

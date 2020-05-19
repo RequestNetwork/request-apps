@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 import * as Yup from "yup";
 import ArrowDropDownRoundedIcon from "@material-ui/icons/ArrowDropDownRounded";
 import WalletAddressValidator from "wallet-address-validator";
-import { isValidEns, ENS } from "request-shared";
+import { isValidEns, ENS, isSimpleAscii } from "request-shared";
 
 import { Spacer, RAlert, currencies } from "request-ui";
 
@@ -73,8 +73,12 @@ const Amount = ({ className }: { className?: string }) => {
       type="number"
       fullWidth
       required
-      error={Boolean(meta.error && meta.touched)}
-      helperText={Boolean(meta.error && meta.touched) ? meta.error : " "}
+      error={Boolean(meta.error && (meta.touched || !!field.value))}
+      helperText={
+        Boolean(meta.error && (meta.touched || !!field.value))
+          ? meta.error
+          : " "
+      }
       InputProps={{
         disableUnderline: true,
         style: {
@@ -138,8 +142,8 @@ const Currency = ({
       label=" "
       fullWidth
       className={className}
-      error={Boolean(meta.error && meta.touched)}
-      helperText={Boolean(meta.error && meta.touched) ? meta.error : " "}
+      error={Boolean(meta.error)}
+      helperText={Boolean(meta.error) ? meta.error : " "}
       InputProps={{
         disableUnderline: true,
         style: {
@@ -182,8 +186,8 @@ const Payer = ({ className }: { className?: string }) => {
       placeholder="Enter an ENS name or ETH address"
       className={className}
       fullWidth
-      error={Boolean(meta.error && meta.touched)}
-      helperText={Boolean(meta.error && meta.touched) ? meta.error : " "}
+      error={Boolean(meta.error)}
+      helperText={Boolean(meta.error) ? meta.error : " "}
       InputProps={{
         disableUnderline: true,
         style: {
@@ -208,8 +212,8 @@ const Reason = ({ className }: { className?: string }) => {
       label="Reason (optional)"
       fullWidth
       className={className}
-      error={Boolean(meta.error && meta.touched)}
-      helperText={Boolean(meta.error && meta.touched) ? meta.error : " "}
+      error={Boolean(meta.error)}
+      helperText={Boolean(meta.error) ? meta.error : " "}
       InputProps={{
         disableUnderline: true,
         style: {
@@ -286,15 +290,7 @@ export const schema = Yup.object().shape<IFormData>({
     "is-valid-reason",
     "Reason contains unsupported characters or symbols.",
     val => {
-      return (
-        !val ||
-        val ===
-          encodeURIComponent(val)
-            .replace(/%3A/g, ":")
-            .replace(/%2F/g, "/")
-            .replace(/%20/g, " ")
-            .replace(/%40/g, "@")
-      );
+      return !val || isSimpleAscii(val);
     }
   ),
 });

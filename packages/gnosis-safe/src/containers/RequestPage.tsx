@@ -9,11 +9,15 @@ import Moment from "react-moment";
 import {
   encodeApproveErc20,
   encodePayErc20Request,
+  encodePayWithProxyEthRequest,
   hasSufficientFunds,
   hasErc20Approval,
   utils,
 } from "@requestnetwork/payment-processor";
-import { erc20ProxyArtifact } from "@requestnetwork/smart-contracts";
+import {
+  erc20ProxyArtifact,
+  ethereumProxyArtifact,
+} from "@requestnetwork/smart-contracts";
 
 import {
   IParsedRequest,
@@ -28,6 +32,7 @@ import { useClipboard } from "use-clipboard-copy";
 
 import ErrorPage from "./ErrorPage";
 import { useGnosisSafe } from "../contexts/GnosisSafeContext";
+import { getAmountToPay } from "@requestnetwork/payment-processor/dist/payment/utils";
 
 export const RequestNotFound = () => {
   return (
@@ -330,15 +335,18 @@ export const RequestPage = () => {
     }
 
     if (request.raw.currencyInfo.type === "ETH") {
-      // if (! (await hasSufficientFunds(request.raw, safeInfo.safeAddress))) {
-      //   // TODO
-      //   alert("Insufficient funds");
-      //   return;
-      // }
+      if (!(await hasSufficientFunds(request.raw, safeInfo.safeAddress))) {
+        // TODO
+        alert("Insufficient funds");
+        return;
+      }
 
-      // TODO
-      alert("not implemented");
-      return;
+      // the payment through the smart contract
+      txs.push({
+        to: ethereumProxyArtifact.getAddress(request.raw.currencyInfo.network!),
+        value: getAmountToPay(request.raw).toString(),
+        data: encodePayWithProxyEthRequest(request.raw),
+      });
     }
 
     if (request.raw.currencyInfo.type === "BTC") {

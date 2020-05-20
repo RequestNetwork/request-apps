@@ -9,7 +9,7 @@ import Moment from "react-moment";
 import {
   encodeApproveErc20,
   encodePayErc20Request,
-  encodePayWithProxyEthRequest,
+  encodePayEthProxyRequest,
   hasSufficientFunds,
   hasErc20Approval,
   utils,
@@ -310,9 +310,6 @@ export const RequestPage = () => {
     }
 
     if (request.raw.currencyInfo.type === "ERC20") {
-      console.log("request.raw, safeInfo.safeAddress");
-      console.log(request.raw, safeInfo.safeAddress);
-      console.log(await hasSufficientFunds(request.raw, safeInfo.safeAddress));
       if (!(await hasSufficientFunds(request.raw, safeInfo.safeAddress))) {
         // TODO
         alert("Insufficient funds");

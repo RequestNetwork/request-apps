@@ -209,7 +209,13 @@ const Row = React.memo(
             <Box display="flex">
               <Address
                 address={request.payee}
-                display={request.payeeName}
+                display={
+                  isSmartContractPayee
+                    ? "Safe"
+                    : isAccountPayee
+                    ? "you"
+                    : request.payeeName
+                }
                 currentUser={isAccountPayee || isSmartContractPayee}
                 text="From"
               />
@@ -221,7 +227,13 @@ const Row = React.memo(
             {request.payer ? (
               <Address
                 address={request.payer}
-                display={request.payerName}
+                display={
+                  isSmartContractPayer
+                    ? "Safe"
+                    : isAccountPayer
+                    ? "you"
+                    : request.payerName
+                }
                 currentUser={isAccountPayer || isSmartContractPayer}
                 text="To"
               />
@@ -267,19 +279,9 @@ const Row = React.memo(
             )}
           </Box>
           <Box flex={1 / 10} className={classes.viewButton}>
-            {request.status !== "open" ||
-            isAccountPayee ||
-            isSmartContractPayee ||
-            !request.loaded ? (
-              <Link
-                to={`/${request.requestId}`}
-                style={{ textDecoration: "none" }}
-              >
-                <Typography variant="h5" style={{ color: "#00CC8E" }}>
-                  View request
-                </Typography>
-              </Link>
-            ) : (
+            {isSmartContractPayer &&
+            request.status === "open" &&
+            request.loaded ? (
               <a
                 href={`/${request.requestId}`}
                 style={{ textDecoration: "none" }}
@@ -288,6 +290,15 @@ const Row = React.memo(
                   Pay now
                 </Typography>
               </a>
+            ) : (
+              <Link
+                to={`/${request.requestId}`}
+                style={{ textDecoration: "none" }}
+              >
+                <Typography variant="h5" style={{ color: "#00CC8E" }}>
+                  View request
+                </Typography>
+              </Link>
             )}
           </Box>
         </Box>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles, Typography, Box, Link } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 import { useWeb3React } from "@web3-react/core";
@@ -195,18 +195,28 @@ const Actions = ({
   smartContractAddress,
 }: {
   request?: IParsedRequest;
-  pay: () => void;
+  pay: () => Promise<void>;
   cancel: () => void;
   download: () => void;
   account?: string;
   smartContractAddress?: string;
 }) => {
+  const [paying, setPaying] = useState(false);
   const { copied, copy } = useClipboard({
     copiedTimeout: 1000,
   });
   const classes = useBodyStyles();
   const share = () => {
     copy(getPayUrl(request!.requestId));
+  };
+
+  const clickPay = async () => {
+    setPaying(true);
+    try {
+      await pay();
+    } finally {
+      setPaying(false);
+    }
   };
 
   if (!request) {
@@ -247,14 +257,19 @@ const Actions = ({
 
   if (
     request.payer &&
-    request.payer?.toLowerCase() === smartContractAddress?.toLowerCase()
+    (request.payer?.toLowerCase() === smartContractAddress?.toLowerCase() ||
+      request.payer?.toLowerCase() === account?.toLowerCase())
   ) {
     return (
       <Box display="flex" flexDirection="column">
         <Box className={classes.line}>
-          <Link className={classes.primaryLink} onClick={pay}>
-            Pay now
-          </Link>
+          {paying ? (
+            <Typography>Paying...</Typography>
+          ) : (
+            <Link className={classes.primaryLink} onClick={clickPay}>
+              Pay now
+            </Link>
+          )}
         </Box>
         <Box className={classes.line}>
           <Link className={classes.link} onClick={share}>

@@ -268,7 +268,7 @@ const Footer = ({ account }: { account?: string }) => {
         fullWidth
         onClick={submitForm}
       >
-        {isSubmitting ? "Creation..." : "Create request"}
+        {isSubmitting ? "Creating..." : "Create request"}
       </Button>
     </>
   );

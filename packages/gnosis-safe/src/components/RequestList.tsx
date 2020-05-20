@@ -279,27 +279,14 @@ const Row = React.memo(
             )}
           </Box>
           <Box flex={1 / 10} className={classes.viewButton}>
-            {isSmartContractPayer &&
-            request.status === "open" &&
-            request.loaded ? (
-              <a
-                href={`/${request.requestId}`}
-                style={{ textDecoration: "none" }}
-              >
-                <Typography variant="h5" style={{ color: "#00CC8E" }}>
-                  Pay now
-                </Typography>
-              </a>
-            ) : (
-              <Link
-                to={`/${request.requestId}`}
-                style={{ textDecoration: "none" }}
-              >
-                <Typography variant="h5" style={{ color: "#00CC8E" }}>
-                  View request
-                </Typography>
-              </Link>
-            )}
+            <Link
+              to={`/${request.requestId}`}
+              style={{ textDecoration: "none" }}
+            >
+              <Typography variant="h5" style={{ color: "#00CC8E" }}>
+                View request
+              </Typography>
+            </Link>
           </Box>
         </Box>
       </Box>

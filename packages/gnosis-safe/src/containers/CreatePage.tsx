@@ -43,7 +43,7 @@ export default () => {
           amount: await amountToString(values.amount!, currency),
           contentData: {
             reason: values.reason,
-            builderId: "request-team-gnosis-safe",
+            builderId: "request-team",
             createdWith: window.location.hostname,
           },
           currency,

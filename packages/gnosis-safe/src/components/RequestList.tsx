@@ -213,7 +213,7 @@ const Row = React.memo(
                   isSmartContractPayee
                     ? "Safe"
                     : isAccountPayee
-                    ? "you"
+                    ? "You"
                     : request.payeeName
                 }
                 currentUser={isAccountPayee || isSmartContractPayee}
@@ -231,7 +231,7 @@ const Row = React.memo(
                   isSmartContractPayer
                     ? "Safe"
                     : isAccountPayer
-                    ? "you"
+                    ? "You"
                     : request.payerName
                 }
                 currentUser={isAccountPayer || isSmartContractPayer}

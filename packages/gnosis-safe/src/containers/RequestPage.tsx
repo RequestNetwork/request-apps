@@ -89,8 +89,27 @@ const useBodyStyles = makeStyles({
   },
 });
 
-const Body = ({ request }: { request?: IParsedRequest }) => {
+const Body = ({
+  account,
+  smartContractAddress,
+  request,
+}: {
+  account?: string | null;
+  smartContractAddress?: string;
+  request?: IParsedRequest;
+}) => {
   const classes = useBodyStyles();
+
+  const isAccountPayee = !!account && account.toLowerCase() === request?.payee;
+  const isAccountPayer = !!account && account.toLowerCase() === request?.payer;
+
+  const isSmartContractPayee =
+    !!smartContractAddress &&
+    smartContractAddress.toLowerCase() === request?.payee;
+  const isSmartContractPayer =
+    !!smartContractAddress &&
+    smartContractAddress.toLowerCase() === request?.payer;
+
   return (
     <Box display="flex" flexDirection="column">
       <Box className={classes.line}>
@@ -127,7 +146,16 @@ const Body = ({ request }: { request?: IParsedRequest }) => {
         </Box>
         <Box>
           {request ? (
-            <Typography>{request.payee}</Typography>
+            <Typography>
+              {request.payee}
+              {isAccountPayee ? (
+                <strong> (You)</strong>
+              ) : isSmartContractPayee ? (
+                <strong> (Safe)</strong>
+              ) : (
+                ""
+              )}
+            </Typography>
           ) : (
             <Skeleton animation="wave" variant="text" width={200} />
           )}
@@ -140,7 +168,16 @@ const Body = ({ request }: { request?: IParsedRequest }) => {
           </Box>
           <Box>
             {request ? (
-              <Typography>{request.payer}</Typography>
+              <Typography>
+                {request.payer}
+                {isAccountPayer ? (
+                  <strong> (You)</strong>
+                ) : isSmartContractPayer ? (
+                  <strong> (Safe)</strong>
+                ) : (
+                  ""
+                )}
+              </Typography>
             ) : (
               <Skeleton animation="wave" variant="text" width={200} />
             )}
@@ -399,7 +436,11 @@ export const RequestPage = () => {
     <>
       <Box flex={1} borderRight="1px solid #E8E7E6;">
         <Header />
-        <Body request={request} />
+        <Body
+          request={request}
+          account={account}
+          smartContractAddress={safeInfo?.safeAddress}
+        />
       </Box>
       <Box flex={1}>
         <ActionsHeader />

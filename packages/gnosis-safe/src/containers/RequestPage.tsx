@@ -342,7 +342,7 @@ export const RequestPage = () => {
       txs.push({
         to: ethereumProxyArtifact.getAddress(request.raw.currencyInfo.network!),
         value: getAmountToPay(request.raw).toString(),
-        data: encodePayWithProxyEthRequest(request.raw),
+        data: encodePayEthProxyRequest(request.raw),
       });
     }
 

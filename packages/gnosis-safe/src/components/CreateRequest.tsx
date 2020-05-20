@@ -246,15 +246,20 @@ const Body = ({ currencies }: { currencies: Record<string, React.FC> }) => {
 };
 
 const Footer = ({ account }: { account?: string }) => {
-  const { submitForm, isValid, values } = useFormikContext<IFormData>();
+  const { submitForm, isValid, values, isSubmitting } = useFormikContext<
+    IFormData
+  >();
   return (
     <>
       <Button
-        disabled={!values.amount || !isValid || !account}
+        disabled={isSubmitting || !values.amount || !isValid || !account}
         color="primary"
         variant="contained"
         style={{
-          backgroundColor: "#008C73",
+          backgroundColor:
+            isSubmitting || !values.amount || !isValid || !account
+              ? "#A1D2CA"
+              : "#008C73",
           color: "#FFFFFF",
           height: 40,
           fontSize: 12,
@@ -263,7 +268,7 @@ const Footer = ({ account }: { account?: string }) => {
         fullWidth
         onClick={submitForm}
       >
-        Create request
+        {isSubmitting ? "Creation..." : "Create request"}
       </Button>
     </>
   );

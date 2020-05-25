@@ -327,12 +327,21 @@ export const CreateRequestForm = ({
           validationSchema={schema}
           onSubmit={onSubmit}
           enableReinitialize
-          initialValues={{
-            currency: "DAI",
-            amount: "" as any,
-            payer: "",
-            reason: "",
-          }}
+          initialValues={
+            network === 4
+              ? {
+                  currency: "FAU",
+                  amount: "" as any,
+                  payer: "",
+                  reason: "",
+                }
+              : {
+                  currency: "DAI",
+                  amount: "" as any,
+                  payer: "",
+                  reason: "",
+                }
+          }
         >
           <>
             <Box>

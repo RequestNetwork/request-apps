@@ -35,13 +35,13 @@ export function useEagerConnect() {
 
   useEffect(() => {
     isAuthorized().then(authorized => {
-      if (authorized) {
-        activate(injected).catch(e => {
-          setTried(true);
-        });
-      } else {
+      // if (authorized) {
+      activate(injected).catch(e => {
         setTried(true);
-      }
+      });
+      // } else {
+      //   setTried(true);
+      // }
     });
     // eslint-disable-next-line
   }, []); // intentionally only running on mount (make sure it's only mounted once :))

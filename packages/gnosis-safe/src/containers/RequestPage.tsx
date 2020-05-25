@@ -110,6 +110,11 @@ const Body = ({
     !!smartContractAddress &&
     smartContractAddress.toLowerCase() === request?.payer;
 
+  const isPaymentAddressSmartContract =
+    request &&
+    !!smartContractAddress &&
+    smartContractAddress.toLowerCase() === request.paymentAddress.toLowerCase();
+
   return (
     <Box display="flex" flexDirection="column">
       <Box className={classes.line}>
@@ -161,6 +166,28 @@ const Body = ({
           )}
         </Box>
       </Box>
+
+      {request &&
+      request.payee.toLowerCase() !== request.paymentAddress.toLowerCase() ? (
+        <Box className={classes.line}>
+          <Box>
+            <Typography variant="h5">Payment address</Typography>
+          </Box>
+          <Box>
+            {request ? (
+              <Typography>
+                {request.paymentAddress}
+                {isPaymentAddressSmartContract ? <strong> (Safe)</strong> : ""}
+              </Typography>
+            ) : (
+              <Skeleton animation="wave" variant="text" width={200} />
+            )}
+          </Box>
+        </Box>
+      ) : (
+        ""
+      )}
+
       {(!request || request.payer) && (
         <Box className={classes.line}>
           <Box>

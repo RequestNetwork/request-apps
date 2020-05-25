@@ -198,6 +198,11 @@ const Row = React.memo(
       !!smartContractAddress &&
       smartContractAddress.toLowerCase() === request.payer;
 
+    const isPaymentAddressSmartContract =
+      !!smartContractAddress &&
+      request.paymentAddress.toLowerCase() ===
+        smartContractAddress.toLowerCase();
+
     return (
       <Box className={classes.row}>
         <Box className={classes.rowInner}>
@@ -212,6 +217,8 @@ const Row = React.memo(
                 display={
                   isSmartContractPayee
                     ? "Safe"
+                    : isAccountPayee && isPaymentAddressSmartContract
+                    ? "You (on behalf of the Safe)"
                     : isAccountPayee
                     ? "You"
                     : request.payeeName

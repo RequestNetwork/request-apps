@@ -3,7 +3,7 @@ import { makeStyles, Typography, Box, Link } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 import { useWeb3React } from "@web3-react/core";
 import { Link as RouterLink } from "react-router-dom";
-import { RStatusBadge, downloadPdf } from "request-ui";
+import { RStatusBadge, downloadPdf, RAlert, Spacer } from "request-ui";
 import Moment from "react-moment";
 
 import {
@@ -362,6 +362,7 @@ const Actions = ({
 export const RequestPage = () => {
   const { account, chainId } = useWeb3React();
   const { safeInfo, appsSdk } = useGnosisSafe();
+  const [errorMessage, setErrorMessage] = useState("");
 
   const {
     request,
@@ -378,20 +379,17 @@ export const RequestPage = () => {
     const txs: any[] = [];
 
     if (!request) {
-      // TODO
-      alert("Request not found");
+      setErrorMessage("Request not found");
       return;
     }
     if (!safeInfo) {
-      // TODO
-      alert("Safe Info not found");
+      setErrorMessage("Impossible to get the safe information for the SDK");
       return;
     }
 
     if (request.raw.currencyInfo.type === "ERC20") {
       if (!(await hasSufficientFunds(request.raw, safeInfo.safeAddress))) {
-        // TODO
-        alert("Insufficient funds");
+        setErrorMessage("Insufficient funds");
         return;
       }
       if (!(await hasErc20Approval(request.raw, safeInfo.safeAddress))) {
@@ -412,8 +410,7 @@ export const RequestPage = () => {
 
     if (request.raw.currencyInfo.type === "ETH") {
       if (!(await hasSufficientFunds(request.raw, safeInfo.safeAddress))) {
-        // TODO
-        alert("Insufficient funds");
+        setErrorMessage("Insufficient funds");
         return;
       }
 
@@ -426,17 +423,18 @@ export const RequestPage = () => {
     }
 
     if (request.raw.currencyInfo.type === "BTC") {
-      // TODO
-      alert("not implemented");
+      setErrorMessage("Payment with BTC not implemented in gnosis safe");
       return;
     }
 
     if (request.raw.currencyInfo.type === "ISO4217") {
-      // TODO
-      alert("not implemented");
+      setErrorMessage(
+        "Payment for this currency is not implemented in gnosis safe"
+      );
       return;
     }
 
+    setErrorMessage("");
     // send the transactions to the gnosis multisig
     appsSdk?.sendTransactions(txs);
   };
@@ -470,6 +468,12 @@ export const RequestPage = () => {
         />
       </Box>
       <Box flex={1}>
+        {errorMessage !== "" && (
+          <>
+            <Spacer size={4} />
+            <RAlert severity="error" message={errorMessage} />
+          </>
+        )}
         <ActionsHeader />
         <Actions
           account={account || undefined}

@@ -150,6 +150,7 @@ const Currency = ({
           backgroundColor: "#F0EFEE",
           borderBottomRightRadius: 4,
           borderTopLeftRadius: 0,
+          height: "43px",
         },
       }}
       SelectProps={{

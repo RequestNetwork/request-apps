@@ -6,6 +6,9 @@ import { Link as RouterLink } from "react-router-dom";
 import { RStatusBadge, downloadPdf, RAlert, Spacer } from "request-ui";
 import Moment from "react-moment";
 
+import InfoIcon from "@material-ui/icons/Info";
+import Tooltip from "@material-ui/core/Tooltip";
+
 import {
   encodeApproveErc20,
   encodePayErc20Request,
@@ -13,6 +16,7 @@ import {
   hasSufficientFunds,
   hasErc20Approval,
   utils,
+  getErc20Balance,
 } from "@requestnetwork/payment-processor";
 import {
   erc20ProxyArtifact,
@@ -27,8 +31,6 @@ import {
   isCancelError,
   getPayUrl,
 } from "request-shared";
-
-import { useClipboard } from "use-clipboard-copy";
 
 import ErrorPage from "./ErrorPage";
 import { useGnosisSafe } from "../contexts/GnosisSafeContext";
@@ -266,13 +268,8 @@ const Actions = ({
   smartContractAddress?: string;
 }) => {
   const [paying, setPaying] = useState(false);
-  const { copied, copy } = useClipboard({
-    copiedTimeout: 1000,
-  });
+
   const classes = useBodyStyles();
-  const share = () => {
-    copy(getPayUrl(request!.requestId));
-  };
 
   const clickPay = async () => {
     setPaying(true);
@@ -311,8 +308,12 @@ const Actions = ({
           </Link>
         </Box>
         <Box className={classes.line}>
-          <Link className={classes.link} onClick={share}>
-            {copied ? "Copied!" : "Share this request"}
+          <Link
+            className={classes.link}
+            href={getPayUrl(request!.requestId)}
+            target="_blank"
+          >
+            Share this request
           </Link>
         </Box>
       </Box>
@@ -324,21 +325,35 @@ const Actions = ({
     (request.payer?.toLowerCase() === smartContractAddress?.toLowerCase() ||
       request.payer?.toLowerCase() === account?.toLowerCase())
   ) {
+    const proxyContractAddress =
+      request.raw.currencyInfo.type === "ERC20"
+        ? erc20ProxyArtifact.getAddress(request.raw.currencyInfo.network!)
+        : request.raw.currencyInfo.type === "ETH"
+        ? ethereumProxyArtifact.getAddress(request.raw.currencyInfo.network!)
+        : "";
+
     return (
       <Box display="flex" flexDirection="column">
         <Box className={classes.line}>
           {paying ? (
             <Typography>Paying...</Typography>
           ) : (
-            <Link className={classes.primaryLink} onClick={clickPay}>
-              Pay now
-            </Link>
+            <Box display="flex">
+              <Link className={classes.primaryLink} onClick={clickPay}>
+                Pay now
+              </Link>
+              {proxyContractAddress !== "" ? (
+                <Tooltip
+                  title={`Paying now will trigger a transaction to a Request proxy-payment contract: ${proxyContractAddress}`}
+                  placement="right"
+                >
+                  <InfoIcon style={{ fontSize: 20 }}></InfoIcon>
+                </Tooltip>
+              ) : (
+                ""
+              )}
+            </Box>
           )}
-        </Box>
-        <Box className={classes.line}>
-          <Link className={classes.link} onClick={share}>
-            {copied ? "Copied!" : "Share this request"}
-          </Link>
         </Box>
       </Box>
     );
@@ -347,8 +362,12 @@ const Actions = ({
   return (
     <Box display="flex" flexDirection="column">
       <Box className={classes.line}>
-        <Link className={classes.primaryLink} onClick={share}>
-          {copied ? "Copied!" : "Copy link to share this request"}
+        <Link
+          className={classes.link}
+          href={getPayUrl(request!.requestId)}
+          target="_blank"
+        >
+          Share this request
         </Link>
       </Box>
       <Box className={classes.line}>
@@ -388,10 +407,13 @@ export const RequestPage = () => {
     }
 
     if (request.raw.currencyInfo.type === "ERC20") {
-      if (!(await hasSufficientFunds(request.raw, safeInfo.safeAddress))) {
-        setErrorMessage("Insufficient funds");
+      const balance = await getErc20Balance(request.raw, safeInfo.safeAddress);
+      // check ETH for gas, and token for funds transfer
+      if (!balance.gt(request.raw.expectedAmount)) {
+        setErrorMessage(`Insufficient ${request.currency} on the safe`);
         return;
       }
+
       if (!(await hasErc20Approval(request.raw, safeInfo.safeAddress))) {
         // approve if needed
         txs.push({
@@ -410,7 +432,7 @@ export const RequestPage = () => {
 
     if (request.raw.currencyInfo.type === "ETH") {
       if (!(await hasSufficientFunds(request.raw, safeInfo.safeAddress))) {
-        setErrorMessage("Insufficient funds");
+        setErrorMessage("Insufficient ETH on the safe");
         return;
       }
 

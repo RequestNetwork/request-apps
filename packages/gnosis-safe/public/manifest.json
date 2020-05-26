@@ -1,5 +1,5 @@
 {
-  "name": "Request (baguette)",
-  "description": "Request in Gnosis Safe",
+  "name": "Request",
+  "description": "Create, receive and pay crypto invoices straight from your Gnosis Safe",
   "iconPath": "request_icon_green.svg"
 }

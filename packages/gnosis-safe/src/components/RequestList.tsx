@@ -14,7 +14,6 @@ import { Link } from "react-router-dom";
 import { RStatusBadge, Spacer, CopyIcon } from "request-ui";
 import Moment from "react-moment";
 import { Skeleton } from "@material-ui/lab";
-import { useClipboard } from "use-clipboard-copy";
 
 const short = (val?: string) =>
   val
@@ -29,12 +28,6 @@ const useAddressStyles = makeStyles(() => ({
     width: "100%",
     height: 22,
     alignItems: "center",
-    "& .copy": {
-      display: "none",
-    },
-    "&:hover .copy": {
-      display: "block",
-    },
   },
 }));
 
@@ -50,9 +43,6 @@ const Address = ({
   text?: string;
 }) => {
   const classes = useAddressStyles();
-  const { copied, copy } = useClipboard({
-    copiedTimeout: 1000,
-  });
 
   return (
     <Box className={classes.container}>
@@ -66,15 +56,6 @@ const Address = ({
           {display || short(address)}
         </Typography>
       </Tooltip>
-      {address && (
-        <IconButton className="copy" size="small" onClick={() => copy(address)}>
-          {copied ? (
-            <CheckIcon style={{ width: 16, height: 16 }} />
-          ) : (
-            <CopyIcon style={{ width: 16, height: 16 }} />
-          )}
-        </IconButton>
-      )}
     </Box>
   );
 };

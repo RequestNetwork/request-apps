@@ -13,9 +13,10 @@ import { Link } from "react-router-dom";
 import * as Yup from "yup";
 import ArrowDropDownRoundedIcon from "@material-ui/icons/ArrowDropDownRounded";
 import WalletAddressValidator from "wallet-address-validator";
-import { isValidEns, ENS, isSimpleAscii } from "request-shared";
+import { isValidEns, ENS, isSimpleAscii, chainIdToName } from "request-shared";
 
 import { Spacer, RAlert, currencies } from "request-ui";
+import { ethers } from "ethers";
 
 export interface IFormData {
   amount?: number;
@@ -275,31 +276,33 @@ const Footer = ({ account }: { account?: string }) => {
   );
 };
 
-export const schema = Yup.object().shape<IFormData>({
-  amount: Yup.number()
-    .positive("Please enter a positive number")
-    .typeError("Please enter a number")
-    .required("Required"),
-  payer: Yup.string().test(
-    "is-valid-recipient",
-    "Please enter a valid ENS or ETH address",
-    async (value: string) => {
-      return (
-        !value ||
-        WalletAddressValidator.validate(value, "ethereum") ||
-        (isValidEns(value) && !!(await new ENS(value).addr()))
-      );
-    }
-  ),
-  currency: Yup.mixed().required("Required"),
-  reason: Yup.string().test(
-    "is-valid-reason",
-    "Reason contains unsupported characters or symbols.",
-    val => {
-      return !val || isSimpleAscii(val);
-    }
-  ),
-});
+export const schema = provider => {
+  return Yup.object().shape<IFormData>({
+    amount: Yup.number()
+      .positive("Please enter a positive number")
+      .typeError("Please enter a number")
+      .required("Required"),
+    payer: Yup.string().test(
+      "is-valid-recipient",
+      "Please enter a valid ENS or ETH address",
+      async (value: string) => {
+        return (
+          !value ||
+          WalletAddressValidator.validate(value, "ethereum") ||
+          (isValidEns(value) && !!(await new ENS(value, provider).addr()))
+        );
+      }
+    ),
+    currency: Yup.mixed().required("Required"),
+    reason: Yup.string().test(
+      "is-valid-reason",
+      "Reason contains unsupported characters or symbols.",
+      val => {
+        return !val || isSimpleAscii(val);
+      }
+    ),
+  });
+};
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -319,12 +322,13 @@ export const CreateRequestForm = ({
 }: IProps) => {
   const classes = useStyles();
   const currencies = getCurrencies(network);
+  const provider = ethers.getDefaultProvider(chainIdToName(network || 1));
 
   return (
     <>
       <Box flex={1} padding="24px" paddingBottom={0}>
         <Formik<IFormData>
-          validationSchema={schema}
+          validationSchema={schema(provider)}
           onSubmit={onSubmit}
           enableReinitialize
           initialValues={{

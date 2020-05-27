@@ -7,7 +7,8 @@ import {
   isCancelError,
   parseCurrency,
 } from "request-shared";
-import { useErrorReporter } from "request-ui";
+import { useErrorReporter, RLogo, Spacer } from "request-ui";
+import { Box, Typography } from "@material-ui/core";
 
 import { useWeb3React } from "@web3-react/core";
 
@@ -71,12 +72,34 @@ export default () => {
     }
   };
   return (
-    <CreateRequestForm
-      account={name || account || undefined}
-      network={chainId}
-      error={error}
-      onSubmit={submit}
-      loading={web3Loading}
-    />
+    <>
+      <Box flex={1} padding="24px" paddingBottom={0}>
+        <CreateRequestForm
+          account={name || account || undefined}
+          network={chainId}
+          error={error}
+          onSubmit={submit}
+          loading={web3Loading}
+        />
+      </Box>
+      <Box flex={1} padding="24px" display="flex" flexDirection="column">
+        <Typography variant="subtitle1">Welcome to</Typography>
+        <Spacer size={3} />
+        <RLogo />
+        <Spacer size={3} />
+        <Typography variant="body2">
+          1. Request cryptocurrency and get paid easily: put the amount, pick a
+          token and precise the reason.
+          <Spacer />
+          2. Share the request to your client or friend directly, or enter their
+          Ethereum reference (address or ENS)
+          <Spacer />
+          3. Get paid in a click
+          <Spacer size={2} />
+          No middleman, no more mistake.
+        </Typography>
+        <img style={{ width: 242, height: 136 }} src="/req01.png" />
+      </Box>
+    </>
   );
 };

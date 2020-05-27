@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { makeStyles, Typography, Box, Link } from "@material-ui/core";
+import { makeStyles, Typography, Box, Link, Button } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 import { useWeb3React } from "@web3-react/core";
 import { Link as RouterLink } from "react-router-dom";
@@ -88,6 +88,15 @@ const useBodyStyles = makeStyles({
     color: "#008C73",
     textDecoration: "underline",
     fontWeight: 600,
+  },
+  payButton: {
+    width: 149,
+    height: 40,
+    background: "#008C73",
+    color: "#FFFFFF",
+    "&:hover": {
+      background: "#008C73",
+    },
   },
 });
 
@@ -335,25 +344,16 @@ const Actions = ({
     return (
       <Box display="flex" flexDirection="column">
         <Box className={classes.line}>
-          {paying ? (
-            <Typography>Paying...</Typography>
-          ) : (
-            <Box display="flex">
-              <Link className={classes.primaryLink} onClick={clickPay}>
-                Pay now
-              </Link>
-              {proxyContractAddress !== "" ? (
-                <Tooltip
-                  title={`Paying now will trigger a transaction to a Request proxy-payment contract: ${proxyContractAddress}`}
-                  placement="right"
-                >
-                  <InfoIcon style={{ fontSize: 20 }}></InfoIcon>
-                </Tooltip>
-              ) : (
-                ""
-              )}
-            </Box>
-          )}
+          <Box display="flex">
+            <Button
+              disableRipple
+              className={classes.payButton}
+              onClick={clickPay}
+              disabled={paying}
+            >
+              Pay now
+            </Button>
+          </Box>
         </Box>
       </Box>
     );

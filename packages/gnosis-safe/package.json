@@ -2,6 +2,7 @@
   "name": "request-gnosis-safe",
   "version": "0.1.0",
   "private": true,
+  "homepage": "./",
   "dependencies": {
     "@gnosis.pm/safe-apps-sdk": "https://github.com/gnosis/safe-apps-sdk",
     "@material-ui/core": "^4.9.7",

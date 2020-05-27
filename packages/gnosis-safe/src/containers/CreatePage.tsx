@@ -44,7 +44,7 @@ export default () => {
           contentData: {
             reason: values.reason,
             builderId: "request-team",
-            createdWith: window.location.hostname,
+            createdWith: "gnosis-safe",
           },
           currency,
           payer: values.payer,

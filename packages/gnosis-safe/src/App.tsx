@@ -1,6 +1,6 @@
 import { Web3Provider } from "ethers/providers";
 import React from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { HashRouter, Route, Switch } from "react-router-dom";
 import { ErrorBoundary, Analytics } from "request-ui";
 
 import {
@@ -123,7 +123,7 @@ const App: React.FC = () => {
   useInactiveListener(!tried);
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <div className={classes.paper}>
@@ -137,7 +137,7 @@ const App: React.FC = () => {
           </Analytics>
         </div>
       </ThemeProvider>
-    </BrowserRouter>
+    </HashRouter>
   );
 };
 

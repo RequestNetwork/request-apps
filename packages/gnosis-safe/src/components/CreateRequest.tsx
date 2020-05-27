@@ -41,7 +41,9 @@ const Header = () => {
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Typography variant="subtitle1">Request a payment</Typography>
         <Link to="/dashboard" style={{ color: "#001428" }}>
-          <Typography variant="caption">Go to my dashboard</Typography>
+          <Box color="#008C62">
+            <Typography variant="caption">Go to my dashboard</Typography>
+          </Box>
         </Link>
       </Box>
       <Spacer size={8} />
@@ -321,44 +323,39 @@ export const CreateRequestForm = ({
   const currencies = getCurrencies(network);
 
   return (
-    <>
-      <Box flex={1} padding="24px" paddingBottom={0}>
-        <Formik<IFormData>
-          validationSchema={schema}
-          onSubmit={onSubmit}
-          enableReinitialize
-          initialValues={{
-            currency: network === 4 ? "FAU" : "DAI",
-            amount: "" as any,
-            payer: "",
-            reason: "",
-          }}
-        >
-          <>
-            <Box>
-              <Box className={classes.container}>
-                <Header />
-                <Body currencies={currencies} />
-              </Box>
+    <Formik<IFormData>
+      validationSchema={schema}
+      onSubmit={onSubmit}
+      enableReinitialize
+      initialValues={{
+        currency: network === 4 ? "FAU" : "DAI",
+        amount: "" as any,
+        payer: "",
+        reason: "",
+      }}
+    >
+      <>
+        <Box>
+          <Box className={classes.container}>
+            <Header />
+            <Body currencies={currencies} />
+          </Box>
 
-              {error && (
-                <>
-                  <Spacer size={4} />
-                  <RAlert
-                    severity="error"
-                    message="Request creation has failed. Please try again later."
-                  />
-                </>
-              )}
-              <Hidden smUp>
-                <Box flex={1} />
-              </Hidden>
-              <Footer account={account} />
-            </Box>
-          </>
-        </Formik>
-      </Box>
-      <Box flex={1}></Box>
-    </>
+          {error && (
+            <>
+              <Spacer size={4} />
+              <RAlert
+                severity="error"
+                message="Request creation has failed. Please try again later."
+              />
+            </>
+          )}
+          <Hidden smUp>
+            <Box flex={1} />
+          </Hidden>
+          <Footer account={account} />
+        </Box>
+      </>
+    </Formik>
   );
 };

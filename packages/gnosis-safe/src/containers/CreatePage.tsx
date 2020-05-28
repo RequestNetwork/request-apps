@@ -98,7 +98,7 @@ export default () => {
           <Spacer size={2} />
           No middleman, no more mistake.
         </Typography>
-        <img style={{ width: 242, height: 136 }} src="/req01.png" />
+        <img style={{ width: 242, height: 136 }} src="./req01.png" />
       </Box>
     </>
   );

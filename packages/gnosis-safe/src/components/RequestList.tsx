@@ -16,18 +16,19 @@ import Moment from "react-moment";
 import { Skeleton } from "@material-ui/lab";
 
 const short = (val?: string) =>
-  val
-    ? val.length >= 20
-      ? `${val.slice(0, 10)}...${val.slice(-10)}`
-      : val
-    : "";
+  val ? (val.length >= 20 ? `${val.slice(0, 4)}...${val.slice(-4)}` : val) : "";
 
-const useAddressStyles = makeStyles(() => ({
+const useAddressStyles = makeStyles(theme => ({
   container: {
     display: "flex",
     width: "100%",
     height: 22,
     alignItems: "center",
+  },
+  text: {
+    [theme.breakpoints.up("md")]: {
+      display: "none",
+    },
   },
 }));
 
@@ -47,9 +48,9 @@ const Address = ({
   return (
     <Box className={classes.container}>
       {text && (
-        <Hidden mdUp>
-          <Box width={40}>{text}</Box>
-        </Hidden>
+        <Box className={classes.text} width={40}>
+          {text}
+        </Box>
       )}
       <Tooltip title={address || ""}>
         <Typography variant={currentUser ? "h5" : "body2"}>
@@ -199,7 +200,7 @@ const Row = React.memo(
                   isSmartContractPayee
                     ? "Safe"
                     : isAccountPayee && isPaymentAddressSmartContract
-                    ? "You (on behalf of the Safe)"
+                    ? "You (on behalf of Safe)"
                     : isAccountPayee
                     ? "You"
                     : request.payeeName
@@ -209,7 +210,7 @@ const Row = React.memo(
               />
             </Box>
           </Box>
-          <Box flex={2 / 10} className={classes.payer}>
+          <Box flex={1 / 10} className={classes.payer}>
             <Spacer size={0} xs={2} />
 
             {request.payer ? (
@@ -254,7 +255,7 @@ const Row = React.memo(
               }
             />
           </Box>
-          <Box flex={2 / 10} className={classes.status}>
+          <Box flex={3 / 10} className={classes.status}>
             {request.loaded ? (
               <RStatusBadge status={request.status} />
             ) : (
@@ -293,13 +294,13 @@ const SkeletonRow = () => {
         <Box flex={2 / 10} className={classes.payee}>
           <Skeleton animation="wave" width={200} />
         </Box>
-        <Box flex={2 / 10} className={classes.payer}>
+        <Box flex={1 / 10} className={classes.payer}>
           <Skeleton animation="wave" width={200} />
         </Box>
         <Box flex={1 / 10}>
           <Skeleton animation="wave" width={100} className={classes.amount} />
         </Box>
-        <Box flex={2 / 10} className={classes.status}>
+        <Box flex={3 / 10} className={classes.status}>
           <Skeleton animation="wave" variant="rect" height={32} width={100} />
         </Box>
         <Box flex={1 / 10} className={classes.viewButton}>
@@ -338,13 +339,13 @@ export default ({
           <Box flex={2 / 10}>
             <Typography variant="h5">From</Typography>
           </Box>
-          <Box flex={2 / 10}>
+          <Box flex={1 / 10}>
             <Typography variant="h5">To</Typography>
           </Box>
           <Box flex={1 / 10}>
             <Typography variant="h5">Amount</Typography>
           </Box>
-          <Box flex={2 / 10}>
+          <Box flex={3 / 10}>
             <Typography variant="h5">Status</Typography>
           </Box>
           <Box flex={1 / 10}></Box>

@@ -32,6 +32,15 @@ const useStyles = makeStyles(() => ({
 }));
 
 const theme = createMuiTheme({
+  breakpoints: {
+    values: {
+      xs: 560,
+      sm: 560,
+      md: 560,
+      lg: 1280,
+      xl: 1920,
+    },
+  },
   typography: {
     body1: {
       fontSize: 12,

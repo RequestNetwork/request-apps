@@ -20,7 +20,7 @@ const useStyles = makeStyles<Theme, IProps>(() => ({
 }));
 
 export const RIcon: React.FC<SvgIconProps & { variant?: string }> = props => {
-  const classes = useStyles(props);
+  const classes = useStyles(props as IProps);
   return (
     <SvgIcon {...props} viewBox="0 0 129.7 141.16" className={classes.root}>
       <g>

@@ -247,10 +247,10 @@ const Row = React.memo(
               amount={request.amount}
               currency={request.currency}
               role={
-                isAccountPayer || isSmartContractPayer
-                  ? "payer"
-                  : isAccountPayee || isSmartContractPayee
+                isAccountPayee || isSmartContractPayee
                   ? "payee"
+                  : isAccountPayer || isSmartContractPayer
+                  ? "payer"
                   : undefined
               }
             />

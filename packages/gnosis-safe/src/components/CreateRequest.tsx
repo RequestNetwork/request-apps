@@ -50,8 +50,8 @@ const Header = () => {
       <Spacer size={8} />
       <RAlert
         severity="info"
-        title=" "
-        message="Compatible with MetaMask only"
+        title="Compatibility notice"
+        message="Request Create is only compatible with MetaMask"
       />
       <Spacer size={8} />
     </Box>

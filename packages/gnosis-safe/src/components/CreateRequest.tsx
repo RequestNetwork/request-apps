@@ -48,6 +48,12 @@ const Header = () => {
         </Link>
       </Box>
       <Spacer size={8} />
+      <RAlert
+        severity="info"
+        title=" "
+        message="Compatible with MetaMask only"
+      />
+      <Spacer size={8} />
     </Box>
   );
 };

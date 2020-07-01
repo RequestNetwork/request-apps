@@ -21,3 +21,6 @@ export * from './hooks';
 export * from './TestnetWarning';
 
 export * from './PdfReceipt';
+
+export * as currencies from "./currencies"
+export * from "./CopyIcon"

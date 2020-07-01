@@ -18,10 +18,18 @@ export interface ICreateRequestArgs {
   currency: RequestLogicTypes.ICurrency;
   paymentAddress?: string;
   contentData: any;
+  topics?: string[];
 }
 
 export const createRequest = async (
-  { currency, amount, payer, paymentAddress, contentData }: ICreateRequestArgs,
+  {
+    currency,
+    amount,
+    payer,
+    paymentAddress,
+    contentData,
+    topics,
+  }: ICreateRequestArgs,
   account: string,
   network: string | number
 ): Promise<Request> => {
@@ -87,6 +95,7 @@ export const createRequest = async (
       type: IdentityTypes.TYPE.ETHEREUM_ADDRESS,
       value: account,
     },
+    topics,
   });
   return request;
 };

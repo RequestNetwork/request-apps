@@ -206,10 +206,10 @@ export const PdfReceipt = ({
     family: 'Inter',
     fonts: [
       {
-        src: '/fonts/Inter-Regular.ttf',
+        src: './fonts/Inter-Regular.ttf',
       },
       {
-        src: '/fonts/Inter-Medium.ttf',
+        src: './fonts/Inter-Medium.ttf',
         fontWeight: 600,
       },
     ],

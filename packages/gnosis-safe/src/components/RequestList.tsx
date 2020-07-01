@@ -14,26 +14,20 @@ import { Link } from "react-router-dom";
 import { RStatusBadge, Spacer, CopyIcon } from "request-ui";
 import Moment from "react-moment";
 import { Skeleton } from "@material-ui/lab";
-import { useClipboard } from "use-clipboard-copy";
 
 const short = (val?: string) =>
-  val
-    ? val.length >= 20
-      ? `${val.slice(0, 10)}...${val.slice(-10)}`
-      : val
-    : "";
+  val ? (val.length >= 20 ? `${val.slice(0, 4)}...${val.slice(-4)}` : val) : "";
 
-const useAddressStyles = makeStyles(() => ({
+const useAddressStyles = makeStyles(theme => ({
   container: {
     display: "flex",
     width: "100%",
     height: 22,
     alignItems: "center",
-    "& .copy": {
+  },
+  text: {
+    [theme.breakpoints.up("md")]: {
       display: "none",
-    },
-    "&:hover .copy": {
-      display: "block",
     },
   },
 }));
@@ -50,31 +44,19 @@ const Address = ({
   text?: string;
 }) => {
   const classes = useAddressStyles();
-  const { copied, copy } = useClipboard({
-    copiedTimeout: 1000,
-  });
 
   return (
     <Box className={classes.container}>
       {text && (
-        <Hidden mdUp>
-          <Box width={40}>{text}</Box>
-        </Hidden>
+        <Box className={classes.text} width={40}>
+          {text}
+        </Box>
       )}
       <Tooltip title={address || ""}>
         <Typography variant={currentUser ? "h5" : "body2"}>
           {display || short(address)}
         </Typography>
       </Tooltip>
-      {address && (
-        <IconButton className="copy" size="small" onClick={() => copy(address)}>
-          {copied ? (
-            <CheckIcon style={{ width: 16, height: 16 }} />
-          ) : (
-            <CopyIcon style={{ width: 16, height: 16 }} />
-          )}
-        </IconButton>
-      )}
     </Box>
   );
 };
@@ -178,10 +160,31 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Row = React.memo(
-  ({ request, account }: { request: IParsedRequest; account: string }) => {
+  ({
+    request,
+    account,
+    smartContractAddress,
+  }: {
+    request: IParsedRequest;
+    account: string;
+    smartContractAddress?: string;
+  }) => {
     const classes = useStyles();
-    const isPayee = !!account && account.toLowerCase() === request.payee;
-    const isPayer = !!account && account.toLowerCase() === request.payer;
+    const isAccountPayee = !!account && account.toLowerCase() === request.payee;
+    const isAccountPayer = !!account && account.toLowerCase() === request.payer;
+
+    const isSmartContractPayee =
+      !!smartContractAddress &&
+      smartContractAddress.toLowerCase() === request.payee;
+    const isSmartContractPayer =
+      !!smartContractAddress &&
+      smartContractAddress.toLowerCase() === request.payer;
+
+    const isPaymentAddressSmartContract =
+      !!smartContractAddress &&
+      request.paymentAddress.toLowerCase() ===
+        smartContractAddress.toLowerCase();
+
     return (
       <Box className={classes.row}>
         <Box className={classes.rowInner}>
@@ -193,21 +196,35 @@ const Row = React.memo(
             <Box display="flex">
               <Address
                 address={request.payee}
-                display={request.payeeName}
-                currentUser={isPayee}
+                display={
+                  isSmartContractPayee
+                    ? "Safe"
+                    : isAccountPayee && isPaymentAddressSmartContract
+                    ? "You (on behalf of Safe)"
+                    : isAccountPayee
+                    ? "You"
+                    : request.payeeName
+                }
+                currentUser={isAccountPayee || isSmartContractPayee}
                 text="From"
               />
             </Box>
           </Box>
-          <Box flex={2 / 10} className={classes.payer}>
+          <Box flex={1 / 10} className={classes.payer}>
             <Spacer size={0} xs={2} />
 
             {request.payer ? (
               <Address
                 address={request.payer}
-                display={request.payerName}
-                currentUser={isPayer}
-                text={"To"}
+                display={
+                  isSmartContractPayer
+                    ? "Safe"
+                    : isAccountPayer
+                    ? "You"
+                    : request.payerName
+                }
+                currentUser={isAccountPayer || isSmartContractPayer}
+                text="To"
               />
             ) : (
               <Box display="flex">
@@ -229,10 +246,16 @@ const Row = React.memo(
             <Amount
               amount={request.amount}
               currency={request.currency}
-              role={isPayee ? "payee" : isPayer ? "payer" : undefined}
+              role={
+                isAccountPayee || isSmartContractPayee
+                  ? "payee"
+                  : isAccountPayer || isSmartContractPayer
+                  ? "payer"
+                  : undefined
+              }
             />
           </Box>
-          <Box flex={2 / 10} className={classes.status}>
+          <Box flex={3 / 10} className={classes.status}>
             {request.loaded ? (
               <RStatusBadge status={request.status} />
             ) : (
@@ -245,27 +268,14 @@ const Row = React.memo(
             )}
           </Box>
           <Box flex={1 / 10} className={classes.viewButton}>
-            {request.status !== "open" || isPayee || !request.loaded ? (
-              <Link
-                to={`/${request.requestId}`}
-                style={{ textDecoration: "none" }}
-              >
-                <Typography variant="h5" style={{ color: "#00CC8E" }}>
-                  View request
-                </Typography>
-              </Link>
-            ) : (
-              <a
-                href={getPayUrl(request.requestId)}
-                style={{ textDecoration: "none" }}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Typography variant="h5" style={{ color: "#00CC8E" }}>
-                  Pay now
-                </Typography>
-              </a>
-            )}
+            <Link
+              to={`/${request.requestId}`}
+              style={{ textDecoration: "none" }}
+            >
+              <Typography variant="h5" style={{ color: "#00CC8E" }}>
+                View request
+              </Typography>
+            </Link>
           </Box>
         </Box>
       </Box>
@@ -284,13 +294,13 @@ const SkeletonRow = () => {
         <Box flex={2 / 10} className={classes.payee}>
           <Skeleton animation="wave" width={200} />
         </Box>
-        <Box flex={2 / 10} className={classes.payer}>
+        <Box flex={1 / 10} className={classes.payer}>
           <Skeleton animation="wave" width={200} />
         </Box>
         <Box flex={1 / 10}>
           <Skeleton animation="wave" width={100} className={classes.amount} />
         </Box>
-        <Box flex={2 / 10} className={classes.status}>
+        <Box flex={3 / 10} className={classes.status}>
           <Skeleton animation="wave" variant="rect" height={32} width={100} />
         </Box>
         <Box flex={1 / 10} className={classes.viewButton}>
@@ -304,10 +314,12 @@ const SkeletonRow = () => {
 export default ({
   requests,
   account,
+  smartContractAddress,
   loading,
 }: {
   requests?: IParsedRequest[];
   account?: string;
+  smartContractAddress?: string;
   loading: boolean;
 }) => {
   return (
@@ -327,13 +339,13 @@ export default ({
           <Box flex={2 / 10}>
             <Typography variant="h5">From</Typography>
           </Box>
-          <Box flex={2 / 10}>
+          <Box flex={1 / 10}>
             <Typography variant="h5">To</Typography>
           </Box>
           <Box flex={1 / 10}>
             <Typography variant="h5">Amount</Typography>
           </Box>
-          <Box flex={2 / 10}>
+          <Box flex={3 / 10}>
             <Typography variant="h5">Status</Typography>
           </Box>
           <Box flex={1 / 10}></Box>
@@ -348,7 +360,12 @@ export default ({
         </>
       ) : requests.length > 0 ? (
         requests.map(request => (
-          <Row key={request.requestId} request={request} account={account} />
+          <Row
+            key={request.requestId}
+            request={request}
+            account={account}
+            smartContractAddress={smartContractAddress}
+          />
         ))
       ) : (
         <Box display="flex" alignItems="center" flexDirection="column">

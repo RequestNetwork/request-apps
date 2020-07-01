@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   makeStyles,
   Typography,
@@ -6,9 +6,10 @@ import {
   Box,
   Button,
 } from "@material-ui/core";
-import CopyToClipboard from "react-copy-to-clipboard";
+import { useClipboard } from "use-clipboard-copy";
 
 import { Spacer } from "request-ui";
+import { getPayUrl } from "request-shared";
 
 const useStyles = makeStyles(theme => ({
   wrapper: {
@@ -51,22 +52,11 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export const getPayUrl = (requestId: string) =>
-  window.location.hostname === "localhost"
-    ? `http://localhost:3001/${requestId}`
-    : window.location.hostname.startsWith("baguette")
-    ? `https://baguette-pay.request.network/${requestId}`
-    : `https://pay.request.network/${requestId}`;
-
 export default ({ requestId }: { requestId: string }) => {
   const classes = useStyles();
-  const [copied, setCopied] = useState(false);
-
-  useEffect(() => {
-    if (copied) {
-      setTimeout(() => setCopied(false), 1500);
-    }
-  }, [copied]);
+  const { copied, copy } = useClipboard({
+    copiedTimeout: 1500,
+  });
 
   const url = getPayUrl(requestId);
   return (
@@ -84,16 +74,15 @@ export default ({ requestId }: { requestId: string }) => {
             },
           }}
         />
-        <CopyToClipboard text={url} onCopy={() => setCopied(true)}>
-          <Button
-            variant="contained"
-            color="secondary"
-            className={classes.button}
-            size="small"
-          >
-            {copied ? "COPIED!" : "COPY LINK"}
-          </Button>
-        </CopyToClipboard>
+        <Button
+          variant="contained"
+          color="secondary"
+          className={classes.button}
+          size="small"
+          onClick={() => copy(url)}
+        >
+          {copied ? "COPIED!" : "COPY LINK"}
+        </Button>
       </Box>
     </>
   );

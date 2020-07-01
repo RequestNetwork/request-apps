@@ -13,7 +13,8 @@ jobs:
           node-version: 10.x
       - name: yarn install & build
         run: |
-          yarn
+          # https://github.com/yarnpkg/yarn/issues/2629
+          while ! yarn install; do echo --- ; done
           yarn workspace request-shared build
           yarn workspace request-ui build
           yarn workspace pay build

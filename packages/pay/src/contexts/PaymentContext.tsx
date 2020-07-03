@@ -192,8 +192,16 @@ export const PaymentProvider: React.FC = ({ children }) => {
   }, [library, request, setPending]);
 
   useEffect(() => {
+    const params = process.env.REACT_APP_EGS_API_KEY
+      ? {
+          "api-key": process.env.REACT_APP_EGS_API_KEY,
+        }
+      : {};
+
     axios
-      .get("https://ethgasstation.info/json/ethgasAPI.json")
+      .get("https://ethgasstation.info/json/ethgasAPI.json", {
+        params,
+      })
       .then(res => setGasPrice(res.data.average / 10 + 1));
   }, []);
 

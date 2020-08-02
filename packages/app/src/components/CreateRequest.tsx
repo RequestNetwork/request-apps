@@ -173,6 +173,7 @@ const getCurrencies = (network?: number): Record<string, React.FC> => {
       PAX: currencies.PaxIcon,
       // BUSD: BusdIcon,
       TUSD: currencies.TusdIcon,
+      ARIA20: currencies.EthIcon,
     };
   }
   return {

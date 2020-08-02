@@ -80,5 +80,12 @@ export const parseCurrency = (
       network: "mainnet",
     };
   }
+  if (network === "mainnet" && currency === "ARIA20") {
+    return {
+      type: RequestLogicTypes.CURRENCY.ERC20,
+      value: "0xeDF6568618A00C6F0908Bf7758A16F76B6E04aF9",
+      network: "mainnet",
+    };
+  }
   return Currency.stringToCurrency(currency);
 };

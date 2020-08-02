@@ -13,7 +13,7 @@ import { chainIdToName } from "request-shared";
 import { Switch } from "@material-ui/core";
 
 const supportedCurrencies: Record<number, string[]> = {
-  1: ["DAI", "USDT", "USDC", "PAX", "BUSD", "TUSD"],
+  1: ["DAI", "USDT", "USDC", "PAX", "BUSD", "TUSD", "ARIA20"],
   4: ["FAU", "CBTK"],
 };
 

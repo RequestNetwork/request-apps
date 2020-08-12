@@ -71,7 +71,7 @@ const ApproveAction = ({ approve }: { approve: () => void }) => {
       fullWidth
       className={classes.square}
     >
-      <Typography variant="caption">Approve</Typography>
+      <Typography variant="caption">Approve before paying</Typography>
     </RButton>
   );
 };

@@ -210,7 +210,7 @@ export const PaymentPage = () => {
           <Spacer size={12} />
           <RAlert
             severity="info"
-            message="Please approve the contract using your connected wallet."
+            message="Please approve the contract in order to proceed with payment, using your connected wallet"
           />
           <Spacer size={5} />
         </>

@@ -250,7 +250,7 @@ export const PaymentProvider: React.FC = ({ children }) => {
     if (active) return;
     setActive(true);
 
-    approveErc20(request!.raw, library, {
+    approveErc20(request.raw, library, {
       gasPrice: ethers.utils.parseUnits(gasPrice.toString(), "gwei"),
     })
       .then(async () => {

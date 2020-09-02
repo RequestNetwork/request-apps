@@ -2,9 +2,7 @@ import {
   payRequest,
   getErc20Balance,
   hasErc20Approval,
-  hasErc20FeeProxyApproval,
   approveErc20,
-  approveErc20FeeProxy,
 } from "@requestnetwork/payment-processor";
 import { useCallback, useEffect, useState } from "react";
 
@@ -42,14 +40,6 @@ export class FiatRequestNotSupportedError extends Error {
   }
 }
 
-const getPaymentNetwork = (
-  data: Types.IRequestData
-): Types.Payment.PAYMENT_NETWORK_ID | undefined => {
-  return Object.keys(data.extensions).find(
-    x => data.extensions[x].type === "payment-network"
-  ) as Types.Payment.PAYMENT_NETWORK_ID | undefined;
-};
-
 /** runs some verification on a request, throw errors if some expectation aren't met  */
 const runChecks = async (
   request: Types.IRequestData,
@@ -68,25 +58,9 @@ const runChecks = async (
         return new NotEnoughForGasError();
       }
       if (!approved) {
-        const pn = getPaymentNetwork(request);
-        if (pn === Types.Payment.PAYMENT_NETWORK_ID.ERC20_PROXY_CONTRACT) {
-          const approval = await hasErc20Approval(request, account, library);
-          if (!approval) {
-            return new RequiresApprovalError();
-          }
-        } else if (
-          pn === Types.Payment.PAYMENT_NETWORK_ID.ERC20_FEE_PROXY_CONTRACT
-        ) {
-          const approval = await hasErc20FeeProxyApproval(
-            request,
-            account,
-            library
-          );
-          if (!approval) {
-            return new RequiresApprovalError();
-          }
-        } else {
-          throw new Error(`Unsupported payment network ${pn}`);
+        const approval = await hasErc20Approval(request, account, library);
+        if (!approval) {
+          return new RequiresApprovalError();
         }
       }
 
@@ -276,13 +250,7 @@ export const PaymentProvider: React.FC = ({ children }) => {
     if (active) return;
     setActive(true);
 
-    const pn = getPaymentNetwork(request.raw);
-    const approveMethod =
-      pn === Types.Payment.PAYMENT_NETWORK_ID.ERC20_FEE_PROXY_CONTRACT
-        ? approveErc20FeeProxy
-        : approveErc20;
-
-    approveMethod(request.raw, library, {
+    approveErc20(request.raw, library, {
       gasPrice: ethers.utils.parseUnits(gasPrice.toString(), "gwei"),
     })
       .then(async () => {

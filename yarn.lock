@@ -1737,10 +1737,10 @@
     node-fetch "2.6.0"
     satoshi-bitcoin "1.0.4"
 
-"@requestnetwork/payment-processor@0.21.0":
-  version "0.21.0"
-  resolved "https://registry.yarnpkg.com/@requestnetwork/payment-processor/-/payment-processor-0.21.0.tgz#efc74dc9bf482f48bac79dcee7526aa3cc1f2216"
-  integrity sha512-uv+uxayYOiKi7BbFSkSJdeSvTo8q9M7N8wh+MlScKdI0QByx+IXphAB3GF9ATIf+TfR8QoAg55mae0HYR27MUQ==
+"@requestnetwork/payment-processor@0.21.1-next.1281":
+  version "0.21.1-next.1281"
+  resolved "https://registry.yarnpkg.com/@requestnetwork/payment-processor/-/payment-processor-0.21.1-next.1281.tgz#3fb7b7164e3cc45518cad51ac60be4cc7e8ccd27"
+  integrity sha512-YRD5m+esd1hM/uIG7Q0DWQ00v2FmemMNmTI1L0qD8I6Ujo/uoISAadzWBrntbNO5bB4X6XvzYTSE9OF/UWUOvQ==
   dependencies:
     "@requestnetwork/payment-detection" "0.21.0"
     "@requestnetwork/smart-contracts" "0.12.0"

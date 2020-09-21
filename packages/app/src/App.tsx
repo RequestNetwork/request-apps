@@ -22,7 +22,6 @@ import { useEagerConnect } from "./hooks/useEagerConnect";
 import { useInactiveListener } from "./hooks/useInactiveListnerer";
 import { useConnectedUser, UserProvider } from "./contexts/UserContext";
 import { injected } from "./connectors";
-import { Announcement } from "./components/Announcement";
 
 const useStyles = makeStyles(() => ({
   paper: {
@@ -59,12 +58,6 @@ const App: React.FC = () => {
           account={name || account}
           connect={() => activate(injected)}
           hasError={!!error}
-        />
-        <Announcement
-          id="1million"
-          message="🎉 $1,000,000 has been transacted through the Request network."
-          link="https://request.network/en/2020/04/22/milestone-reached-launching-request-create-and-pay"
-          linkText="Read more on our blog."
         />
 
         {web3detected && isMetaMask && isMobile && (
@@ -142,7 +135,7 @@ export default () => {
       service="RequestApp"
       component={ErrorPage}
     >
-      <Web3ReactProvider getLibrary={provider => new Web3Provider(provider)}>
+      <Web3ReactProvider getLibrary={(provider) => new Web3Provider(provider)}>
         <UserProvider>
           <App />
         </UserProvider>

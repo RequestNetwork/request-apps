@@ -59,6 +59,7 @@ const App: React.FC = () => {
           connect={() => activate(injected)}
           hasError={!!error}
         />
+        <div style={{ marginTop: "10px" }} />
 
         {web3detected && isMetaMask && isMobile && (
           <RAlert

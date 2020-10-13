@@ -33,12 +33,11 @@
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
-- [Usage](#usage)
-- [Roadmap](#roadmap)
+- [Build](#build)
+- [Run](#run)
 - [Contributing](#contributing)
 - [License](#license)
 - [Contact](#contact)
-- [Acknowledgements](#acknowledgements)
 
 <!-- ABOUT THE PROJECT -->
 
@@ -59,6 +58,7 @@ To get a local copy up and running follow these simple steps.
 ### Prerequisites
 
 You will need a local version of Node.js installed (version 13+).
+You will also need yarn, since we use it to manage the monorepo. ([How to install yarn](https://classic.yarnpkg.com/en/docs/install))
 
 ### Installation
 
@@ -74,15 +74,31 @@ git clone https://github.com/requestNetwork/request-app.git
 yarn install
 ```
 
-or
+## Build
+
+To build all the packages, run:
 
 ```sh
-npm install
+yarn workspaces run build
 ```
 
-## Running
+## Run
 
-## Building
+### Running Create
+
+Go to `packages/create` and run:
+
+```sh
+yarn start
+```
+
+### Running Create
+
+Go to `packages/pay` and run:
+
+```sh
+yarn start
+```
 
 <!-- CONTRIBUTING -->
 
@@ -115,3 +131,9 @@ Distributed under the MIT License. See `LICENSE` for more information.
 [issues-url]: https://github.com/requestNetwork/request-apps/issues
 [license-shield]: https://img.shields.io/github/license/requestNetwork/request-apps.svg?style=flat-square
 [license-url]: https://github.com/requestNetwork/request-apps/blob/master/LICENSE
+
+<!-- CONTACT -->
+
+## Contact
+
+The easiest way to reach out to us is through our [Request Hub Slack](https://request-slack.herokuapp.com/) or our [Request Discord](https://discord.gg/zBVSfFP).

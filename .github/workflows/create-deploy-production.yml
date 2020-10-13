@@ -1,9 +1,12 @@
-name: "[App] Deploy to staging"
+name: "[Create] Deploy to Production"
 
-on: [push]
+on:
+  push:
+    tags:
+      - "*"
 
 jobs:
-  build:
+  build-deploy-production:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -17,30 +20,15 @@ jobs:
           while ! yarn install; do echo --- ; done
           yarn workspace request-shared build
           yarn workspace request-ui build
-          yarn workspace app build
+          yarn workspace create build
         env:
           CI: false
-          PUBLIC_URL: https://baguette-v2.request.
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v1
-        with:
-          name: app-build-artifact
-          path: packages/app/build
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    if: github.ref == 'refs/heads/master'
-    steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v1
-        with:
-          name: app-build-artifact
-          path: packages/app/build
+          PUBLIC_URL: https://${{ secrets.CREATE_PROD_S3_BUCKET }}
       - uses: benjlevesque/s3-sync-action@master
         env:
           CI: false
-          SOURCE_DIR: "packages/app/build"
+          SOURCE_DIR: "packages/create/build"
           AWS_REGION: eu-west-1
-          AWS_S3_BUCKET: baguette-v2.request.network
+          AWS_S3_BUCKET: ${{ secrets.CREATE_PROD_S3_BUCKET }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

@@ -92,12 +92,20 @@ Go to `packages/create` and run:
 yarn start
 ```
 
-### Running Create
+### Running Pay
 
 Go to `packages/pay` and run:
 
 ```sh
 yarn start
+```
+
+### ETHGasStation API Key
+
+If you get throttled by ethgasstation API, you can add your own API key to `packages/pay/.env` file:
+
+```
+REACT_APP_EGS_API_KEY=<YOUR API KEY HERE>
 ```
 
 <!-- CONTRIBUTING -->

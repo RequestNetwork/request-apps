@@ -24,6 +24,7 @@ jobs:
         env:
           CI: false
           PUBLIC_URL: https://pay.request.network
+          REACT_APP_EGS_API_KEY: ${{ secrets.EGS_API_KEY }}
       - uses: benjlevesque/s3-sync-action@master
         env:
           CI: false

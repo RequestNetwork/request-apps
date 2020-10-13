@@ -21,6 +21,7 @@ jobs:
         env:
           CI: false
           PUBLIC_URL: https://baguette-pay.request.network
+          REACT_APP_EGS_API_KEY: ${{ secrets.EGS_API_KEY }}
       - name: Upload build artifact
         uses: actions/upload-artifact@v1
         with:

@@ -1,4 +1,4 @@
-name: "[App] Deploy to Production"
+name: "[Create] Deploy to Production"
 
 on:
   push:
@@ -20,15 +20,15 @@ jobs:
           while ! yarn install; do echo --- ; done
           yarn workspace request-shared build
           yarn workspace request-ui build
-          yarn workspace app build
+          yarn workspace create build
         env:
           CI: false
           PUBLIC_URL: https://create.request.network
       - uses: benjlevesque/s3-sync-action@master
         env:
           CI: false
-          SOURCE_DIR: "packages/app/build"
+          SOURCE_DIR: "packages/create/build"
           AWS_REGION: eu-west-1
-          AWS_S3_BUCKET: create.request.network
+          AWS_S3_BUCKET: ${{ secrets.CREATE_PROD_S3_BUCKET }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

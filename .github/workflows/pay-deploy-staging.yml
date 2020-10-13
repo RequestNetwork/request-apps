@@ -41,6 +41,6 @@ jobs:
           CI: false
           SOURCE_DIR: "packages/pay/build"
           AWS_REGION: eu-west-1
-          AWS_S3_BUCKET: baguette-pay.request.network
+          AWS_S3_BUCKET: ${{ secrets.PAY_STAGING_S3_BUCKET }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

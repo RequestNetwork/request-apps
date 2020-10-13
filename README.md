@@ -7,7 +7,7 @@
 
 <br />
 <p align="center">
-  <a href="https://github.com/requestNetwork/request-app">
+  <a href="https://github.com/requestNetwork/request-apps">
     <img src="https://raw.githubusercontent.com/RequestNetwork/Request/master/Hubs/Request%20Logos/OnLight/png/Request_onlight_reg_green.png" width="400px" alt="Request Logo" >
   </a>
 
@@ -17,11 +17,11 @@
     Monorepo containing the Request Network Dapps
     <br />
     <br />
-    <a href="https://github.com/requestNetwork/request-app/packages">Packages</a>
+    <a href="https://github.com/requestNetwork/request-apps/packages">Packages</a>
     ·
-    <a href="https://github.com/requestNetwork/request-app/issues">Report Bug</a>
+    <a href="https://github.com/requestNetwork/request-apps/issues">Report Bug</a>
     ·
-    <a href="https://github.com/requestNetwork/request-app/issues">Request Feature</a>
+    <a href="https://github.com/requestNetwork/request-apps/issues">Request Feature</a>
   </p>
 </p>
 
@@ -65,7 +65,7 @@ You will also need yarn, since we use it to manage the monorepo. ([How to instal
 1. Clone the repo
 
 ```sh
-git clone https://github.com/requestNetwork/request-app.git
+git clone https://github.com/requestNetwork/request-apps.git
 ```
 
 2. Install dependencies

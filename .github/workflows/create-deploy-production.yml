@@ -23,7 +23,7 @@ jobs:
           yarn workspace create build
         env:
           CI: false
-          PUBLIC_URL: https://create.request.network
+          PUBLIC_URL: https://${{ secrets.CREATE_PROD_S3_BUCKET }}
       - uses: benjlevesque/s3-sync-action@master
         env:
           CI: false

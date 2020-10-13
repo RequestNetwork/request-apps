@@ -20,7 +20,7 @@ jobs:
           yarn workspace create build
         env:
           CI: false
-          PUBLIC_URL: https://baguette-v2.request.
+          PUBLIC_URL: https://${{ secrets.CREATE_STAGING_S3_BUCKET }}
       - name: Upload build artifact
         uses: actions/upload-artifact@v1
         with:

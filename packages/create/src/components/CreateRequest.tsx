@@ -9,12 +9,17 @@ import {
   MenuItem,
   Hidden,
   Tooltip,
+  IconButton,
+  Link,
+  Button,
 } from "@material-ui/core";
 import Moment from "react-moment";
 import * as Yup from "yup";
 import { Skeleton } from "@material-ui/lab";
 import WalletAddressValidator from "wallet-address-validator";
 import { isValidEns, ENS, isSimpleAscii } from "request-shared";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 
 import {
   RIcon,
@@ -32,6 +37,7 @@ export interface IFormData {
   payer?: string;
   currency?: string;
   reason?: string;
+  paymentAddress?: string;
 }
 
 export interface IProps {
@@ -130,7 +136,7 @@ const Header = ({
 
 const useBodyStyles = makeStyles(theme => ({
   container: {
-    height: 290,
+    minHeight: 290,
     width: "100%",
     display: "flex",
     flexDirection: "column",
@@ -139,6 +145,13 @@ const useBodyStyles = makeStyles(theme => ({
   },
   field: {
     marginBottom: 8,
+  },
+  advancedButton: {
+    paddingLeft: 0,
+    paddingRight: 0,
+  },
+  advancedButtonLabel: {
+    color: theme.palette.common.black,
   },
 }));
 
@@ -200,7 +213,6 @@ const Currency = ({
     <TextField
       {...field}
       select
-      name="currency"
       label=" "
       fullWidth
       className={className}
@@ -222,7 +234,6 @@ const Payer = ({ className }: { className?: string }) => {
   return (
     <TextField
       {...field}
-      name="payer"
       label="Who are you sending this request to? (optional)"
       placeholder="Enter an ENS name or ETH address"
       className={className}
@@ -240,8 +251,23 @@ const Reason = ({ className }: { className?: string }) => {
   return (
     <TextField
       {...field}
-      name="reason"
       label="Reason (optional)"
+      fullWidth
+      className={className}
+      error={Boolean(meta.error)}
+      helperText={Boolean(meta.error) ? meta.error : " "}
+    />
+  );
+};
+
+const PaymentAddress = ({ className }: { className?: string }) => {
+  const [field, meta] = useField("paymentAddress");
+
+  return (
+    <TextField
+      {...field}
+      label="Where do you want to receive the funds?"
+      placeholder="Enter an ENS name or ETH address"
       fullWidth
       className={className}
       error={Boolean(meta.error)}
@@ -252,6 +278,7 @@ const Reason = ({ className }: { className?: string }) => {
 
 const Body = ({ currencies }: { currencies: Record<string, React.FC> }) => {
   const classes = useBodyStyles();
+  const [advancedOpen, setAdvancedOpen] = React.useState(false);
   return (
     <Box className={classes.container}>
       <Box display="flex" flexDirection="row">
@@ -265,6 +292,26 @@ const Body = ({ currencies }: { currencies: Record<string, React.FC> }) => {
 
       <Payer className={classes.field} />
       <Reason className={classes.field} />
+      <Box>
+        <Button
+          variant="text"
+          className={classes.advancedButton}
+          classes={{ label: classes.advancedButtonLabel }}
+          onClick={() => setAdvancedOpen(!advancedOpen)}
+        >
+          {advancedOpen ? (
+            <ExpandMoreIcon fontSize="small" />
+          ) : (
+            <ChevronRightIcon fontSize="small" />
+          )}{" "}
+          <Typography variant="body1">Advanced</Typography>
+        </Button>
+        {advancedOpen && (
+          <Box mt={2}>
+            <PaymentAddress className={classes.field} />
+          </Box>
+        )}
+      </Box>
     </Box>
   );
 };
@@ -321,6 +368,7 @@ export const schema = Yup.object().shape<IFormData>({
       return !val || isSimpleAscii(val);
     }
   ),
+  paymentAddress: Yup.string().required("Required"),
 });
 
 const useStyles = makeStyles(theme => ({
@@ -358,6 +406,7 @@ export const CreateRequestForm = ({
           amount: "" as any,
           payer: "",
           reason: "",
+          paymentAddress: account,
         }}
       >
         <>

@@ -42,7 +42,7 @@ export default () => {
           },
           currency,
           payer: values.payer,
-          paymentAddress: account,
+          paymentAddress: values.paymentAddress,
         },
         account,
         chainId

@@ -9,8 +9,6 @@ import {
   MenuItem,
   Hidden,
   Tooltip,
-  IconButton,
-  Link,
   Button,
 } from "@material-ui/core";
 import Moment from "react-moment";
@@ -251,7 +249,7 @@ const Reason = ({ className }: { className?: string }) => {
   return (
     <TextField
       {...field}
-      label="Reason (optional)"
+      label="Reason (optional, only non-confidential)"
       fullWidth
       className={className}
       error={Boolean(meta.error)}

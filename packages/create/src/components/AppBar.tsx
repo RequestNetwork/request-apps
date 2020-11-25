@@ -144,7 +144,7 @@ export const RequestAppBar = ({
       );
       return () => clearTimeout(t);
     }
-  }, [account, loading]);
+  }, [hasError, account, loading]);
 
   const Links = ({ className }: { className: string }) => (
     <>

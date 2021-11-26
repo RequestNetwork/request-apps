@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { listRequests, IParsedRequest } from "request-shared";
+import { IParsedRequest, useListRequests } from "request-shared";
 import { useWeb3React } from "@web3-react/core";
 
 interface IContext {
@@ -26,6 +26,7 @@ const applyFilter = (
 
 export const RequestListProvider: React.FC = ({ children }) => {
   const { account, chainId } = useWeb3React();
+  const listRequests = useListRequests();
   const [forceUpdate, setForceUpdate] = useState(false);
   const [requests, setRequests] = useState<IParsedRequest[]>();
 
@@ -56,6 +57,7 @@ export const RequestListProvider: React.FC = ({ children }) => {
               )
             );
           });
+
           result.loadBalances();
         }
       });
@@ -63,7 +65,7 @@ export const RequestListProvider: React.FC = ({ children }) => {
     return () => {
       canceled = true;
     };
-  }, [chainId, account, forceUpdate]);
+  }, [chainId, account, forceUpdate, listRequests]);
   return (
     <RequestListContext.Provider
       value={{

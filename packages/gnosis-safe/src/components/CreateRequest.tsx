@@ -330,7 +330,6 @@ export const CreateRequestForm = ({
 }: IProps) => {
   const classes = useStyles();
   const currencies = getCurrencies(network);
-  const provider = ethers.getDefaultProvider(chainIdToName(network || 1));
 
   return (
     <Formik<IFormData>

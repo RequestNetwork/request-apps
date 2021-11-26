@@ -6,7 +6,6 @@ import {
   Typography,
   TextField,
   useTheme,
-  MenuItem,
   Hidden,
   Tooltip,
   Button,
@@ -14,11 +13,10 @@ import {
 import Moment from "react-moment";
 import * as Yup from "yup";
 import { Skeleton } from "@material-ui/lab";
-import WalletAddressValidator from "wallet-address-validator";
-import { isValidEns, ENS, isSimpleAscii } from "request-shared";
+import { CurrencyManager } from "@requestnetwork/currency";
+import { isValidEns, ENS, isSimpleAscii, useCurrency } from "request-shared";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-
 import {
   RIcon,
   RContainer,
@@ -26,9 +24,14 @@ import {
   RButton,
   TestnetWarning,
   RAlert,
-  currencies,
+  getCurrenciesForPicker,
+  CurrencyPickerItem,
 } from "request-ui";
 import Dot from "./Dot";
+import { useWeb3React } from "@web3-react/core";
+import { ChangeChainLink } from "./ChangeChainLink";
+
+export type PaymentChain = "mainnet" | "xdai" | "matic" | "rinkeby";
 
 export interface IFormData {
   amount?: number;
@@ -174,38 +177,10 @@ const Amount = ({ className }: { className?: string }) => {
   );
 };
 
-const getCurrencies = (network?: number): Record<string, React.FC> => {
-  if (network === 1) {
-    return {
-      DAI: currencies.DaiIcon,
-      ETH: currencies.EthIcon,
-      // USDT: UsdtIcon,
-      USDC: currencies.UsdcIcon,
-      PAX: currencies.PaxIcon,
-      // BUSD: BusdIcon,
-      TUSD: currencies.TusdIcon,
-    };
-  }
-  return {
-    FAU: currencies.DaiIcon,
-    ETH: currencies.EthIcon,
-  };
-};
-
-const Currency = ({
-  className,
-  currencies,
-}: {
-  className?: string;
-  currencies: Record<string, React.FC>;
-}) => {
+const CurrencyPicker = ({ className }: { className?: string }) => {
   const [field, meta] = useField("currency");
-
-  const CurrencyIcon = ({ text, icon: Icon }: any) => (
-    <Box display="flex" alignItems="center">
-      <Icon style={{ width: 18, height: 18, marginRight: 8 }} /> {text}
-    </Box>
-  );
+  const { chainId } = useWeb3React();
+  const { currencyManager } = useCurrency();
 
   return (
     <TextField
@@ -216,12 +191,25 @@ const Currency = ({
       className={className}
       error={Boolean(meta.error)}
       helperText={Boolean(meta.error) ? meta.error : " "}
+      SelectProps={{
+        renderValue: val => {
+          const currency = currencyManager.fromId(val as string)!;
+          return (
+            <CurrencyPickerItem
+              currency={currency}
+              showNetwork={
+                currency &&
+                "network" in currency &&
+                currency.network !== "mainnet"
+              }
+            />
+          );
+        },
+      }}
     >
-      {Object.keys(currencies).map(currency => (
-        <MenuItem key={currency} value={currency}>
-          <CurrencyIcon text={currency} icon={currencies[currency]} />
-        </MenuItem>
-      ))}
+      {getCurrenciesForPicker({
+        currencyFilter: ({ network }) => chainId === 4 || network !== "rinkeby",
+      })}
     </TextField>
   );
 };
@@ -274,17 +262,17 @@ const PaymentAddress = ({ className }: { className?: string }) => {
   );
 };
 
-const Body = ({ currencies }: { currencies: Record<string, React.FC> }) => {
+const Body = () => {
   const classes = useBodyStyles();
   const [advancedOpen, setAdvancedOpen] = React.useState(false);
   return (
     <Box className={classes.container}>
       <Box display="flex" flexDirection="row">
-        <Box flex={0.8}>
+        <Box flex={0.7}>
           <Amount className={classes.field} />
         </Box>
-        <Box flex={0.2}>
-          <Currency className={classes.field} currencies={currencies} />
+        <Box flex={0.3}>
+          <CurrencyPicker className={classes.field} />
         </Box>
       </Box>
 
@@ -314,7 +302,13 @@ const Body = ({ currencies }: { currencies: Record<string, React.FC> }) => {
   );
 };
 
-const Footer = ({ account }: { account?: string }) => {
+const Footer = ({
+  account,
+  disabled,
+}: {
+  account?: string;
+  disabled?: boolean;
+}) => {
   const { submitForm, isValid, values, isSubmitting } = useFormikContext<
     IFormData
   >();
@@ -327,7 +321,7 @@ const Footer = ({ account }: { account?: string }) => {
         <Box flex={1} />
       </Hidden>
       <RButton
-        disabled={!values.amount || !isValid || !account}
+        disabled={disabled || !values.amount || !isValid || !account}
         color="primary"
         fullWidth
         onClick={submitForm}
@@ -350,10 +344,10 @@ export const schema = Yup.object().shape<IFormData>({
   payer: Yup.string().test(
     "is-valid-recipient",
     "Please enter a valid ENS or ETH address",
-    async (value: string) => {
+    async function(value: string) {
       return (
         !value ||
-        WalletAddressValidator.validate(value, "ethereum") ||
+        CurrencyManager.validateAddress(value, { type: "ETH" } as any) ||
         (isValidEns(value) && !!(await new ENS(value).addr()))
       );
     }
@@ -380,6 +374,16 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const UnsupportedChainWarning = () => {
+  return (
+    <RAlert
+      severity="warning"
+      message="This app no longer support Request creation on Ethereum Mainnet. Payments on Ethereum are still supported."
+      actions={<ChangeChainLink chain="xdai" />}
+    />
+  );
+};
+
 export const CreateRequestForm = ({
   error,
   onSubmit,
@@ -389,18 +393,23 @@ export const CreateRequestForm = ({
   loading,
 }: IProps) => {
   const classes = useStyles();
-  const currencies = getCurrencies(network);
+
   return (
     <RContainer>
       <Spacer size={15} xs={8} />
-
-      {network && network !== 1 && <TestnetWarning />}
+      {network === 1 && (
+        <>
+          <UnsupportedChainWarning />
+          <Spacer size={4} />
+        </>
+      )}
+      <TestnetWarning chainId={network} />
       <Formik<IFormData>
         validationSchema={schema}
         onSubmit={onSubmit}
         enableReinitialize
         initialValues={{
-          currency: !network || network === 1 ? "DAI" : "FAU",
+          currency: !network || network === 4 ? "FAU-rinkeby" : "DAI-mainnet",
           amount: "" as any,
           payer: "",
           reason: "",
@@ -415,7 +424,7 @@ export const CreateRequestForm = ({
               network={network}
               loading={loading}
             />
-            <Body currencies={currencies} />
+            <Body />
           </Box>
           {error && (
             <>
@@ -429,7 +438,7 @@ export const CreateRequestForm = ({
           <Hidden smUp>
             <Box flex={1} />
           </Hidden>
-          <Footer account={account} />
+          <Footer disabled={network === 1} account={account} />
         </>
       </Formik>
     </RContainer>

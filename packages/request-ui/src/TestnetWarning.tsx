@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, Typography, makeStyles } from '@material-ui/core';
+import { chainInfos } from 'request-shared';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -27,14 +28,17 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export const TestnetWarning = () => {
+export const TestnetWarning = ({ chainId }: { chainId?: number | string }) => {
   const classes = useStyles();
-  return (
-    <Box className={classes.container}>
-      <Box className={classes.textBox}>
-        <Typography variant="body1">Test Network</Typography>
+  if (chainId && chainInfos[chainId]?.isTest) {
+    return (
+      <Box className={classes.container}>
+        <Box className={classes.textBox}>
+          <Typography variant="body1">Test Network</Typography>
+        </Box>
+        <Box className={classes.bottomLine} />
       </Box>
-      <Box className={classes.bottomLine} />
-    </Box>
-  );
+    );
+  }
+  return null;
 };

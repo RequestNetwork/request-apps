@@ -9,6 +9,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     alignItems: 'center',
     padding: 0,
+    margin: 'auto',
     width: '100%',
     background: 'linear-gradient(-68deg,#FAFAFA 35%,#ffffff 0%)',
     backgroundRepeat: 'no-repeat',

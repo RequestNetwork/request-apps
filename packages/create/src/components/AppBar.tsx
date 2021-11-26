@@ -21,6 +21,7 @@ import { Skeleton } from "@material-ui/lab";
 import ConnectButton from "./ConnectButton";
 import UserInfo from "./UserInfo";
 import { ConnectModal } from "./ConnectModal";
+import { ChangeChainLink } from "./ChangeChainLink";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -221,6 +222,8 @@ export const RequestAppBar = ({
                 network={network}
                 onClick={() => setConnectModalOpen(true)}
               />
+            ) : hasError ? (
+              <ChangeChainLink chain="xdai" variant="button" />
             ) : (
               <ConnectButton
                 connecting={connecting}

@@ -1,9 +1,10 @@
-import { Web3Provider } from "ethers/providers";
+import { providers } from "ethers";
 import * as React from "react";
 import Intercom from "react-intercom";
 
 import { Box, makeStyles } from "@material-ui/core";
 import { Web3ReactProvider, useWeb3React } from "@web3-react/core";
+import { CurrencyProvider, getCurrencies } from "request-shared";
 
 import {
   RAlert,
@@ -97,7 +98,7 @@ export const ErrorContainer = () => {
       )}
       <RContainer>
         <Spacer size={15} xs={5} />
-        {request && request.network !== "mainnet" && <TestnetWarning />}
+        <TestnetWarning chainId={request?.network} />
       </RContainer>
     </Box>
   );
@@ -122,7 +123,7 @@ export const FeedbackContainer = () => {
   );
 };
 
-export const PaymentPage = () => {
+export const PaymentPageInner = () => {
   const [loaded, setLoaded] = React.useState(false);
 
   const { ready: connectorReady, connectorName } = useConnector();
@@ -244,26 +245,32 @@ const AutoConnect = () => {
   return <></>;
 };
 
-export default () => {
+const PaymentPage = () => {
   const isMobile = useMobile();
 
   return (
-    <RequestProvider>
-      <Web3ReactProvider getLibrary={provider => new Web3Provider(provider)}>
-        <ConnectorProvider>
-          <PaymentProvider>
-            <AutoConnect />
-            <FeedbackContainer />
-            <ErrorContainer />
-            <PaymentPage />
-            <Intercom
-              appID="mmdbekc3"
-              custom_launcher_selector="#intercom-trigger"
-              hide_default_launcher={isMobile}
-            />
-          </PaymentProvider>
-        </ConnectorProvider>
-      </Web3ReactProvider>
-    </RequestProvider>
+    <CurrencyProvider currencies={getCurrencies()}>
+      <RequestProvider>
+        <Web3ReactProvider
+          getLibrary={provider => new providers.Web3Provider(provider)}
+        >
+          <ConnectorProvider>
+            <PaymentProvider>
+              <AutoConnect />
+              <FeedbackContainer />
+              <ErrorContainer />
+              <PaymentPageInner />
+              <Intercom
+                appID="mmdbekc3"
+                custom_launcher_selector="#intercom-trigger"
+                hide_default_launcher={isMobile}
+              />
+            </PaymentProvider>
+          </ConnectorProvider>
+        </Web3ReactProvider>
+      </RequestProvider>
+    </CurrencyProvider>
   );
 };
+
+export default PaymentPage;

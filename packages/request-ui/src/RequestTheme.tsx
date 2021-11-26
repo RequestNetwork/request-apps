@@ -1,8 +1,8 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core';
 
-const defaultTheme = createMuiTheme({});
+const defaultTheme = createTheme({});
 
-export const theme = createMuiTheme({
+export const theme = createTheme({
   palette: {
     action: {
       disabled: '#656565',

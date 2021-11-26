@@ -1,7 +1,9 @@
-export * from './BusdIcon';
-export * from './DaiIcon';
-export * from './EthIcon';
-export * from './PaxIcon';
-export * from './TusdIcon';
-export * from './UsdcIcon';
-export * from './UsdtIcon';
+export { BusdIcon as BUSD } from './BusdIcon';
+export { DaiIcon as DAI } from './DaiIcon';
+export { EthIcon as ETH } from './EthIcon';
+export { PaxIcon as PAX } from './PaxIcon';
+export { TusdIcon as TUSD } from './TusdIcon';
+export { UsdcIcon as USDC } from './UsdcIcon';
+export { UsdtIcon as USDT } from './UsdtIcon';
+export { XdaiIcon as XDAI } from './XdaiIcon';
+export { MaticIcon as MATIC } from './MaticIcon';

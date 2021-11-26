@@ -23,4 +23,5 @@ export * from './TestnetWarning';
 export * from './PdfReceipt';
 
 export * as currencies from "./currencies"
+export * from "./CurrencyPicker"
 export * from "./CopyIcon"

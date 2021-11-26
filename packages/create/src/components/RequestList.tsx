@@ -15,6 +15,7 @@ import { RStatusBadge, Spacer, CopyIcon } from "request-ui";
 import Moment from "react-moment";
 import { Skeleton } from "@material-ui/lab";
 import { useClipboard } from "use-clipboard-copy";
+import { CurrencyDefinition } from "@requestnetwork/currency";
 
 const short = (val?: string) =>
   val
@@ -85,7 +86,7 @@ const Amount = ({
   role,
 }: {
   amount: number;
-  currency: string;
+  currency: CurrencyDefinition;
   role?: "payee" | "payer";
 }) => {
   const displayAmount = amount.toLocaleString("en-US", {
@@ -98,14 +99,16 @@ const Amount = ({
   });
   return (
     <Tooltip
-      title={titleAmount !== displayAmount ? `${amount} ${currency}` : ""}
+      title={
+        titleAmount !== displayAmount ? `${amount} ${currency.symbol}` : ""
+      }
     >
       <Box
         color={role === "payee" ? "#008556" : role === "payer" ? "#DE1C22" : ""}
       >
         <Typography variant="h5">
           {role === "payer" ? <>-</> : <>+</>}&nbsp;
-          {displayAmount} {currency}
+          {displayAmount} {currency.symbol}
         </Typography>
       </Box>
     </Tooltip>
@@ -301,7 +304,7 @@ const SkeletonRow = () => {
   );
 };
 
-export default ({
+export const RequestList = ({
   requests,
   account,
   loading,
@@ -361,3 +364,5 @@ export default ({
     </Box>
   );
 };
+
+export default RequestList;

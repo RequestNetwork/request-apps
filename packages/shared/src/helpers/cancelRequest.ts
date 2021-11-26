@@ -1,7 +1,7 @@
 import { chainIdToName } from "./chainIdToName";
 import { RequestNetwork } from "@requestnetwork/request-client.js";
 import { IdentityTypes } from "@requestnetwork/types";
-import { Web3Provider } from "ethers/providers";
+import { providers } from "ethers";
 
 import { CustomSignatureProvider } from "./CustomSignatureProvider";
 
@@ -16,7 +16,7 @@ export const cancelRequest = async (
     throw new Error("ethereum not detected");
   }
   let signatureProvider = new CustomSignatureProvider(
-    new Web3Provider((window as any).ethereum).getSigner()
+    new providers.Web3Provider((window as any).ethereum).getSigner()
   );
   if (!win.ethereum.isMetamask) {
     const { Web3SignatureProvider } = require("@requestnetwork/web3-signature");
@@ -24,10 +24,7 @@ export const cancelRequest = async (
   }
   const rn = new RequestNetwork({
     nodeConnectionConfig: {
-      baseURL:
-        network === "rinkeby"
-          ? "https://gateway-rinkeby.request.network"
-          : "https://gateway.request.network",
+      baseURL: `https://${network}.gateway.request.network`,
     },
     signatureProvider,
   });
@@ -37,5 +34,5 @@ export const cancelRequest = async (
     type: IdentityTypes.TYPE.ETHEREUM_ADDRESS,
     value: account,
   });
-  await new Promise(resolve => cancellation.on("confirmed", () => resolve()));
+  await new Promise(resolve => cancellation.on("confirmed", resolve));
 };

@@ -15,21 +15,21 @@ const useStyles = makeStyles(theme => ({
       width: 532,
       boxShadow: "unset",
       borderRadius: 4,
-      boxSizing: "border-box"
-    }
+      boxSizing: "border-box",
+    },
   },
   dot: {
     height: 8,
     width: 8,
     backgroundColor: "#DE1C22",
     borderRadius: "50%",
-    display: "inline-block"
-  }
+    display: "inline-block",
+  },
 }));
 
-export default ({
+const ErrorPage = ({
   topText,
-  bottomText
+  bottomText,
 }: {
   topText: string | JSX.Element;
   bottomText?: string | JSX.Element;
@@ -56,3 +56,5 @@ export default ({
     </RContainer>
   );
 };
+
+export default ErrorPage;

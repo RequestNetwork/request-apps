@@ -1,5 +1,4 @@
 export * from "./createRequest";
-export * from "./currency";
 export * from "./parseRequest";
 export * from "./listRequests";
 export * from "./ens";
@@ -10,3 +9,4 @@ export * from "./isCancelError";
 export * from "./chainIdToName";
 export * from "./stringUtils";
 export * from "./getPayUrl";
+export * from "./getCurrencies";

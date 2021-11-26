@@ -1,14 +1,15 @@
-import { Web3Provider } from "ethers/providers";
+import { providers } from "ethers";
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import { ErrorBoundary, theme, RAlert, useMobile, Analytics } from "request-ui";
 import Intercom from "react-intercom";
+import { ErrorBoundary, theme, RAlert, useMobile, Analytics } from "request-ui";
 
 import {
   CssBaseline,
   makeStyles,
   ThemeProvider,
   Link,
+  Box,
 } from "@material-ui/core";
 import { useWeb3React, Web3ReactProvider } from "@web3-react/core";
 
@@ -22,6 +23,8 @@ import { useEagerConnect } from "./hooks/useEagerConnect";
 import { useInactiveListener } from "./hooks/useInactiveListnerer";
 import { useConnectedUser, UserProvider } from "./contexts/UserContext";
 import { injected } from "./connectors";
+import { CurrencyProvider, getCurrencies } from "request-shared";
+import { ChangeChainLink } from "./components/ChangeChainLink";
 
 const useStyles = makeStyles(() => ({
   paper: {
@@ -33,7 +36,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const App: React.FC = () => {
+const AppInner: React.FC = () => {
   const classes = useStyles();
   const tried = useEagerConnect();
   useInactiveListener(!tried);
@@ -110,25 +113,33 @@ const App: React.FC = () => {
             }
           />
         )}
-        {web3detected && error && error.name === "UnsupportedChainIdError" && (
-          <RAlert severity="error" message="Network not supported" />
+        {web3detected && error && error.name === "UnsupportedChainIdError" ? (
+          <ErrorPage
+            topText="Network not supported."
+            bottomText={
+              <Box mt={4}>
+                <ChangeChainLink variant="button" chain="xdai" />
+              </Box>
+            }
+          />
+        ) : (
+          <div className={classes.paper}>
+            <Analytics trackingId="UA-105153327-15">
+              <Switch>
+                <Route path="/" exact component={CreatePage} />
+                <Route path="/dashboard" component={DashboardPage} />
+                <Route path="/:id([0-9a-fA-F]+)" component={RequestPage} />
+                <Route path="*" component={NotFoundPage} />
+              </Switch>
+            </Analytics>
+          </div>
         )}
-        <div className={classes.paper}>
-          <Analytics trackingId="UA-105153327-15">
-            <Switch>
-              <Route path="/" exact component={CreatePage} />
-              <Route path="/dashboard" component={DashboardPage} />
-              <Route path="/:id([0-9a-fA-F]+)" component={RequestPage} />
-              <Route path="*" component={NotFoundPage} />
-            </Switch>
-          </Analytics>
-        </div>
       </ThemeProvider>
     </BrowserRouter>
   );
 };
 
-export default () => {
+const App = () => {
   return (
     <ErrorBoundary
       stackdriverErrorReporterApiKey="AIzaSyBr5Ix9knr8FPzOmkB6QmcEs-E9fjReZj8"
@@ -136,11 +147,17 @@ export default () => {
       service="RequestApp"
       component={ErrorPage}
     >
-      <Web3ReactProvider getLibrary={(provider) => new Web3Provider(provider)}>
-        <UserProvider>
-          <App />
-        </UserProvider>
+      <Web3ReactProvider
+        getLibrary={provider => new providers.Web3Provider(provider)}
+      >
+        <CurrencyProvider currencies={getCurrencies()}>
+          <UserProvider>
+            <AppInner />
+          </UserProvider>
+        </CurrencyProvider>
       </Web3ReactProvider>
     </ErrorBoundary>
   );
 };
+
+export default App;

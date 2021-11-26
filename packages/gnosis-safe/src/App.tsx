@@ -1,4 +1,4 @@
-import { Web3Provider } from "ethers/providers";
+import { providers } from "ethers";
 import React from "react";
 import { HashRouter, Route, Switch } from "react-router-dom";
 import { ErrorBoundary } from "request-ui";
@@ -7,7 +7,7 @@ import {
   CssBaseline,
   makeStyles,
   ThemeProvider,
-  createMuiTheme,
+  createTheme,
 } from "@material-ui/core";
 import { Web3ReactProvider } from "@web3-react/core";
 
@@ -31,7 +31,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const theme = createMuiTheme({
+const theme = createTheme({
   breakpoints: {
     values: {
       xs: 560,
@@ -156,7 +156,9 @@ export default () => {
       service="RequestGnosisSafeApp"
       component={ErrorPage}
     >
-      <Web3ReactProvider getLibrary={provider => new Web3Provider(provider)}>
+      <Web3ReactProvider
+        getLibrary={provider => new providers.Web3Provider(provider)}
+      >
         <UserProvider>
           <GnosisSafeProvider>
             <App />

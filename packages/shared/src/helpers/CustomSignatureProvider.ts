@@ -1,5 +1,5 @@
 import Utils from "@requestnetwork/utils";
-import { JsonRpcSigner } from "ethers/providers";
+import { providers } from "ethers";
 import {
   IdentityTypes,
   SignatureProviderTypes,
@@ -8,7 +8,7 @@ import {
 
 export class CustomSignatureProvider
   implements SignatureProviderTypes.ISignatureProvider {
-  constructor(private signer: JsonRpcSigner) {}
+  constructor(private signer: providers.JsonRpcSigner) {}
   /** list of supported signing method */
   public supportedMethods: SignatureTypes.METHOD[] = [
     SignatureTypes.METHOD.ECDSA,

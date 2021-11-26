@@ -7,6 +7,7 @@ import CommentIcon from '@material-ui/icons/Comment';
 import { Skeleton } from '@material-ui/lab';
 
 import { RequestStatus } from 'request-shared';
+import { CurrencyDefinition } from '@requestnetwork/currency';
 
 import { colors } from './colors';
 import { Spacer } from './Spacer';
@@ -92,10 +93,10 @@ interface IProps {
   status: RequestStatus;
   amount: string;
   overpaid: string;
-  currency: string;
+  currency: CurrencyDefinition;
   reason?: string;
   counterValue?: string;
-  counterCurrency: string;
+  counterCurrency: CurrencyDefinition;
 }
 
 export const RequestSkeleton = () => {
@@ -165,7 +166,7 @@ export const RequestView = ({
         <RStatusBadge status={status} />
         <Spacer size={3} />
         <Typography variant="h3">
-          {amount} {currency}
+          {amount} {currency.symbol}
         </Typography>
 
         {counterValue && (

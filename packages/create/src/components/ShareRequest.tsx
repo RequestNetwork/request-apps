@@ -52,7 +52,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default ({ requestId }: { requestId: string }) => {
+const ShareRequest = ({ requestId }: { requestId: string }) => {
   const classes = useStyles();
   const { copied, copy } = useClipboard({
     copiedTimeout: 1500,
@@ -87,3 +87,5 @@ export default ({ requestId }: { requestId: string }) => {
     </>
   );
 };
+
+export default ShareRequest;

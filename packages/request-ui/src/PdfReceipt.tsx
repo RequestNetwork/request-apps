@@ -19,6 +19,7 @@ import {
   useRequest,
   getEtherscanUrl,
 } from 'request-shared';
+import { CurrencyDefinition } from '@requestnetwork/currency';
 
 import { RButton } from './RButton';
 import { statusLabels } from './RStatusBadge';
@@ -27,7 +28,7 @@ import moment from 'moment';
 
 interface IProps {
   request: IParsedRequest;
-  counterCurrency: string;
+  counterCurrency: CurrencyDefinition;
   counterValue?: string;
 }
 
@@ -57,11 +58,7 @@ export const downloadPdf = async (props: IProps) => {
   downloadFile(blob, `${date} RequestReceipt.pdf`);
 };
 
-export const ReceiptLink = (props: {
-  request: IParsedRequest;
-  counterCurrency: string;
-  counterValue?: string;
-}) => {
+export const ReceiptLink = (props: IProps) => {
   return (
     <RButton
       onClick={() => downloadPdf(props)}
@@ -222,7 +219,7 @@ export const PdfReceipt = ({
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        {request.network !== 'mainnet' && (
+        {request.network === 'rinkeby' && (
           <View style={styles.testNetwork}>
             <View style={styles.testNetworkBanner} />
             <View style={styles.testNetworkText}>

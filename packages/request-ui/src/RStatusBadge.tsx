@@ -18,12 +18,13 @@ const useStyles = makeStyles<Theme, IProps>({
   },
 });
 
-export const statusLabels = {
+export const statusLabels: Record<RequestStatus, string> = {
   open: 'Awaiting Payment',
   paid: 'Paid',
   pending: 'Pending',
   canceled: 'Canceled',
   overpaid: 'Overpaid',
+  unknown: 'Unkown',
 };
 
 export const RStatusBadge = (props: IProps) => {
@@ -36,7 +37,14 @@ export const RStatusBadge = (props: IProps) => {
       alignItems="center"
       position="relative"
     >
-      <div className={[classes.status, props.className].join(' ')}>
+      <div
+        className={[classes.status, props.className].join(' ')}
+        title={
+          props.status === 'unknown'
+            ? 'The balance computation might have failed'
+            : ''
+        }
+      >
         <Typography variant="h6">{statusLabels[props.status]}</Typography>
       </div>
     </Box>

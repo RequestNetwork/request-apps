@@ -56,7 +56,7 @@ export function useEagerConnect(request?: IParsedRequest) {
         }
       });
     }
-  }, [connector, activate]); // intentionally only running on mount (make sure it's only mounted once :))
+  }, [connector, activate, setError]); // intentionally only running on mount (make sure it's only mounted once :))
 
   // if the connection worked, wait until we get confirmation of that to flip the flag
   useEffect(() => {
@@ -68,39 +68,37 @@ export function useEagerConnect(request?: IParsedRequest) {
   useEffect((): any => {
     if (!connector) return;
     const { ethereum } = window as any;
-    if (ethereum && ethereum.on && !active && !error && !tried) {
+
+    if (ethereum && ethereum.on) {
       const handleConnect = () => {
         console.log("Handling 'connect' event");
         activate(connector);
+        setError(null as any);
       };
       const handleChainChanged = (chainId: string | number) => {
         console.log("Handling 'chainChanged' event with payload", chainId);
         activate(connector);
+        setError(null as any);
       };
       const handleAccountsChanged = (accounts: string[]) => {
         console.log("Handling 'accountsChanged' event with payload", accounts);
         if (accounts.length > 0) {
           activate(connector);
+          setError(null as any);
         }
-      };
-      const handleNetworkChanged = (networkId: string | number) => {
-        console.log("Handling 'networkChanged' event with payload", networkId);
-        activate(connector);
       };
 
       ethereum.on("connect", handleConnect);
       ethereum.on("chainChanged", handleChainChanged);
       ethereum.on("accountsChanged", handleAccountsChanged);
-      ethereum.on("networkChanged", handleNetworkChanged);
 
       return () => {
         if (ethereum.removeListener) {
           ethereum.removeListener("connect", handleConnect);
           ethereum.removeListener("chainChanged", handleChainChanged);
           ethereum.removeListener("accountsChanged", handleAccountsChanged);
-          ethereum.removeListener("networkChanged", handleNetworkChanged);
         }
       };
     }
-  }, [active, error, tried, activate, connector]);
+  }, [active, error, tried, activate, setError, connector]);
 }

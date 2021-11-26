@@ -1,12 +1,7 @@
 import { FormikHelpers } from "formik";
 import React, { useState } from "react";
 import { useHistory } from "react-router";
-import {
-  amountToString,
-  createRequest,
-  isCancelError,
-  parseCurrency,
-} from "request-shared";
+import { isCancelError, useCreateRequest } from "request-shared";
 import { useErrorReporter, RLogo, Spacer } from "request-ui";
 import { Box, Typography } from "@material-ui/core";
 
@@ -25,6 +20,7 @@ export default () => {
   const { account, chainId } = useWeb3React();
   const { loading: web3Loading, name } = useConnectedUser();
   const { report } = useErrorReporter();
+  const createRequest = useCreateRequest();
 
   const submit = async (
     values: IFormData,
@@ -33,21 +29,22 @@ export default () => {
     if (!account || !chainId) {
       throw new Error("not connected");
     }
-    if (!safeInfo?.safeAddress) {
-      throw new Error("Safe not connected");
+    if (!values.amount) {
+      throw new Error("amount not specified");
+    }
+    if (!values.currency) {
+      throw new Error("currency not specified");
     }
     try {
-      const currency = parseCurrency(values.currency!, chainId);
-
       const request = await createRequest(
         {
-          amount: await amountToString(values.amount!, currency),
+          amount: values.amount,
           contentData: {
             reason: values.reason,
             builderId: "request-team",
             createdWith: "gnosis-safe",
           },
-          currency,
+          currencyId: values.currency,
           payer: values.payer,
           paymentAddress: safeInfo!.safeAddress,
           // add the safeAddress in the topics to link it to the gnosis multisig

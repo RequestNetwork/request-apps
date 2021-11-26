@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useWeb3React } from "@web3-react/core";
 import { ENS } from "request-shared";
-import { Web3Provider } from "ethers/providers";
+import { providers } from "ethers";
 
 interface IContext {
   loading: boolean;
@@ -13,20 +13,25 @@ const UserContext = React.createContext<IContext | null>(null);
 
 export const UserProvider: React.FC = ({ children }) => {
   const [loading, setLoading] = useState(true);
-  const { account, library } = useWeb3React<Web3Provider>();
+  const { account, library, chainId } = useWeb3React<providers.Web3Provider>();
   const [name, setName] = useState<string>();
 
-  const load = async (account?: string) => {
-    if (account) {
-      const ens = await ENS.fromAddress(account, library);
-      if (ens) {
-        setName(ens.name);
+  const load = useCallback(
+    async (account?: string) => {
+      if (account) {
+        if (chainId === 1 || chainId === 4) {
+          const ens = await ENS.fromAddress(account, library);
+          if (ens) {
+            setName(ens.name);
+          }
+        }
+        // const t = setTimeout(() => setLoading(false), 200);
+        // return () => clearTimeout(t);
+        setLoading(false);
       }
-      // const t = setTimeout(() => setLoading(false), 200);
-      // return () => clearTimeout(t);
-      setLoading(false);
-    }
-  };
+    },
+    [chainId, library]
+  );
 
   useEffect(() => {
     if (!account) {
@@ -38,7 +43,7 @@ export const UserProvider: React.FC = ({ children }) => {
       setName(undefined);
       load(account);
     }
-  }, [account]);
+  }, [account, load]);
 
   return (
     <UserContext.Provider

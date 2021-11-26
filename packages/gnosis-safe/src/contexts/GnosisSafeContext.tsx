@@ -37,7 +37,6 @@ export const GnosisSafeProvider: React.FC = ({ children }) => {
   };
 
   useEffect(() => {
-    console.log({ safeInfo });
     if (!safeInfo?.safeAddress) {
       const t = setTimeout(() => {
         setLoading(false);

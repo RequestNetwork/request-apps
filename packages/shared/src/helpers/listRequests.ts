@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { RequestNetwork, Request } from "@requestnetwork/request-client.js";
+import { Request } from "@requestnetwork/request-client.js";
 import { IdentityTypes } from "@requestnetwork/types";
 import { EventEmitter } from "events";
 import { parseRequest } from "./parseRequest";
@@ -7,6 +7,7 @@ import { chainIdToName } from "./chainIdToName";
 import { IParsedRequest } from "../";
 import { ICurrencyManager } from "@requestnetwork/currency";
 import { useCurrency } from "../contexts/CurrencyContext";
+import { getRequestClient } from "./client";
 
 interface IBalanceEvents {
   finished: () => void;
@@ -48,11 +49,7 @@ export const listRequests = async (
   if (!account) {
     throw new Error("Not connected");
   }
-  const requestNetwork = new RequestNetwork({
-    nodeConnectionConfig: {
-      baseURL: `https://${network}.gateway.request.network/`,
-    },
-  });
+  const requestNetwork = getRequestClient(network);
 
   const requests = await requestNetwork.fromIdentity(
     {

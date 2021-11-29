@@ -3,7 +3,7 @@ import {
   PaymentTypes,
   RequestLogicTypes,
 } from "@requestnetwork/types";
-import { RequestNetwork, Request } from "@requestnetwork/request-client.js";
+import { Request } from "@requestnetwork/request-client.js";
 import { constants, providers } from "ethers";
 import WalletAddressValidator from "wallet-address-validator";
 
@@ -14,6 +14,7 @@ import { getDefaultProvider } from "ethers";
 import { CurrencyManager } from "@requestnetwork/currency";
 import { useCurrency } from "../contexts/CurrencyContext";
 import { utils } from "ethers";
+import { getRequestClient } from "./client";
 
 export interface ICreateRequestArgs {
   payer?: string;
@@ -25,7 +26,8 @@ export interface ICreateRequestArgs {
 }
 
 export const useCreateRequest = () => {
-  const { currencyList } = useCurrency();
+  const { currencyManager, currencyList } = useCurrency();
+
   const createRequest = async (
     {
       currencyId,
@@ -53,15 +55,12 @@ export const useCreateRequest = () => {
       } = require("@requestnetwork/web3-signature");
       signatureProvider = new Web3SignatureProvider(win.ethereum);
     }
-    const requestNetwork = new RequestNetwork({
-      nodeConnectionConfig: {
-        baseURL: `https://${chainName}.gateway.request.network/`,
-      },
+    const requestNetwork = getRequestClient(
+      chainName,
       signatureProvider,
-      currencies: currencyList,
-    });
+      currencyList
+    );
 
-    const currencyManager = new CurrencyManager(currencyList);
     const currency = currencyManager.fromId(currencyId)!;
 
     const isEth = currency.type === RequestLogicTypes.CURRENCY.ETH;

@@ -1,9 +1,9 @@
 import { chainIdToName } from "./chainIdToName";
-import { RequestNetwork } from "@requestnetwork/request-client.js";
 import { IdentityTypes } from "@requestnetwork/types";
 import { providers } from "ethers";
 
 import { CustomSignatureProvider } from "./CustomSignatureProvider";
+import { getRequestClient } from "./client";
 
 export const cancelRequest = async (
   requestId: string,
@@ -22,12 +22,7 @@ export const cancelRequest = async (
     const { Web3SignatureProvider } = require("@requestnetwork/web3-signature");
     signatureProvider = new Web3SignatureProvider(win.ethereum);
   }
-  const rn = new RequestNetwork({
-    nodeConnectionConfig: {
-      baseURL: `https://${network}.gateway.request.network`,
-    },
-    signatureProvider,
-  });
+  const rn = getRequestClient(network, signatureProvider);
 
   const request = await rn.fromRequestId(requestId);
   const cancellation = await request.cancel({

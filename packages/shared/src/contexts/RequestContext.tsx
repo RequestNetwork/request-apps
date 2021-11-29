@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-import { RequestNetwork, Request } from "@requestnetwork/request-client.js";
+import { Request } from "@requestnetwork/request-client.js";
 import { CurrencyDefinition } from "@requestnetwork/currency";
 
 import { useRate } from "../hooks/useRate";
@@ -9,6 +9,7 @@ import { parseRequest } from "../helpers/parseRequest";
 import { IParsedRequest } from "../";
 import { chainIdToName } from "../helpers/chainIdToName";
 import { useCurrency } from "./CurrencyContext";
+import { getRequestClient } from "../helpers/client";
 
 interface IContext {
   /** true if first fetch is ongoing */
@@ -48,11 +49,7 @@ const loadRequest = async (
   }
   network = chainIdToName(network);
   try {
-    const rn = new RequestNetwork({
-      nodeConnectionConfig: {
-        baseURL: `https://${network}.gateway.request.network`,
-      },
-    });
+    const rn = getRequestClient(network);
     return {
       network,
       request: await rn.fromRequestId(requestId),

@@ -4,7 +4,7 @@ import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import { ExportToCsv } from "export-to-csv";
 import { IParsedRequest } from "request-shared";
 
-export default ({ requests }: { requests?: IParsedRequest[] }) => {
+const CsvExport = ({ requests }: { requests?: IParsedRequest[] }) => {
   const onClick = (ev: React.MouseEvent) => {
     ev.preventDefault();
     if (requests) {
@@ -13,7 +13,7 @@ export default ({ requests }: { requests?: IParsedRequest[] }) => {
         useKeysAsHeaders: true,
       });
       csv.generateCsv(
-        requests.map(({ raw, ...request }) => {
+        requests.map(({ raw, currency, loaded, network, ...request }) => {
           return Object.keys(request).reduce((obj, field) => {
             obj[field] = (request as any)[field] || "";
             return obj;
@@ -38,3 +38,5 @@ export default ({ requests }: { requests?: IParsedRequest[] }) => {
     <div />
   );
 };
+
+export default CsvExport;

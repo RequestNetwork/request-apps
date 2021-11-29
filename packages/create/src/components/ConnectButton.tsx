@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default ({
+const ConnectButton = ({
   onClick,
   connecting,
 }: {
@@ -66,3 +66,4 @@ export default ({
     </RButton>
   );
 };
+export default ConnectButton;

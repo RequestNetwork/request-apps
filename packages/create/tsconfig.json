@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "target": "ES2017",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -13,9 +17,21 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react",
+    "jsx": "react-jsx",
     "outDir": "dist",
-    "rootDir": "src"
+    "rootDir": "src",
+    "noFallthroughCasesInSwitch": true,
+    "useUnknownInCatchVariables": false
   },
-  "include": ["src"]
+  "include": [
+    "src/**/*"
+  ],
+  "references": [
+    {
+      "path": "../request-ui"
+    },
+    {
+      "path": "../shared"
+    }
+  ]
 }

@@ -51,8 +51,7 @@ export const NoRequests = () => {
       <Typography variant="h4">
         There are no requests associated with your wallet address.
       </Typography>
-      <Spacer size={2} />
-      <Typography variant="caption">You can create one here:</Typography>
+
       <Spacer size={12} />
       <Link to="/" style={{ textDecoration: "none " }}>
         <RButton sticky size="medium" color="secondary" style={{ width: 315 }}>
@@ -99,7 +98,7 @@ export const Dashboard = () => {
   return (
     <Box className={classes.container}>
       <Spacer size={24} xs={5} />
-      {chainId && chainId !== 1 && <TestnetWarning />}
+      <TestnetWarning chainId={chainId} />
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Box display="flex" flex={1}>
           {["All", "Outstanding", "Paid"].map((f, index) => (
@@ -132,10 +131,12 @@ export const Dashboard = () => {
   );
 };
 
-export default () => {
+const DashboardPage = () => {
   return (
     <RequestListProvider>
       <Dashboard />
     </RequestListProvider>
   );
 };
+
+export default DashboardPage;

@@ -9,12 +9,13 @@ import {
 } from "@material-ui/core";
 import CheckIcon from "@material-ui/icons/Check";
 import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
-import { IParsedRequest, getPayUrl } from "request-shared";
+import { IParsedRequest, getPayUrl, useEnsName } from "request-shared";
 import { Link } from "react-router-dom";
 import { RStatusBadge, Spacer, CopyIcon } from "request-ui";
 import Moment from "react-moment";
 import { Skeleton } from "@material-ui/lab";
 import { useClipboard } from "use-clipboard-copy";
+import { CurrencyDefinition } from "@requestnetwork/currency";
 
 const short = (val?: string) =>
   val
@@ -54,6 +55,8 @@ const Address = ({
     copiedTimeout: 1000,
   });
 
+  const [name] = useEnsName(address, { disabled: !!display });
+
   return (
     <Box className={classes.container}>
       {text && (
@@ -63,7 +66,7 @@ const Address = ({
       )}
       <Tooltip title={address || ""}>
         <Typography variant={currentUser ? "h5" : "body2"}>
-          {display || short(address)}
+          {display || name || short(address)}
         </Typography>
       </Tooltip>
       {address && (
@@ -85,7 +88,7 @@ const Amount = ({
   role,
 }: {
   amount: number;
-  currency: string;
+  currency: CurrencyDefinition;
   role?: "payee" | "payer";
 }) => {
   const displayAmount = amount.toLocaleString("en-US", {
@@ -98,14 +101,16 @@ const Amount = ({
   });
   return (
     <Tooltip
-      title={titleAmount !== displayAmount ? `${amount} ${currency}` : ""}
+      title={
+        titleAmount !== displayAmount ? `${amount} ${currency.symbol}` : ""
+      }
     >
       <Box
         color={role === "payee" ? "#008556" : role === "payer" ? "#DE1C22" : ""}
       >
         <Typography variant="h5">
           {role === "payer" ? <>-</> : <>+</>}&nbsp;
-          {displayAmount} {currency}
+          {displayAmount} {currency.symbol}
         </Typography>
       </Box>
     </Tooltip>
@@ -193,7 +198,6 @@ const Row = React.memo(
             <Box display="flex">
               <Address
                 address={request.payee}
-                display={request.payeeName}
                 currentUser={isPayee}
                 text="From"
               />
@@ -205,9 +209,8 @@ const Row = React.memo(
             {request.payer ? (
               <Address
                 address={request.payer}
-                display={request.payerName}
                 currentUser={isPayer}
-                text={"To"}
+                text="To"
               />
             ) : (
               <Box display="flex">
@@ -301,7 +304,7 @@ const SkeletonRow = () => {
   );
 };
 
-export default ({
+export const RequestList = ({
   requests,
   account,
   loading,
@@ -361,3 +364,5 @@ export default ({
     </Box>
   );
 };
+
+export default RequestList;

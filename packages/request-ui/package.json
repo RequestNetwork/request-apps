@@ -7,21 +7,14 @@
     "dist"
   ],
   "scripts": {
-    "start": "tsdx watch",
-    "build": "tsdx build",
-    "test": "tsdx test --passWithNoTests",
-    "lint": "tsdx lint",
-    "prepare": "tsdx build",
+    "start": "tsc --watch",
+    "build": "tsc && cp -r ./src/assets ./dist/assets",
+    "test": "jest--passWithNoTests",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
   "peerDependencies": {
     "react": ">=16"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "tsdx lint"
-    }
   },
   "prettier": {
     "printWidth": 80,
@@ -31,7 +24,6 @@
   },
   "name": "request-ui",
   "author": "Request",
-  "module": "dist/request-ui.esm.js",
   "devDependencies": {
     "@babel/core": "^7.8.7",
     "@rollup/plugin-image": "^2.0.4",
@@ -40,7 +32,7 @@
     "@storybook/addons": "^5.3.17",
     "@storybook/react": "^5.3.17",
     "@types/classnames": "^2.2.10",
-    "@types/jest": "^25.1.4",
+    "@types/jest": "^25.2.1",
     "@types/react": "^16.9.23",
     "@types/react-dom": "^16.9.5",
     "husky": "^4.2.3",
@@ -48,9 +40,8 @@
     "react-dom": "^16.13.0",
     "request-shared": "0.1.0",
     "ts-loader": "^6.2.1",
-    "tsdx": "^0.12.3",
-    "tslib": "^1.11.1",
-    "typescript": "^3.8.3"
+    "tslib": "^2.3.1",
+    "typescript": "^4.1.2"
   },
   "private": true,
   "dependencies": {

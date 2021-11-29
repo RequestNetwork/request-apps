@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default ({
+const UserInfo = ({
   name,
   network,
   onClick,
@@ -54,3 +54,5 @@ export default ({
     </RButton>
   );
 };
+
+export default UserInfo;

@@ -15,15 +15,19 @@ import {
   Slider,
   ButtonGroup,
   ThemeProvider,
-  createMuiTheme,
+  createTheme,
 } from "@material-ui/core";
 import SettingsIcon from "@material-ui/icons/Settings";
-import { PaymentPage, ErrorContainer, FeedbackContainer } from "./PaymentPage";
+import {
+  PaymentPageInner,
+  ErrorContainer,
+  FeedbackContainer,
+} from "./PaymentPage";
 import { UnsupportedChainIdError, getWeb3ReactContext } from "@web3-react/core";
 import { NoEthereumProviderError } from "@web3-react/injected-connector";
-
 import { RequestContext, RequestStatus, IParsedRequest } from "request-shared";
 import { Types } from "@requestnetwork/request-client.js";
+import { CurrencyManager } from "@requestnetwork/currency";
 import { ConnectorContext } from "../contexts/ConnectorContext";
 import {
   PaymentContext,
@@ -50,11 +54,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const currencyManager = CurrencyManager.getDefault();
 const currencies = {
-  [Types.RequestLogic.CURRENCY.ERC20]: "DAI",
-  [Types.RequestLogic.CURRENCY.BTC]: "BTC",
-  [Types.RequestLogic.CURRENCY.ETH]: "ETH",
-  [Types.RequestLogic.CURRENCY.ISO4217]: "EUR",
+  [Types.RequestLogic.CURRENCY.ERC20]: currencyManager.from("DAI")!,
+  [Types.RequestLogic.CURRENCY.BTC]: currencyManager.from("BTC")!,
+  [Types.RequestLogic.CURRENCY.ETH]: currencyManager.from("ETH")!,
+  [Types.RequestLogic.CURRENCY.ISO4217]: currencyManager.from("EUR")!,
 };
 
 const paymentNetwork = {
@@ -132,8 +137,8 @@ const getRequest = async (state: IState): Promise<IParsedRequest> => {
     paymentAddress: "0x000000000000000000000000000000000000000",
     reason: await getReason(state.reasonLength),
     currencyNetwork: "rinkeby",
+    currencySymbol: currencies[state.currencyType].symbol,
     payee: "0x0ebB3177F8959ae1F2e7935250Ff83Ba6A159049",
-    payeeName: state.ens ? "dev.request.network" : undefined,
     raw: {
       currencyInfo: {
         type: state.currencyType,
@@ -193,7 +198,7 @@ const defaultState: IState = {
   testnet: true,
 };
 
-const defaultTheme = createMuiTheme({});
+const defaultTheme = createTheme({});
 
 const DemoSettings = ({
   state,
@@ -511,7 +516,7 @@ const DemoPage = () => {
       {state && (
         <RequestContext.Provider
           value={{
-            counterCurrency: "USD",
+            counterCurrency: currencyManager.from("USD")!,
             counterValue: "1.00",
             request,
             loading: !request,
@@ -552,7 +557,7 @@ const DemoPage = () => {
               >
                 <FeedbackContainer />
                 <ErrorContainer />
-                <PaymentPage />
+                <PaymentPageInner />
                 {state.debug && <pre>{JSON.stringify(state)}</pre>}
               </PaymentContext.Provider>
             </ConnectorContext.Provider>

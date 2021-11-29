@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 
-import { RequestNetwork, Request } from "@requestnetwork/request-client.js";
+import { Request } from "@requestnetwork/request-client.js";
+import { CurrencyDefinition } from "@requestnetwork/currency";
 
 import { useRate } from "../hooks/useRate";
 import { parseRequest } from "../helpers/parseRequest";
 import { IParsedRequest } from "../";
 import { chainIdToName } from "../helpers/chainIdToName";
+import { useCurrency } from "./CurrencyContext";
+import { getRequestClient } from "../helpers/client";
 
 interface IContext {
   /** true if first fetch is ongoing */
@@ -14,7 +17,7 @@ interface IContext {
   /** the fetched request */
   request?: IParsedRequest;
   /** the counter fiat currency, for display */
-  counterCurrency: string;
+  counterCurrency: CurrencyDefinition;
   /** the request's expected amount in counter currency */
   counterValue?: string;
   /**
@@ -39,20 +42,14 @@ const loadRequest = async (
 ): Promise<{ network: string; request: Request } | null> => {
   if (!network) {
     return (
+      (await loadRequest(requestId, "xdai")) ||
       (await loadRequest(requestId, "mainnet")) ||
       (await loadRequest(requestId, "rinkeby"))
     );
   }
   network = chainIdToName(network);
   try {
-    const rn = new RequestNetwork({
-      nodeConnectionConfig: {
-        baseURL:
-          network === "rinkeby"
-            ? "https://gateway-rinkeby.request.network"
-            : "https://gateway.request.network",
-      },
-    });
+    const rn = getRequestClient(network);
     return {
       network,
       request: await rn.fromRequestId(requestId),
@@ -67,10 +64,12 @@ export const RequestProvider: React.FC<{ chainId?: string | number }> = ({
   children,
   chainId,
 }) => {
-  const { id } = useParams();
+  const { currencyManager } = useCurrency();
+
+  const { id } = useParams<{ id?: string }>();
   const [loading, setLoading] = useState(true);
   const [parsedRequest, setParsedRequest] = useState<IParsedRequest>();
-  const counterCurrency = "USD";
+  const counterCurrency = currencyManager.from("USD")!;
   const [counterValue, setCounterValue] = useState<string>("");
   const [pending, setPending] = useState(false);
 
@@ -97,6 +96,7 @@ export const RequestProvider: React.FC<{ chainId?: string | number }> = ({
         data: result.request.getData(),
         network: result.network,
         pending,
+        currencyManager,
       });
       parseResult.loaded = true;
       setParsedRequest(parseResult);
@@ -125,7 +125,11 @@ export const RequestProvider: React.FC<{ chainId?: string | number }> = ({
         counterCurrency,
         counterValue,
         setPending,
-        update: () => fetchRequest(id, chainId, pending),
+        update: useCallback(() => fetchRequest(id, chainId, pending), [
+          id,
+          chainId,
+          pending,
+        ]),
       }}
     >
       {children}

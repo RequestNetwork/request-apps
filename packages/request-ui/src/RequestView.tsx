@@ -6,7 +6,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import CommentIcon from '@material-ui/icons/Comment';
 import { Skeleton } from '@material-ui/lab';
 
-import { RequestStatus } from 'request-shared';
+import { RequestStatus, useEnsName } from 'request-shared';
+import { CurrencyDefinition } from '@requestnetwork/currency';
 
 import { colors } from './colors';
 import { Spacer } from './Spacer';
@@ -92,10 +93,10 @@ interface IProps {
   status: RequestStatus;
   amount: string;
   overpaid: string;
-  currency: string;
+  currency: CurrencyDefinition;
   reason?: string;
   counterValue?: string;
-  counterCurrency: string;
+  counterCurrency: CurrencyDefinition;
 }
 
 export const RequestSkeleton = () => {
@@ -143,13 +144,15 @@ export const RequestView = ({
 }: IProps) => {
   const classes = useStyles();
 
+  const [payeeName] = useEnsName(payee);
+
   return (
     <Box className={classes.container}>
       <Box className={classes.header} color="">
         <Typography variant="h5">Request for payment from</Typography>
         <Spacer />
         <Box color="text.secondary" className={classes.from}>
-          <Typography variant="caption">{payee}</Typography>
+          <Typography variant="caption">{payeeName || payee}</Typography>
         </Box>
       </Box>
       <Box className={classes.body}>
@@ -165,7 +168,7 @@ export const RequestView = ({
         <RStatusBadge status={status} />
         <Spacer size={3} />
         <Typography variant="h3">
-          {amount} {currency}
+          {amount} {currency.symbol}
         </Typography>
 
         {counterValue && (

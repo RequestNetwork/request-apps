@@ -8,7 +8,7 @@ import DemoPage from "./containers/DemoPage";
 import ErrorPage from "./containers/ErrorPage";
 import NotFoundPage from "./containers/NotFoundPage";
 import PaymentPage from "./containers/PaymentPage";
-import AllowancePage from "./containers/AllowancePage";
+//@ts-ignore
 import { ReceiptPreview } from "request-ui";
 
 const useStyles = makeStyles(theme => ({
@@ -56,7 +56,6 @@ const App: React.FC = () => {
                   path="/pdf/:id([0-9a-fA-F]+)"
                   component={ReceiptPreview}
                 />
-                <Route path="/allowances" component={AllowancePage} />
                 <Route path="*" component={NotFoundPage} />
               </Switch>
             </Analytics>

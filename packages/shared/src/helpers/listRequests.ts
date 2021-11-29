@@ -1,9 +1,13 @@
-import { RequestNetwork, Request } from "@requestnetwork/request-client.js";
+import { useCallback } from "react";
+import { Request } from "@requestnetwork/request-client.js";
 import { IdentityTypes } from "@requestnetwork/types";
 import { EventEmitter } from "events";
 import { parseRequest } from "./parseRequest";
 import { chainIdToName } from "./chainIdToName";
 import { IParsedRequest } from "../";
+import { ICurrencyManager } from "@requestnetwork/currency";
+import { useCurrency } from "../contexts/CurrencyContext";
+import { getRequestClient } from "./client";
 
 interface IBalanceEvents {
   finished: () => void;
@@ -23,23 +27,29 @@ export class BalanceEventEmitter extends EventEmitter {
   ): boolean => this._untypedEmit(event, ...args);
 }
 
+export const useListRequests = () => {
+  const { currencyManager } = useCurrency();
+  return useCallback(
+    (
+      account: string,
+      network: string | number,
+      isSmartContract: boolean = false
+    ) => listRequests(account, network, isSmartContract, currencyManager),
+    [currencyManager]
+  );
+};
+
 export const listRequests = async (
   account: string,
   network: string | number,
-  isSmartContract: boolean = false
+  isSmartContract: boolean = false,
+  currencyManager: ICurrencyManager
 ) => {
   network = chainIdToName(network);
   if (!account) {
     throw new Error("Not connected");
   }
-  const requestNetwork = new RequestNetwork({
-    nodeConnectionConfig: {
-      baseURL:
-        network === "rinkeby"
-          ? "https://gateway-rinkeby.request.network/"
-          : "https://gateway.request.network/",
-    },
-  });
+  const requestNetwork = getRequestClient(network);
 
   const requests = await requestNetwork.fromIdentity(
     {
@@ -65,7 +75,7 @@ export const listRequests = async (
         data: request.getData(),
         network: network as string,
         pending: false,
-        disableEns: true,
+        currencyManager,
       });
       parsedRequest.loaded = false;
       list.push(parsedRequest);
@@ -85,7 +95,13 @@ export const listRequests = async (
     // a function to start loading balances.
     // The callback is called for each updated balance.
     loadBalances: () =>
-      loadBalances(requests, sorted, network as string, emitter),
+      loadBalances(
+        requests,
+        sorted,
+        network as string,
+        emitter,
+        currencyManager
+      ),
     on: emitter.on,
   };
 };
@@ -94,7 +110,8 @@ const loadBalances = async (
   requests: Request[],
   sortedRequests: IParsedRequest[],
   network: string,
-  emitter: BalanceEventEmitter
+  emitter: BalanceEventEmitter,
+  currencyManager: ICurrencyManager
 ) => {
   let i = 0;
   // update balances by batches of 10.
@@ -108,8 +125,9 @@ const loadBalances = async (
       if (!request) {
         continue;
       }
-      const promise = loadBalance(request, network);
-      promise.then(req => emitter.emit("update", req));
+      const promise = loadBalance(request, network, currencyManager);
+
+      promise.then(req => req && emitter.emit("update", req));
       promises.push(promise);
     }
 
@@ -119,13 +137,22 @@ const loadBalances = async (
   emitter.emit("finished");
 };
 
-const loadBalance = async (request: Request, network: string) => {
-  await request.refreshBalance();
+const loadBalance = async (
+  request: Request,
+  network: string,
+  currencyManager: ICurrencyManager
+) => {
+  try {
+    await request.refreshBalance();
+  } catch (e) {
+    return null;
+  }
   const newParsedRequest = await parseRequest({
     requestId: request.requestId,
     data: request.getData(),
     network,
     pending: false,
+    currencyManager,
   });
   newParsedRequest.loaded = true;
   return newParsedRequest;

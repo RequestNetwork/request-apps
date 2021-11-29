@@ -9,10 +9,10 @@ import { useCallback, useEffect, useState } from "react";
 import { useWeb3React } from "@web3-react/core";
 
 import { useRequest } from "request-shared";
-import { Web3Provider, TransactionResponse } from "ethers/providers";
+import { Web3Provider, TransactionResponse } from "@ethersproject/providers";
 import { Types } from "@requestnetwork/request-client.js";
 import React from "react";
-import { ethers } from "ethers";
+import { ethers, BigNumber } from "ethers";
 import axios from "axios";
 
 export class NotEnoughForGasError extends Error {
@@ -49,8 +49,12 @@ const runChecks = async (
 ) => {
   switch (request.currencyInfo.type) {
     case "ERC20":
-      const erc20balance = await getErc20Balance(request, account, library);
-      if (erc20balance.lt(request.expectedAmount)) {
+      const erc20balance = await getErc20Balance(
+        request,
+        account,
+        library as any
+      );
+      if (BigNumber.from(erc20balance as any).lt(request.expectedAmount)) {
         return new NotEnoughForRequestError();
       }
       const ethBalance = await library.getBalance(account);
@@ -58,7 +62,11 @@ const runChecks = async (
         return new NotEnoughForGasError();
       }
       if (!approved) {
-        const approval = await hasErc20Approval(request, account, library);
+        const approval = await hasErc20Approval(
+          request,
+          account,
+          library as any
+        );
         if (!approval) {
           return new RequiresApprovalError();
         }
@@ -97,8 +105,6 @@ export interface IPaymentContext {
   txHash?: string;
 }
 
-const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
-
 /** exposes payment methods and information */
 export const PaymentProvider: React.FC = ({ children }) => {
   const [paying, setPaying] = useState(false);
@@ -117,7 +123,7 @@ export const PaymentProvider: React.FC = ({ children }) => {
   const { account, library } = useWeb3React<Web3Provider>();
   const { request, setPending, update } = useRequest();
 
-  const txCallback = useCallback(
+  const txCallback: any = useCallback(
     async (tx: TransactionResponse) => {
       if (!tx.hash) {
         throw new Error("no tx hash");
@@ -215,8 +221,8 @@ export const PaymentProvider: React.FC = ({ children }) => {
     if (active) return;
     setActive(true);
 
-    payRequest(request.raw, library, undefined, {
-      gasPrice: ethers.utils.parseUnits(gasPrice.toString(), "gwei"),
+    payRequest(request.raw, library as any, undefined, {
+      gasPrice: ethers.utils.parseUnits(gasPrice.toString(), "gwei") as any,
       gasLimit: 100000,
     })
       .then(txCallback)
@@ -250,8 +256,8 @@ export const PaymentProvider: React.FC = ({ children }) => {
     if (active) return;
     setActive(true);
 
-    approveErc20(request.raw, library, {
-      gasPrice: ethers.utils.parseUnits(gasPrice.toString(), "gwei"),
+    approveErc20(request.raw, library as any, {
+      gasPrice: ethers.utils.parseUnits(gasPrice.toString(), "gwei") as any,
     })
       .then(async () => {
         setBroadcasting(true);
@@ -276,6 +282,7 @@ export const PaymentProvider: React.FC = ({ children }) => {
     updated,
     gasPrice,
     approved,
+    active,
   ]);
 
   useEffect(() => {
@@ -286,7 +293,7 @@ export const PaymentProvider: React.FC = ({ children }) => {
         setUpdated(true);
       });
     }
-  }, [paying, approving]);
+  }, [paying, approving, update]);
 
   // Run checks and show error messages if something is wrong.
   useEffect(() => {
@@ -306,7 +313,7 @@ export const PaymentProvider: React.FC = ({ children }) => {
         setErrorsChecked(true);
       });
     }
-  }, [request, approving, paying, account, library]);
+  }, [request, approving, paying, account, library, approved]);
 
   const value = {
     ready: ready && !loadingPendingTx,

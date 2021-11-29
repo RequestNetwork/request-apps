@@ -77,7 +77,7 @@ const RequestActions = ({
   return <></>;
 };
 
-export const RequestPage = () => {
+const RequestPageInner = () => {
   const { account, chainId } = useWeb3React();
 
   const {
@@ -117,9 +117,9 @@ export const RequestPage = () => {
   return (
     <RContainer>
       <Spacer size={15} xs={8} />
-      {request && request.network !== "mainnet" && <TestnetWarning />}
+      <TestnetWarning chainId={request?.network} />
       <RequestView
-        payee={request.payeeName || request.payee}
+        payee={request.payee}
         createdDate={request.createdDate}
         paidDate={request.paidDate}
         canceledDate={request.canceledDate}
@@ -160,16 +160,20 @@ export const RequestPage = () => {
   );
 };
 
-export default () => {
+const RequestPage = () => {
   const { chainId, account } = useWeb3React();
   const { loading: web3Loading } = useConnectedUser();
 
+  if (web3Loading) {
+    return null;
+  }
   if (!web3Loading && (!account || !chainId)) {
     return <NotLoggedPage />;
   }
   return (
     <RequestProvider chainId={chainId}>
-      <RequestPage />
+      <RequestPageInner />
     </RequestProvider>
   );
 };
+export default RequestPage;

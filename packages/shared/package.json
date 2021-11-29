@@ -14,10 +14,11 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@requestnetwork/request-client.js": "0.21.0",
-    "@requestnetwork/types": "0.20.0",
-    "@requestnetwork/web3-signature": "0.4.17",
-    "ethers": "^4.0.46",
+    "@requestnetwork/currency": "^0.8.1-next.1581",
+    "@requestnetwork/request-client.js": "^0.39.1-next.1581",
+    "@requestnetwork/types": "^0.35.1-next.1581",
+    "@requestnetwork/web3-signature": "^0.4.36-next.1581",
+    "ethers": "5.5.1",
     "wallet-address-validator": "^0.2.4"
   }
 }

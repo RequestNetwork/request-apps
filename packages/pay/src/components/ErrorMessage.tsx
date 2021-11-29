@@ -1,8 +1,10 @@
 import React from "react";
 import { RAlert, Severity } from "request-ui";
+import { Link } from "@material-ui/core";
 
 import { UnsupportedChainIdError } from "@web3-react/core";
 import { NoEthereumProviderError } from "@web3-react/injected-connector";
+import { addEthereumChain, chainInfos, IParsedRequest } from "request-shared";
 
 import {
   FiatRequestNotSupportedError,
@@ -10,8 +12,6 @@ import {
   NotEnoughForRequestError,
   RequiresApprovalError,
 } from "../contexts/PaymentContext";
-import { IParsedRequest } from "request-shared";
-import { Link } from "@material-ui/core";
 
 const getErrorMessage = (error: Error, request: IParsedRequest) => {
   if (error instanceof NoEthereumProviderError) {
@@ -39,14 +39,29 @@ const getErrorMessage = (error: Error, request: IParsedRequest) => {
     return "Please approve the contract using your connected wallet.";
   }
   if (error instanceof UnsupportedChainIdError) {
-    if (request.currencyNetwork === "mainnet") {
-      return "This is a live request. Please connect to the main network to pay.";
-    }
-    if (request.currencyNetwork === "rinkeby") {
-      return "This is a test request. Please connect to the Rinkeby Test Network to pay.";
-    }
-
-    return `Please connect your wallet to ${request.currencyNetwork} to pay this request.`;
+    const prefix =
+      request.currencyNetwork === "rinkeby" ? "This is a test request. " : "";
+    const network = request.currencyNetwork || "";
+    const text = `connect your wallet to ${chainInfos[network].name}`;
+    return (
+      <>
+        {prefix}Please{" "}
+        {network ? (
+          <Link
+            underline="always"
+            onClick={() => {
+              addEthereumChain(network);
+            }}
+            style={{ cursor: "pointer" }}
+          >
+            {text}
+          </Link>
+        ) : (
+          text
+        )}{" "}
+        to pay this request.
+      </>
+    );
   }
 
   if (error instanceof NotEnoughForRequestError) {

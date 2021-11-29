@@ -291,7 +291,12 @@ const PaymentActions = () => {
       pay={pay}
       paying={paying}
       broadcasting={broadcasting}
-      disabled={!paymentReady || !!error || !!paymentError}
+      disabled={
+        !paymentReady ||
+        !!error ||
+        !!paymentError ||
+        request.status === "unknown"
+      }
     />
   );
 };

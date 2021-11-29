@@ -105,8 +105,6 @@ export interface IPaymentContext {
   txHash?: string;
 }
 
-const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
-
 /** exposes payment methods and information */
 export const PaymentProvider: React.FC = ({ children }) => {
   const [paying, setPaying] = useState(false);
@@ -284,6 +282,7 @@ export const PaymentProvider: React.FC = ({ children }) => {
     updated,
     gasPrice,
     approved,
+    active,
   ]);
 
   useEffect(() => {
@@ -294,7 +293,7 @@ export const PaymentProvider: React.FC = ({ children }) => {
         setUpdated(true);
       });
     }
-  }, [paying, approving]);
+  }, [paying, approving, update]);
 
   // Run checks and show error messages if something is wrong.
   useEffect(() => {
@@ -314,7 +313,7 @@ export const PaymentProvider: React.FC = ({ children }) => {
         setErrorsChecked(true);
       });
     }
-  }, [request, approving, paying, account, library]);
+  }, [request, approving, paying, account, library, approved]);
 
   const value = {
     ready: ready && !loadingPendingTx,

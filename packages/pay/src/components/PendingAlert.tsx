@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default ({
+const PendingAlert = ({
   request,
   txHash,
 }: {
@@ -40,3 +40,5 @@ export default ({
     </Box>
   );
 };
+
+export default PendingAlert;

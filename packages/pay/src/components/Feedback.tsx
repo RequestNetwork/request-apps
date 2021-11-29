@@ -140,7 +140,13 @@ const FeedbackWidget = ({
   );
 };
 
-export default ({ open, onClose }: { open: boolean; onClose: () => void }) => {
+const Feedback = ({
+  open,
+  onClose,
+}: {
+  open: boolean;
+  onClose: () => void;
+}) => {
   const classes = useStyles();
   const { sendFeedback } = useHubspotFeedback();
   const [mood, setMood] = useState<"Good" | "Bad">();
@@ -333,3 +339,5 @@ export default ({ open, onClose }: { open: boolean; onClose: () => void }) => {
     />
   );
 };
+
+export default Feedback;

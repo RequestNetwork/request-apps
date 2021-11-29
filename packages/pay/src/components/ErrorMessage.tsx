@@ -2,8 +2,7 @@ import React from "react";
 import { RAlert, Severity } from "request-ui";
 import { Link } from "@material-ui/core";
 
-import { providers } from "ethers";
-import { UnsupportedChainIdError, useWeb3React } from "@web3-react/core";
+import { UnsupportedChainIdError } from "@web3-react/core";
 import { NoEthereumProviderError } from "@web3-react/injected-connector";
 import { addEthereumChain, chainInfos, IParsedRequest } from "request-shared";
 

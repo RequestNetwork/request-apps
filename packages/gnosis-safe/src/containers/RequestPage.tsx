@@ -378,7 +378,7 @@ const Actions = ({
     </Box>
   );
 };
-export const RequestPage = () => {
+export const RequestPageInner = () => {
   const { account, chainId } = useWeb3React();
   const { safeInfo, appsSdk } = useGnosisSafe();
   const [errorMessage, setErrorMessage] = useState("");
@@ -510,12 +510,14 @@ export const RequestPage = () => {
   );
 };
 
-export default () => {
+const RequestPage = () => {
   const { chainId } = useWeb3React();
 
   return (
     <RequestProvider chainId={chainId}>
-      <RequestPage />
+      <RequestPageInner />
     </RequestProvider>
   );
 };
+
+export default RequestPage;

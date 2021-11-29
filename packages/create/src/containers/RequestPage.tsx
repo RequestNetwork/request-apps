@@ -164,6 +164,9 @@ const RequestPage = () => {
   const { chainId, account } = useWeb3React();
   const { loading: web3Loading } = useConnectedUser();
 
+  if (web3Loading) {
+    return null;
+  }
   if (!web3Loading && (!account || !chainId)) {
     return <NotLoggedPage />;
   }

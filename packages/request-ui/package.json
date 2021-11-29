@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "start": "tsc --watch",
-    "build": "tsc",
+    "build": "tsc && cp -r ./src/assets ./dist/assets",
     "test": "jest--passWithNoTests",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
@@ -24,7 +24,6 @@
   },
   "name": "request-ui",
   "author": "Request",
-  "module": "dist/request-ui.esm.js",
   "devDependencies": {
     "@babel/core": "^7.8.7",
     "@rollup/plugin-image": "^2.0.4",

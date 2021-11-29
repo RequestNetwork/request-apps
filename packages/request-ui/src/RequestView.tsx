@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import CommentIcon from '@material-ui/icons/Comment';
 import { Skeleton } from '@material-ui/lab';
 
-import { RequestStatus } from 'request-shared';
+import { RequestStatus, useEnsName } from 'request-shared';
 import { CurrencyDefinition } from '@requestnetwork/currency';
 
 import { colors } from './colors';
@@ -144,13 +144,15 @@ export const RequestView = ({
 }: IProps) => {
   const classes = useStyles();
 
+  const [payeeName] = useEnsName(payee);
+
   return (
     <Box className={classes.container}>
       <Box className={classes.header} color="">
         <Typography variant="h5">Request for payment from</Typography>
         <Spacer />
         <Box color="text.secondary" className={classes.from}>
-          <Typography variant="caption">{payee}</Typography>
+          <Typography variant="caption">{payeeName || payee}</Typography>
         </Box>
       </Box>
       <Box className={classes.body}>

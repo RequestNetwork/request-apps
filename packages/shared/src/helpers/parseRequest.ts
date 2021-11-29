@@ -2,10 +2,8 @@ import { utils, BigNumber } from "ethers";
 
 import { Types } from "@requestnetwork/request-client.js";
 import { ICurrencyManager } from "@requestnetwork/currency";
-import { getDefaultProvider } from "@requestnetwork/payment-detection";
 
 import { IParsedRequest } from "../";
-import { ENS } from "./ens";
 
 const getStatus = (
   state: Types.RequestLogic.STATE,
@@ -28,14 +26,12 @@ export const parseRequest = async ({
   data,
   network,
   pending,
-  disableEns,
   currencyManager,
 }: {
   requestId: string;
   data: Types.IRequestData;
   network: string;
   pending: boolean;
-  disableEns?: boolean;
   currencyManager: ICurrencyManager;
 }): Promise<IParsedRequest> => {
   const currency = currencyManager.fromStorageCurrency(data.currencyInfo);
@@ -69,34 +65,7 @@ export const parseRequest = async ({
     x => x.type === "payment-network"
   )?.values;
 
-  const provider = getDefaultProvider(currency.network);
-
-  let paymentFrom;
-
-  if (
-    data.balance?.events?.length &&
-    [
-      Types.RequestLogic.CURRENCY.ERC20,
-      Types.RequestLogic.CURRENCY.ETH,
-    ].includes(data.currencyInfo.type)
-  ) {
-    const tx = await provider.getTransaction(
-      data.balance.events[0].parameters.txHash
-    );
-    if (tx) {
-      paymentFrom = tx.from;
-    }
-  }
-  let payeeName, payerName;
-  if (!disableEns) {
-    // Try to get the payee ENS address
-    payeeName = data.payee?.value
-      ? await ENS.resolve(data.payee?.value)
-      : undefined;
-    payerName = data.payer?.value
-      ? await ENS.resolve(data.payer?.value)
-      : undefined;
-  }
+  const paymentParams = data.balance?.events?.[0]?.parameters;
 
   return {
     requestId,
@@ -110,7 +79,8 @@ export const parseRequest = async ({
       ? new Date(canceledTimestamp * 1000)
       : undefined,
     paymentAddress: extensionsValues?.paymentAddress,
-    paymentFrom,
+    paymentTxHash: paymentParams?.txHash,
+    paymentFrom: paymentParams?.from,
     reason: data.contentData?.reason,
     invoiceNumber: data.contentData?.invoiceNumber,
     currencyType: data.currencyInfo.type,
@@ -118,9 +88,7 @@ export const parseRequest = async ({
     currencyNetwork: "network" in currency ? currency.network : "",
     txHash: data.balance?.events[0]?.parameters?.txHash,
     payee: data.payee?.value?.toLowerCase() || "",
-    payeeName,
     payer: data.payer?.value?.toLowerCase() || undefined,
-    payerName,
     raw: data,
     network,
   };

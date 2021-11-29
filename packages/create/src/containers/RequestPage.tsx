@@ -119,7 +119,7 @@ const RequestPageInner = () => {
       <Spacer size={15} xs={8} />
       <TestnetWarning chainId={request?.network} />
       <RequestView
-        payee={request.payeeName || request.payee}
+        payee={request.payee}
         createdDate={request.createdDate}
         paidDate={request.paidDate}
         canceledDate={request.canceledDate}

@@ -1,7 +1,7 @@
 import { ethers, Contract, Signer, providers, utils } from "ethers";
 import WalletAddressValidator from "wallet-address-validator";
-
-const ensCache: Record<string, string | null> = {};
+import { useState, useEffect } from "react";
+const ensCache: Record<string, Promise<string | null>> = {};
 
 abstract class EnsResolverContract extends Contract {
   private static abi = [
@@ -43,7 +43,13 @@ abstract class EnsRegistryContract extends Contract {
 
 const getResolver = async (nodehash: string, provider?: providers.Provider) => {
   if (!provider) {
-    provider = ethers.getDefaultProvider();
+    const eth = window.ethereum;
+    const chainId = Number(eth?.chainId);
+    if (eth && (chainId === 1 || chainId === 4)) {
+      provider = new ethers.providers.Web3Provider(eth);
+    } else {
+      provider = ethers.getDefaultProvider("mainnet");
+    }
   }
   const registryContract = EnsRegistryContract.connect(
     ENS.registryAddress,
@@ -67,14 +73,11 @@ export class ENS {
 
   static async resolve(address: string, provider?: providers.Provider) {
     if (ensCache[address] === undefined) {
-      const nodehash = utils.namehash(address.substring(2) + ".addr.reverse");
-      const resolver = await getResolver(nodehash, provider);
-      if (resolver) {
-        ensCache[address] = (await resolver.name(nodehash)) || null;
-      } else {
-        ensCache[address] = null;
-      }
       console.log(`cache missed for ${address} => ${ensCache[address]}`);
+      const nodehash = utils.namehash(address.substring(2) + ".addr.reverse");
+      ensCache[address] = getResolver(nodehash, provider).then(resolver =>
+        resolver ? resolver.name(nodehash) : null
+      );
     }
     return ensCache[address] || undefined;
   }
@@ -119,3 +122,29 @@ export const isValidEns = (val: string) =>
   /^[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?$/.test(
     val
   );
+
+export const useEnsName = (
+  address: string | null | undefined,
+  { disabled, timeout }: { disabled?: boolean; timeout?: number } = {}
+): [string | undefined, { loading: boolean }] => {
+  const [name, setName] = useState<string | null>();
+  const [loading, setLoading] = useState(!disabled);
+  useEffect(() => {
+    if (disabled) return;
+
+    if (!address) {
+      if (timeout) {
+        const t = setTimeout(() => {
+          setLoading(false);
+        }, timeout);
+        return () => clearTimeout(t);
+      }
+    } else {
+      ENS.resolve(address)
+        .then(setName)
+        .finally(() => setLoading(false));
+    }
+    return () => {};
+  }, [disabled, address]);
+  return [name || undefined, { loading }];
+};

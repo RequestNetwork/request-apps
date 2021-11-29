@@ -196,7 +196,7 @@ export const PaymentPageInner = () => {
           paidDate={request.paidDate}
           canceledDate={request.canceledDate}
           currency={request.currency}
-          payee={request.payeeName || request.payee}
+          payee={request.payee}
           reason={request.reason}
           status={request.status}
           counterValue={counterValue}

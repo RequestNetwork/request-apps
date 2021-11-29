@@ -78,7 +78,6 @@ export const listRequests = async (
         data: request.getData(),
         network: network as string,
         pending: false,
-        disableEns: true,
         currencyManager,
       });
       parsedRequest.loaded = false;

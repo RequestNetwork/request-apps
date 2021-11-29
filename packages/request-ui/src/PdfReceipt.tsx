@@ -233,9 +233,7 @@ export const PdfReceipt = ({
         <View style={styles.headerRow}>
           <View>
             <Text style={styles.caption}>From</Text>
-            <Text style={styles.headerBodyText}>
-              {request.payeeName || request.payee}
-            </Text>
+            <Text style={styles.headerBodyText}>{request.payee}</Text>
           </View>
           <View
             style={{
@@ -269,9 +267,7 @@ export const PdfReceipt = ({
           <View>
             <Text style={styles.caption}>Billed to</Text>
 
-            <Text style={styles.headerBodyText}>
-              {request.payerName || request.payer || 'Open'}
-            </Text>
+            <Text style={styles.headerBodyText}>{request.payer || 'Open'}</Text>
           </View>
 
           <View>

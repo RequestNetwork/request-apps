@@ -21,16 +21,15 @@ export interface IParsedRequest {
   canceledDate?: Date;
   paymentAddress: string;
   paymentFrom?: string;
+  paymentTxHash?: string;
   invoiceNumber?: string;
   reason?: string;
   currencyType: RequestLogicTypes.CURRENCY;
   currencySymbol: string;
-  currencyNetwork?: string;
+  currencyNetwork: string;
   txHash?: string;
   payee: string;
   payer?: string;
-  payeeName?: string;
-  payerName?: string;
   raw: ClientTypes.IRequestData;
   network: string;
   loaded?: boolean;

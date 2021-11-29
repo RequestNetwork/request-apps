@@ -139,7 +139,6 @@ const getRequest = async (state: IState): Promise<IParsedRequest> => {
     currencyNetwork: "rinkeby",
     currencySymbol: currencies[state.currencyType].symbol,
     payee: "0x0ebB3177F8959ae1F2e7935250Ff83Ba6A159049",
-    payeeName: state.ens ? "dev.request.network" : undefined,
     raw: {
       currencyInfo: {
         type: state.currencyType,

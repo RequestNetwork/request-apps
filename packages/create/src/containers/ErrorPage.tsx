@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default ({
+const ErrorPage = ({
   topText,
   bottomText,
 }: {
@@ -50,3 +50,5 @@ export default ({
     </RContainer>
   );
 };
+
+export default ErrorPage;

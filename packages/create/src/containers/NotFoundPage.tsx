@@ -1,7 +1,7 @@
 import * as React from "react";
 import ErrorPage from "./ErrorPage";
 
-export default () => {
+const NotFoundPage = () => {
   return (
     <ErrorPage
       topText="404 not found."
@@ -9,3 +9,5 @@ export default () => {
     />
   );
 };
+
+export default NotFoundPage;

@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Link, Typography } from "@material-ui/core";
+import { Button, Link } from "@material-ui/core";
 import { addEthereumChain, chainInfos } from "request-shared";
 import { useWeb3React } from "@web3-react/core";
 

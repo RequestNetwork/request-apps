@@ -1,7 +1,7 @@
 import React from "react";
 import ErrorPage from "./ErrorPage";
 
-export default () => {
+const NotLoggedPage = () => {
   return (
     <ErrorPage
       topText="You are not logged in!"
@@ -9,3 +9,5 @@ export default () => {
     />
   );
 };
+
+export default NotLoggedPage;

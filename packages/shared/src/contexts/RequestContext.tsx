@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 
 import { Request } from "@requestnetwork/request-client.js";
@@ -125,7 +125,11 @@ export const RequestProvider: React.FC<{ chainId?: string | number }> = ({
         counterCurrency,
         counterValue,
         setPending,
-        update: () => fetchRequest(id, chainId, pending),
+        update: useCallback(() => fetchRequest(id, chainId, pending), [
+          id,
+          chainId,
+          pending,
+        ]),
       }}
     >
       {children}

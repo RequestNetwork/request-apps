@@ -1,10 +1,15 @@
 {
-  "include": ["src"],
+  "include": [
+    "src"
+  ],
   "compilerOptions": {
     "composite": true,
-    "target": "es5",
+    "target": "ES2017",
     "module": "esnext",
-    "lib": ["dom", "esnext"],
+    "lib": [
+      "dom",
+      "esnext"
+    ],
     "importHelpers": true,
     "declaration": true,
     "sourceMap": true,
@@ -24,8 +29,13 @@
     "moduleResolution": "node",
     "baseUrl": "./",
     "paths": {
-      "@": ["./"],
-      "*": ["src/*", "node_modules/*"]
+      "@": [
+        "./"
+      ],
+      "*": [
+        "src/*",
+        "node_modules/*"
+      ]
     },
     "jsx": "react",
     "esModuleInterop": true,

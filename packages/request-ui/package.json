@@ -7,21 +7,14 @@
     "dist"
   ],
   "scripts": {
-    "start": "tsdx watch",
-    "build": "tsdx build",
-    "test": "tsdx test --passWithNoTests",
-    "lint": "tsdx lint",
-    "prepare": "tsdx build",
+    "start": "tsc --watch",
+    "build": "tsc",
+    "test": "jest--passWithNoTests",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
   "peerDependencies": {
     "react": ">=16"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "tsdx lint"
-    }
   },
   "prettier": {
     "printWidth": 80,
@@ -48,7 +41,6 @@
     "react-dom": "^16.13.0",
     "request-shared": "0.1.0",
     "ts-loader": "^6.2.1",
-    "tsdx": "0.14.1",
     "tslib": "^1.11.1",
     "typescript": "^4.1.2"
   },

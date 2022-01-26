@@ -24,7 +24,7 @@ export const statusLabels: Record<RequestStatus, string> = {
   pending: 'Pending',
   canceled: 'Canceled',
   overpaid: 'Overpaid',
-  unknown: 'Unkown',
+  unknown: 'Unknown',
 };
 
 export const RStatusBadge = (props: IProps) => {

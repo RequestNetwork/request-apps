@@ -2,7 +2,7 @@ import { ClientTypes } from "@requestnetwork/types";
 import { IParsedRequest } from "../";
 
 const etherscanDomain: Record<string, string> = {
-  rinkeby: "https://rinkeby.etherscan.io",
+  goerli: "https://goerli.etherscan.io",
   mainnet: "https://etherscan.io",
 };
 

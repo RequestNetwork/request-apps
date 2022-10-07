@@ -81,7 +81,7 @@ export const useCreateRequest = () => {
     if (payer) {
       if (isValidEns(payer)) {
         const provider = getDefaultProvider(
-          chainName === "rinkeby" ? "rinkeby" : "mainnet"
+          chainName === "goerli" ? "goerli" : "mainnet"
         );
         payer = await new ENS(payer, provider).addr();
       } else if (!WalletAddressValidator.validate(payer, "ethereum")) {

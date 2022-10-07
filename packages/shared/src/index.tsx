@@ -105,15 +105,22 @@ export const addEthereumChain = (
   if (!library) {
     library = new providers.Web3Provider((window as any).ethereum);
   }
-  return library.send("wallet_addEthereumChain", [
-    {
-      chainId: utils.hexlify(chainId),
-      chainName: name,
-      blockExplorerUrls,
-      rpcUrls,
-      nativeCurrency,
-    },
-  ]);
+
+  if (rpcUrls && rpcUrls.length > 0) {
+    return library.send("wallet_addEthereumChain", [
+      {
+        chainId: utils.hexlify(chainId),
+        chainName: name,
+        blockExplorerUrls,
+        rpcUrls: rpcUrls ? rpcUrls : [],
+        nativeCurrency,
+      },
+    ]);
+  } else {
+    return library.send("wallet_switchEthereumChain", [
+      { chainId: utils.hexValue(chainId) },
+    ]);
+  }
 };
 
 Object.values(chainInfos).forEach((val) => (chainInfos[val.chainId] = val));

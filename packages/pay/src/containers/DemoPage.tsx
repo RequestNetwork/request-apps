@@ -136,7 +136,7 @@ const getRequest = async (state: IState): Promise<IParsedRequest> => {
     canceledDate: state.status === "canceled" ? new Date() : undefined,
     paymentAddress: "0x000000000000000000000000000000000000000",
     reason: await getReason(state.reasonLength),
-    currencyNetwork: "rinkeby",
+    currencyNetwork: "goerli",
     currencySymbol: currencies[state.currencyType].symbol,
     payee: "0x0ebB3177F8959ae1F2e7935250Ff83Ba6A159049",
     raw: {
@@ -146,7 +146,7 @@ const getRequest = async (state: IState): Promise<IParsedRequest> => {
           state.currencyType === Types.RequestLogic.CURRENCY.ERC20
             ? "0x995d6a8c21f24be1dd04e105dd0d83758343e258"
             : "",
-        network: "rinkeby",
+        network: "goerli",
       },
       expectedAmount: "100000",
       extensions: {
@@ -157,7 +157,7 @@ const getRequest = async (state: IState): Promise<IParsedRequest> => {
         },
       },
     } as any,
-    network: state.testnet ? "rinkeby" : "mainnet",
+    network: state.testnet ? "goerli" : "mainnet",
   };
 };
 

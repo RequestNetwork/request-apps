@@ -6,9 +6,9 @@
     "@material-ui/core": "^4.9.7",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.46",
+    "@requestnetwork/currency": "0.8.1-next.1787",
     "@web3-react/core": "^6.0.7",
     "@web3-react/injected-connector": "^6.0.7",
-    "@requestnetwork/currency": "^0.8.1-next.1581",
     "ethers": "5.5.1",
     "export-to-csv": "^0.2.1",
     "formik": "^2.1.4",
@@ -48,7 +48,7 @@
     ]
   },
   "devDependencies": {
-    "@requestnetwork/types": "^0.35.1-next.1581",
+    "@requestnetwork/types": "0.35.1-next.1787",
     "@testing-library/jest-dom": "^5.15.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",

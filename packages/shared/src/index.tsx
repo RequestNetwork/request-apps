@@ -82,11 +82,17 @@ export const chainInfos: Record<string | number, ChainInfo> = {
     },
     rpcUrls: ["https://rpc-mainnet.matic.network/"],
   },
-  rinkeby: {
-    id: "rinkeby",
-    name: "Rinkeby",
-    chainId: 4,
+  goerli: {
+    id: "goerli",
+    name: "Goerli",
+    chainId: 5,
     color: "#FFB95F",
+    blockExplorerUrls: ["https://goerli.etherscan.io/"],
+    nativeCurrency: {
+      name: "Matic",
+      symbol: "MATIC",
+      decimals: 18,
+    },
   },
 };
 
@@ -110,4 +116,4 @@ export const addEthereumChain = (
   ]);
 };
 
-Object.values(chainInfos).forEach(val => (chainInfos[val.chainId] = val));
+Object.values(chainInfos).forEach((val) => (chainInfos[val.chainId] = val));

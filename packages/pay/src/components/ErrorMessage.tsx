@@ -40,7 +40,7 @@ const getErrorMessage = (error: Error, request: IParsedRequest) => {
   }
   if (error instanceof UnsupportedChainIdError) {
     const prefix =
-      request.currencyNetwork === "rinkeby" ? "This is a test request. " : "";
+      request.currencyNetwork === "goerli" ? "This is a test request. " : "";
     const network = request.currencyNetwork || "";
     const text = `connect your wallet to ${chainInfos[network].name}`;
     return (

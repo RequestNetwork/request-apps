@@ -35,7 +35,7 @@ interface IContext {
  */
 export const RequestContext = React.createContext<IContext | null>(null);
 
-/** Gets a request from a gateway. Tries mainnet then rinkeby */
+/** Gets a request from a gateway. Tries mainnet then goerli */
 const loadRequest = async (
   requestId: string,
   network?: string | number
@@ -44,7 +44,7 @@ const loadRequest = async (
     return (
       (await loadRequest(requestId, "xdai")) ||
       (await loadRequest(requestId, "mainnet")) ||
-      (await loadRequest(requestId, "rinkeby"))
+      (await loadRequest(requestId, "goerli"))
     );
   }
   network = chainIdToName(network);
@@ -125,11 +125,10 @@ export const RequestProvider: React.FC<{ chainId?: string | number }> = ({
         counterCurrency,
         counterValue,
         setPending,
-        update: useCallback(() => fetchRequest(id, chainId, pending), [
-          id,
-          chainId,
-          pending,
-        ]),
+        update: useCallback(
+          () => fetchRequest(id, chainId, pending),
+          [id, chainId, pending]
+        ),
       }}
     >
       {children}

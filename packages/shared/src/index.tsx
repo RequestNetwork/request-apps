@@ -89,8 +89,8 @@ export const chainInfos: Record<string | number, ChainInfo> = {
     color: "#FFB95F",
     blockExplorerUrls: ["https://goerli.etherscan.io/"],
     nativeCurrency: {
-      name: "Matic",
-      symbol: "MATIC",
+      name: "ETH-goerli",
+      symbol: "ETH",
       decimals: 18,
     },
   },

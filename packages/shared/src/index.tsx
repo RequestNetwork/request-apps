@@ -62,13 +62,13 @@ export const chainInfos: Record<string | number, ChainInfo> = {
     color: "#48a900",
     chainId: 100,
     name: "xDAI Chain",
-    rpcUrls: ["https://rpc.xdaichain.com"],
+    rpcUrls: ["https://gnosischain-rpc.gateway.pokt.network/"],
     nativeCurrency: {
       name: "xDAI",
       symbol: "xDAI",
       decimals: 18,
     },
-    blockExplorerUrls: ["https://blockscout.com/poa/xdai"],
+    blockExplorerUrls: ["https://gnosischain.io/"],
   },
   matic: {
     id: "matic",
@@ -106,21 +106,26 @@ export const addEthereumChain = (
     library = new providers.Web3Provider((window as any).ethereum);
   }
 
-  if (rpcUrls && rpcUrls.length > 0) {
-    return library.send("wallet_addEthereumChain", [
-      {
-        chainId: utils.hexlify(chainId),
-        chainName: name,
-        blockExplorerUrls,
-        rpcUrls: rpcUrls ? rpcUrls : [],
-        nativeCurrency,
-      },
-    ]);
-  } else {
+  // first attempt to switch to that chain
+  try {
     return library.send("wallet_switchEthereumChain", [
       { chainId: utils.hexValue(chainId) },
     ]);
+  } catch {}
+
+  if (!rpcUrls || rpcUrls.length === 0) {
+    return null;
   }
+
+  return library.send("wallet_addEthereumChain", [
+    {
+      chainId: utils.hexValue(chainId),
+      chainName: name,
+      blockExplorerUrls,
+      rpcUrls: rpcUrls ? rpcUrls : [],
+      nativeCurrency,
+    },
+  ]);
 };
 
 Object.values(chainInfos).forEach((val) => (chainInfos[val.chainId] = val));

@@ -5,7 +5,8 @@
     "packages": [
       "packages/shared",
       "packages/request-ui",
-      "packages/*"
+      "packages/create",
+      "packages/pay"
     ]
   }
 }

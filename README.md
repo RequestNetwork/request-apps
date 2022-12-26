@@ -144,4 +144,4 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Contact
 
-The easiest way to reach out to us is through our [Request Hub Slack](https://request-slack.herokuapp.com/) or our [Request Discord](https://discord.gg/zBVSfFP).
+The easiest way to reach out to us is through our [Request Discord](https://request.network/discord).

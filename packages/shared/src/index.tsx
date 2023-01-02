@@ -7,7 +7,7 @@ export type RequestStatus =
   | "pending"
   | "canceled"
   | "overpaid"
-  | "waiting";
+  | "unknown";
 
 /** Formatted request */
 export interface IParsedRequest {

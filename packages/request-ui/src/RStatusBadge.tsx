@@ -24,7 +24,7 @@ export const statusLabels: Record<RequestStatus, string> = {
   pending: 'Pending',
   canceled: 'Canceled',
   overpaid: 'Overpaid',
-  waiting: 'Waiting',
+  waiting: 'Creating Request'
 };
 
 export const RStatusBadge = (props: IProps) => {
@@ -41,7 +41,7 @@ export const RStatusBadge = (props: IProps) => {
         className={[classes.status, props.className].join(' ')}
         title={
           props.status === 'waiting'
-            ? `The request hasn't been indexed by IPFS yet. Please check back later`
+          ? 'The balance computation might have failed'
             : ''
         }
       >

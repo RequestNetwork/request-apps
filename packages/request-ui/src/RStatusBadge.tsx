@@ -41,7 +41,7 @@ export const RStatusBadge = (props: IProps) => {
         className={[classes.status, props.className].join(' ')}
         title={
           props.status === 'waiting'
-          ? 'The balance computation might have failed'
+          ? 'Waiting for request to be stored in IPFS'
             : ''
         }
       >

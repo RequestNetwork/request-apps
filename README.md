@@ -100,6 +100,17 @@ Go to `packages/pay` and run:
 yarn start
 ```
 
+### Request URLs
+
+The Request apps can be accessed through these URLs:
+
+| Product        | Status    | URL                                |
+| ---------------| ----------|------------------------------------|
+| Request Create |Production |https://create.request.network      |
+| Request Create |Staging    |https://baguette-v2.request.network |
+| Request Pay    |Production |https://pay.request.network         |
+| Request Pay    |Staging    |https://baguette-pay.request.network|
+
 ### ETHGasStation API Key
 
 If you get throttled by ethgasstation API, you can add your own API key to `packages/pay/.env` file:

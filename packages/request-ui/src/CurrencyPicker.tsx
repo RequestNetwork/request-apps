@@ -12,6 +12,9 @@ export const CurrencyPickerItem = ({
   currency: Currency;
   showNetwork?: boolean;
 }) => {
+  if (!currency) {
+    return <div></div>;
+  }
   const Icon = (currencyIcons as any)[currency.symbol.toUpperCase()];
   const text =
     'network' in currency && currency.network && showNetwork
@@ -38,7 +41,7 @@ export const getCurrenciesForPicker = ({
     if (currencyFilter && !currencyFilter(curr)) return prev;
     const chain = chainInfos[curr.network];
     if (!chain) return prev;
-    let net = prev.find(x => x.chain.id === curr.network);
+    let net = prev.find((x) => x.chain.id === curr.network);
     if (!net) {
       net = { chain, currencies: [] };
       prev.push(net);
@@ -67,7 +70,7 @@ export const getCurrenciesForPicker = ({
         </Box>
       </ListSubheader>,
       <Divider />,
-      currencies.map(currency => {
+      currencies.map((currency) => {
         return (
           <MenuItem key={currency.id} value={currency.id}>
             <CurrencyPickerItem currency={currency} />

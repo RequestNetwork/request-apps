@@ -3,6 +3,5 @@
 node_modules
 .cache
 dist
-build
 e2e
 tsconfig.tsbuildinfo

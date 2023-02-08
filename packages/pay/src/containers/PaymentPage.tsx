@@ -42,7 +42,7 @@ export const RequestNotFound = () => {
   );
 };
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   wrapper: {
     display: "flex",
     justifyContent: "center",
@@ -64,7 +64,7 @@ const WrappedSpinner = () => {
   );
 };
 
-const useErrorContainerStyles = makeStyles(theme => ({
+const useErrorContainerStyles = makeStyles((theme) => ({
   container: {
     display: "flex",
     alignItems: "center",
@@ -165,6 +165,8 @@ export const PaymentPageInner = () => {
     return <RequestNotFound />;
   }
 
+  console.log("Request Status", request?.status);
+
   const requiresApproval =
     request?.status === "open" && error instanceof RequiresApprovalError;
   const activating = !active && !!connectorName;
@@ -252,7 +254,7 @@ const PaymentPage = () => {
     <CurrencyProvider currencies={getCurrencies()}>
       <RequestProvider>
         <Web3ReactProvider
-          getLibrary={provider => new providers.Web3Provider(provider)}
+          getLibrary={(provider) => new providers.Web3Provider(provider)}
         >
           <ConnectorProvider>
             <PaymentProvider>

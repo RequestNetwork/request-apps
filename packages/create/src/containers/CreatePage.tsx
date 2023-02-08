@@ -8,6 +8,7 @@ import { useWeb3React } from "@web3-react/core";
 
 import { CreateRequestForm, IFormData } from "../components/CreateRequest";
 import { useConnectedUser } from "../contexts/UserContext";
+import { ethers } from "ethers";
 
 const CreatePage = () => {
   const history = useHistory();
@@ -30,6 +31,16 @@ const CreatePage = () => {
     if (!values.currency) {
       throw new Error("currency not specified");
     }
+
+    const provider = ethers.getDefaultProvider();
+    if (!ethers.utils.isAddress(values.payer!)) {
+      const addressFromEns = await provider.resolveName(values.payer!);
+      if (!ethers.utils.isAddress(addressFromEns!)) {
+        throw new Error("payer not valid");
+      }
+      values.payer = addressFromEns!;
+    }
+
     try {
       const request = await createRequest(
         {

@@ -3,14 +3,14 @@ import {
   getErc20Balance,
   hasErc20Approval,
   approveErc20,
-} from "@requestnetwork/payment-processor";
+} from "@huma-shan/payment-processor";
 import { useCallback, useEffect, useState } from "react";
 
 import { useWeb3React } from "@web3-react/core";
 
 import { useRequest } from "request-shared";
 import { Web3Provider, TransactionResponse } from "@ethersproject/providers";
-import { Types } from "@requestnetwork/request-client.js";
+import { Types } from "@huma-shan/request-client.js";
 import React from "react";
 import { ethers, BigNumber } from "ethers";
 import axios from "axios";
@@ -181,7 +181,7 @@ export const PaymentProvider: React.FC = ({ children }) => {
         localStorage.removeItem("txhash");
       }
       if (request?.status === "open") {
-        library.getTransaction(hash).then(async tx => {
+        library.getTransaction(hash).then(async (tx) => {
           if (tx) {
             setTxHash(hash);
             setPending(true);
@@ -208,7 +208,7 @@ export const PaymentProvider: React.FC = ({ children }) => {
       .get("https://ethgasstation.info/json/ethgasAPI.json", {
         params,
       })
-      .then(res => setGasPrice(res.data.average / 10 + 1));
+      .then((res) => setGasPrice(res.data.average / 10 + 1));
   }, []);
 
   // Process paying a request or
@@ -222,11 +222,11 @@ export const PaymentProvider: React.FC = ({ children }) => {
     setActive(true);
 
     payRequest(request.raw, library as any, undefined, {
-      gasPrice: ethers.utils.parseUnits(gasPrice.toString(), "gwei") as any,
+      // gasPrice: ethers.utils.parseUnits(gasPrice.toString(), "gwei") as any,
       gasLimit: 100000,
     })
       .then(txCallback)
-      .catch(e => {
+      .catch((e) => {
         setPaying(false);
         console.log(e);
       })
@@ -257,7 +257,7 @@ export const PaymentProvider: React.FC = ({ children }) => {
     setActive(true);
 
     approveErc20(request.raw, library as any, {
-      gasPrice: ethers.utils.parseUnits(gasPrice.toString(), "gwei") as any,
+      // gasPrice: ethers.utils.parseUnits(gasPrice.toString(), "gwei") as any,
     })
       .then(async () => {
         setBroadcasting(true);
@@ -307,7 +307,7 @@ export const PaymentProvider: React.FC = ({ children }) => {
       setReady(true);
     } else {
       if (!account || !request || !library) return;
-      runChecks(request.raw, account, library, approved).then(err => {
+      runChecks(request.raw, account, library, approved).then((err) => {
         setError(err);
         setReady(true);
         setErrorsChecked(true);

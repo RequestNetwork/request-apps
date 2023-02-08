@@ -4,7 +4,7 @@ import {
   IdentityTypes,
   SignatureProviderTypes,
   SignatureTypes,
-} from "@requestnetwork/types";
+} from "@huma-shan/types";
 
 export class CustomSignatureProvider
   implements SignatureProviderTypes.ISignatureProvider {

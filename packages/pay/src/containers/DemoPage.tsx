@@ -26,7 +26,7 @@ import {
 import { UnsupportedChainIdError, getWeb3ReactContext } from "@web3-react/core";
 import { NoEthereumProviderError } from "@web3-react/injected-connector";
 import { RequestContext, RequestStatus, IParsedRequest } from "request-shared";
-import { Types } from "@requestnetwork/request-client.js";
+import { Types } from "@huma-shan/request-client.js";
 import { CurrencyManager, CurrencyDefinition } from "@requestnetwork/currency";
 import { ConnectorContext } from "../contexts/ConnectorContext";
 import {
@@ -39,7 +39,7 @@ import {
 import Draggable from "react-draggable";
 import Axios from "axios";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   fab: {
     position: "absolute",
     top: theme.spacing(2),
@@ -275,7 +275,7 @@ const DemoSettings = ({
             <FormLabel>Status</FormLabel>
             <ButtonGroup size="small" variant="contained">
               {["open", "pending", "paid", "overpaid", "canceled"].map(
-                (status) => (
+                status => (
                   <Button
                     key={status}
                     onClick={() => set({ status: status as RequestStatus })}
@@ -291,12 +291,12 @@ const DemoSettings = ({
           <Box className={classes.field} alignItems="center">
             <FormLabel>Currency</FormLabel>
             <ButtonGroup size="small" variant="contained">
-              {Object.keys(currencies).map((c) => (
+              {Object.keys(currencies).map(c => (
                 <Button
                   key={c}
                   value={c}
                   color={c === state.currencyType ? "primary" : undefined}
-                  onClick={(e) => set({ currencyType: c as any })}
+                  onClick={e => set({ currencyType: c as any })}
                 >
                   {currencies[c as Types.RequestLogic.CURRENCY]}
                 </Button>
@@ -310,13 +310,13 @@ const DemoSettings = ({
           >
             <FormLabel>Error</FormLabel>
             <ButtonGroup size="small" variant="contained">
-              {Object.keys(errorsDescriptions).map((err) => (
+              {Object.keys(errorsDescriptions).map(err => (
                 <Button
                   key={err}
                   color={
                     (state.error?.name || "") === err ? "primary" : undefined
                   }
-                  onClick={(e) => set({ error: errors[err] })}
+                  onClick={e => set({ error: errors[err] })}
                 >
                   {errorsDescriptions[err]}
                 </Button>
@@ -337,7 +337,7 @@ const DemoSettings = ({
               style={{ maxWidth: 150 }}
               size="small"
               value={state.amount}
-              onChange={(e) => set({ amount: e.target.value })}
+              onChange={e => set({ amount: e.target.value })}
             />
           </Box>
           <Box
@@ -439,7 +439,7 @@ const DemoSettings = ({
   );
 };
 
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
 
 const DemoPage = () => {
   const web3context = getWeb3ReactContext();
@@ -503,7 +503,7 @@ const DemoPage = () => {
     if (!state) return;
     let canceled = false;
 
-    getRequest(state).then((request) => {
+    getRequest(state).then(request => {
       if (canceled) return;
       setTimeout(() => setRequest(request), state.loadingTime);
     });
@@ -537,7 +537,7 @@ const DemoPage = () => {
           <web3context.Provider
             value={{
               error: state.error,
-              setError: (e) => set({ error: e }),
+              setError: e => set({ error: e }),
               activate: () => Promise.resolve(),
               active: state.active,
               deactivate: () => Promise.resolve(),
@@ -548,7 +548,7 @@ const DemoPage = () => {
             <ConnectorContext.Provider
               value={{
                 ready: true,
-                activateConnector: (c) => set({ connector: c }),
+                activateConnector: c => set({ connector: c }),
                 connectorName: state.connector,
                 providerName: "",
               }}

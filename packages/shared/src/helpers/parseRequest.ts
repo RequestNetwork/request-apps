@@ -1,6 +1,6 @@
 import { utils, BigNumber } from "ethers";
 
-import { Types } from "@requestnetwork/request-client.js";
+import { Types } from "@huma-shan/request-client.js";
 import { ICurrencyManager } from "@requestnetwork/currency";
 
 import { IParsedRequest } from "../";

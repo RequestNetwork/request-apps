@@ -1,6 +1,6 @@
 import { useCallback } from "react";
-import { Request } from "@requestnetwork/request-client.js";
-import { IdentityTypes } from "@requestnetwork/types";
+import { Request } from "@huma-shan/request-client.js";
+import { IdentityTypes } from "@huma-shan/types";
 import { EventEmitter } from "events";
 import { parseRequest } from "./parseRequest";
 import { chainIdToName } from "./chainIdToName";

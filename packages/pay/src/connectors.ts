@@ -1,7 +1,7 @@
 import { InjectedConnector } from "@web3-react/injected-connector";
 import { AbstractConnector } from "@web3-react/abstract-connector";
 import { chainInfos, IParsedRequest } from "request-shared";
-import { RequestLogicTypes } from "@requestnetwork/types";
+import { RequestLogicTypes } from "@huma-shan/types";
 
 /** Get available connectors based on request type and network. */
 export const getConnectors = (

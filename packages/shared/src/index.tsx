@@ -1,5 +1,5 @@
 import { CurrencyDefinition } from "@requestnetwork/currency";
-import { RequestLogicTypes, ClientTypes } from "@requestnetwork/types";
+import { RequestLogicTypes, ClientTypes } from "@huma-shan/types";
 import { providers, utils } from "ethers";
 export type RequestStatus =
   | "paid"
@@ -128,4 +128,4 @@ export const addEthereumChain = (
   ]);
 };
 
-Object.values(chainInfos).forEach((val) => (chainInfos[val.chainId] = val));
+Object.values(chainInfos).forEach(val => (chainInfos[val.chainId] = val));

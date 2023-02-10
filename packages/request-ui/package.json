@@ -25,6 +25,10 @@
   "name": "request-ui",
   "author": "Request",
   "devDependencies": {
+    "@requestnetwork/currency": "0.9.0",
+    "@frinkly/payment-detection": "0.36.1",
+    "@huma-shan/request-client.js": "0.42.0",
+    "@huma-shan/types": "0.38.0",
     "@babel/core": "^7.8.7",
     "@rollup/plugin-image": "^2.0.4",
     "@storybook/addon-actions": "^5.3.17",

@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
+import { useWeb3React } from "@web3-react/core";
 
-import { Request } from "@requestnetwork/request-client.js";
+import { Request } from "@huma-shan/request-client.js";
 import { CurrencyDefinition } from "@requestnetwork/currency";
 
 import { useRate } from "../hooks/useRate";
@@ -42,9 +43,10 @@ const loadRequest = async (
 ): Promise<{ network: string; request: Request } | null> => {
   if (!network) {
     return (
+      (await loadRequest(requestId, "goerli")) ||
+      (await loadRequest(requestId, "matic")) ||
       (await loadRequest(requestId, "xdai")) ||
-      (await loadRequest(requestId, "mainnet")) ||
-      (await loadRequest(requestId, "goerli"))
+      (await loadRequest(requestId, "mainnet"))
     );
   }
   network = chainIdToName(network);
@@ -65,6 +67,7 @@ export const RequestProvider: React.FC<{ chainId?: string | number }> = ({
   chainId,
 }) => {
   const { currencyManager } = useCurrency();
+  const { library } = useWeb3React();
 
   const { id } = useParams<{ id?: string }>();
   const [loading, setLoading] = useState(true);
@@ -97,6 +100,7 @@ export const RequestProvider: React.FC<{ chainId?: string | number }> = ({
         network: result.network,
         pending,
         currencyManager,
+        provider: library,
       });
       parseResult.loaded = true;
       setParsedRequest(parseResult);

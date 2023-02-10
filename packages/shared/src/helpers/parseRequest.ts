@@ -1,15 +1,17 @@
-import { utils, BigNumber } from "ethers";
+import { utils, BigNumber, providers } from "ethers";
 
-import { Types } from "@requestnetwork/request-client.js";
+import { Types } from "@huma-shan/request-client.js";
 import { ICurrencyManager } from "@requestnetwork/currency";
 
-import { IParsedRequest } from "../";
+import { fetchReceivableMinted, IParsedRequest } from "../";
+import { ExtensionTypes } from "@huma-shan/types";
 
 const getStatus = (
   state: Types.RequestLogic.STATE,
   expectedAmount: BigNumber,
   balance: BigNumber | undefined,
-  pending: boolean
+  pending: boolean,
+  receivableMinted?: boolean
 ) => {
   if (!balance) return "unknown";
   if (state === Types.RequestLogic.STATE.CANCELED) return "canceled";
@@ -17,6 +19,7 @@ const getStatus = (
   if (balance?.eq(expectedAmount)) return "paid";
   if (balance?.gt(expectedAmount)) return "overpaid";
   if (pending) return "pending";
+  if (receivableMinted === false) return "receivablePending";
   return "open";
 };
 
@@ -27,12 +30,14 @@ export const parseRequest = async ({
   network,
   pending,
   currencyManager,
+  provider,
 }: {
   requestId: string;
   data: Types.IRequestData;
   network: string;
   pending: boolean;
   currencyManager: ICurrencyManager;
+  provider?: providers.Web3Provider;
 }): Promise<IParsedRequest> => {
   const currency = currencyManager.fromStorageCurrency(data.currencyInfo);
   if (!currency) {
@@ -49,20 +54,34 @@ export const parseRequest = async ({
     balance = Number(utils.formatUnits(data.balance.balance, decimals));
   }
 
+  const paymentNetwork = Object.values(data.extensions).find(
+    (x) => x.type === "payment-network"
+  )?.id;
+
+  let receivableMinted;
+  if (
+    paymentNetwork ===
+      ExtensionTypes.PAYMENT_NETWORK_ID.ERC20_TRANSFERRABLE_RECEIVABLE &&
+    provider
+  ) {
+    receivableMinted = await fetchReceivableMinted(data, provider);
+  }
+
   const status = getStatus(
     data.state,
     BigNumber.from(data.expectedAmount),
     data.balance?.balance ? BigNumber.from(data.balance.balance) : undefined,
-    pending
+    pending,
+    receivableMinted
   );
 
   const paidTimestamp = data.balance?.events.reverse()[0]?.timestamp;
   const canceledTimestamp = data.events.find(
-    x => x.name === Types.RequestLogic.ACTION_NAME.CANCEL
+    (x) => x.name === Types.RequestLogic.ACTION_NAME.CANCEL
   )?.timestamp;
 
   const extensionsValues = Object.values(data.extensions).find(
-    x => x.type === "payment-network"
+    (x) => x.type === "payment-network"
   )?.values;
 
   const paymentParams = data.balance?.events?.[0]?.parameters;
@@ -91,5 +110,7 @@ export const parseRequest = async ({
     payer: data.payer?.value?.toLowerCase() || undefined,
     raw: data,
     network,
+    receivableMinted,
+    paymentNetwork,
   };
 };

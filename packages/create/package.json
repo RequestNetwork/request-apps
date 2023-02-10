@@ -6,7 +6,10 @@
     "@material-ui/core": "^4.9.7",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.46",
-    "@requestnetwork/currency": "0.8.1-next.1787",
+    "@requestnetwork/currency": "0.9.0",
+    "@huma-shan/payment-processor": "0.41.0",
+    "@huma-shan/request-client.js": "0.42.0",
+    "@huma-shan/types": "0.38.0",
     "@web3-react/core": "^6.0.7",
     "@web3-react/injected-connector": "^6.0.7",
     "ethers": "5.5.1",
@@ -24,8 +27,8 @@
     "yup": "^0.28.3"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "NODE_OPTIONS=--max_old_space_size=8192 react-scripts build",
+    "start": "PORT=4000 react-scripts start",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -48,7 +51,6 @@
     ]
   },
   "devDependencies": {
-    "@requestnetwork/types": "0.35.1-next.1787",
     "@testing-library/jest-dom": "^5.15.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",

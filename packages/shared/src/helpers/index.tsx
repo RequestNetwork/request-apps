@@ -10,3 +10,4 @@ export * from "./chainIdToName";
 export * from "./stringUtils";
 export * from "./getPayUrl";
 export * from "./getCurrencies";
+export * from "./getReceivable";

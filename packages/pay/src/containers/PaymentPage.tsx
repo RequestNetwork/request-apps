@@ -42,7 +42,7 @@ export const RequestNotFound = () => {
   );
 };
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   wrapper: {
     display: "flex",
     justifyContent: "center",
@@ -64,7 +64,7 @@ const WrappedSpinner = () => {
   );
 };
 
-const useErrorContainerStyles = makeStyles(theme => ({
+const useErrorContainerStyles = makeStyles((theme) => ({
   container: {
     display: "flex",
     alignItems: "center",
@@ -93,9 +93,10 @@ export const ErrorContainer = () => {
 
   return (
     <Box className={classes.container}>
-      {request?.status === "open" && error && showErrorAtTop && (
-        <ErrorMessage error={error} request={request} />
-      )}
+      {(request?.status === "open" ||
+        request?.status === "receivablePending") &&
+        error &&
+        showErrorAtTop && <ErrorMessage error={error} request={request} />}
       <RContainer>
         <Spacer size={15} xs={5} />
         <TestnetWarning chainId={request?.network} />
@@ -164,6 +165,8 @@ export const PaymentPageInner = () => {
   if (loaded && !request) {
     return <RequestNotFound />;
   }
+
+  console.log("Request Status", request?.status);
 
   const requiresApproval =
     request?.status === "open" && error instanceof RequiresApprovalError;
@@ -252,7 +255,7 @@ const PaymentPage = () => {
     <CurrencyProvider currencies={getCurrencies()}>
       <RequestProvider>
         <Web3ReactProvider
-          getLibrary={provider => new providers.Web3Provider(provider)}
+          getLibrary={(provider) => new providers.Web3Provider(provider)}
         >
           <ConnectorProvider>
             <PaymentProvider>

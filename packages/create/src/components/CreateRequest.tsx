@@ -28,7 +28,6 @@ import {
   CurrencyPickerItem,
 } from "request-ui";
 import Dot from "./Dot";
-import { useWeb3React } from "@web3-react/core";
 import { ChangeChainLink } from "./ChangeChainLink";
 
 export interface IFormData {
@@ -160,7 +159,7 @@ const Amount = ({ className }: { className?: string }) => {
     <TextField
       {...field}
       name="amount"
-      label="Amount"
+      label="Amount (Maximum 100)"
       className={className}
       type="number"
       fullWidth
@@ -177,7 +176,7 @@ const Amount = ({ className }: { className?: string }) => {
 
 const CurrencyPicker = ({ className }: { className?: string }) => {
   const [field, meta] = useField("currency");
-  const { chainId } = useWeb3React();
+  // const { chainId } = useWeb3React();
   const { currencyManager } = useCurrency();
 
   return (
@@ -205,9 +204,10 @@ const CurrencyPicker = ({ className }: { className?: string }) => {
         },
       }}
     >
-      {getCurrenciesForPicker({
+      {/* {getCurrenciesForPicker({
         currencyFilter: ({ network }) => chainId === 5 || network !== "goerli",
-      })}
+      })} */}
+      {getCurrenciesForPicker({})}
     </TextField>
   );
 };
@@ -218,11 +218,12 @@ const Payer = ({ className }: { className?: string }) => {
   return (
     <TextField
       {...field}
-      label="Who are you sending this request to? (optional)"
-      placeholder="Enter an ENS name or ETH address"
+      label="Who are you sending this request to?"
+      placeholder="Enter an ETH address"
       className={className}
       fullWidth
       size="medium"
+      required
       error={Boolean(meta.error)}
       helperText={Boolean(meta.error) ? meta.error : " "}
     />
@@ -336,19 +337,22 @@ const Footer = ({
 export const schema = Yup.object().shape<IFormData>({
   amount: Yup.number()
     .positive("Please enter a positive number")
+    .max(100, "Please limit to 100 for testing purpose")
     .typeError("Please enter a number")
     .required("Required"),
-  payer: Yup.string().test(
-    "is-valid-recipient",
-    "Please enter a valid ENS or ETH address",
-    async function (value: string) {
-      return (
-        !value ||
-        CurrencyManager.validateAddress(value, { type: "ETH" } as any) ||
-        (isValidEns(value) && !!(await new ENS(value).addr()))
-      );
-    }
-  ),
+  payer: Yup.string()
+    .test(
+      "is-valid-recipient",
+      "Please enter a valid ETH address",
+      async function (value: string) {
+        return (
+          !value ||
+          CurrencyManager.validateAddress(value, { type: "ETH" } as any) ||
+          (isValidEns(value) && !!(await new ENS(value).addr()))
+        );
+      }
+    )
+    .required("Required"),
   currency: Yup.mixed().required("Required"),
   reason: Yup.string().test(
     "is-valid-reason",
@@ -391,6 +395,16 @@ export const CreateRequestForm = ({
 }: IProps) => {
   const classes = useStyles();
 
+  const getCurrency = () => {
+    if (network === 5) {
+      return "USDC-goerli";
+    }
+    if (network === 137) {
+      return "USDC-matic";
+    }
+    return "USDC-goerli";
+  };
+
   return (
     <RContainer>
       <Spacer size={15} xs={8} />
@@ -406,7 +420,7 @@ export const CreateRequestForm = ({
         onSubmit={onSubmit}
         enableReinitialize
         initialValues={{
-          currency: !network || network === 5 ? "FAU-goerli" : "DAI-mainnet",
+          currency: getCurrency(),
           amount: "" as any,
           payer: "",
           reason: "",

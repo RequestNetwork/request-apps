@@ -65,7 +65,7 @@ const getErrorMessage = (error: Error, request: IParsedRequest) => {
   }
 
   if (error instanceof NotEnoughForRequestError) {
-    return `You do not have sufficient funds. Please add ${request.currency} to your wallet to pay this request.`;
+    return `You do not have sufficient funds. Please add ${request.currencySymbol} to your wallet to pay this request.`;
   }
   if (error instanceof NotEnoughForGasError) {
     return `You do not have sufficient ETH to pay gas. Please add ETH to your wallet to pay this request.`;

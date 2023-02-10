@@ -16,6 +16,7 @@ export const statusColors: Record<RequestStatus, string> = {
   canceled: '#FFBEBE',
   overpaid: '#BEE8FF',
   unknown: '#D3D3D3',
+  receivablePending: '#7DB8B2',
 };
 
 export const alertColors = {

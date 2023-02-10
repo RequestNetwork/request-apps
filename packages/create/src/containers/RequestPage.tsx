@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { makeStyles, Typography } from "@material-ui/core";
 import { useWeb3React } from "@web3-react/core";
 import {
@@ -9,6 +9,7 @@ import {
   RequestSkeleton,
   TestnetWarning,
   ReceiptLink,
+  MintReceivable,
 } from "request-ui";
 import {
   IParsedRequest,
@@ -57,7 +58,7 @@ const RequestActions = ({
   const classes = useStyles();
   account = account?.toLowerCase();
   if (
-    request.status === "open" &&
+    (request.status === "open" || request.status === "receivablePending") &&
     account &&
     [request.payer, request.payee].includes(account)
   ) {
@@ -80,13 +81,8 @@ const RequestActions = ({
 const RequestPageInner = () => {
   const { account, chainId } = useWeb3React();
 
-  const {
-    request,
-    loading,
-    update,
-    counterCurrency,
-    counterValue,
-  } = useRequest();
+  const { request, loading, update, counterCurrency, counterValue } =
+    useRequest();
 
   const cancel = async () => {
     if (!request || !account || !chainId) {
@@ -118,6 +114,9 @@ const RequestPageInner = () => {
     <RContainer>
       <Spacer size={15} xs={8} />
       <TestnetWarning chainId={request?.network} />
+      {request.status === "receivablePending" && (
+        <MintReceivable request={request} />
+      )}
       <RequestView
         payee={request.payee}
         createdDate={request.createdDate}

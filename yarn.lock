@@ -2076,6 +2076,24 @@
     "@ethersproject/properties" "^5.7.0"
     "@ethersproject/strings" "^5.7.0"
 
+"@frinkly/payment-detection@0.36.1":
+  version "0.36.1"
+  resolved "https://registry.yarnpkg.com/@frinkly/payment-detection/-/payment-detection-0.36.1.tgz#e528abe080ccdc58ccbd9c28e333c1d9e7f78437"
+  integrity sha512-4v3gfXPJ7zmaQUjvmFgoedAhYbJZnImup0i5jABpmlnVXKFBzC3Ux8zTGu11yT5Z8b5vXKC6xYmemV5Rb1g/Wg==
+  dependencies:
+    "@requestnetwork/currency" "0.9.0"
+    "@requestnetwork/smart-contracts" "0.29.0"
+    "@requestnetwork/types" "0.36.0"
+    "@requestnetwork/utils" "0.36.0"
+    axios "0.27.2"
+    ethers "5.5.1"
+    graphql "15.5.1"
+    graphql-request "3.4.0"
+    graphql-tag "2.12.4"
+    lodash "4.17.21"
+    satoshi-bitcoin "1.0.4"
+    tslib "2.3.1"
+
 "@gar/promisify@^1.0.1":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@gar/promisify/-/promisify-1.1.2.tgz#30aa825f11d438671d585bd44e7fd564535fc210"
@@ -2137,6 +2155,18 @@
     node-dijkstra "2.5.0"
     tslib "2.3.1"
 
+"@huma-shan/currency@0.12.0":
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/@huma-shan/currency/-/currency-0.12.0.tgz#7a7fd7d5ef77ad89dc79e81ca6d51ae79bc5c917"
+  integrity sha512-VbgT2rq3skKunCkaGDReU8LCxlDmUStVNNFQL2whJY3NYCLcwfT+N9aE0utDwUev/xrihhq7UEyGMYlMxXblMQ==
+  dependencies:
+    "@huma-shan/types" "0.39.0"
+    "@huma-shan/utils" "0.39.0"
+    "@metamask/contract-metadata" "1.31.0"
+    multicoin-address-validator "0.5.2"
+    node-dijkstra "2.5.0"
+    tslib "2.3.1"
+
 "@huma-shan/data-access@0.29.0":
   version "0.29.0"
   resolved "https://registry.yarnpkg.com/@huma-shan/data-access/-/data-access-0.29.0.tgz#af2d69a7b517e926a135aa3a30d152577843dbd7"
@@ -2175,6 +2205,14 @@
     "@huma-shan/types" "0.38.0"
     tslib "2.3.1"
 
+"@huma-shan/multi-format@0.18.0":
+  version "0.18.0"
+  resolved "https://registry.yarnpkg.com/@huma-shan/multi-format/-/multi-format-0.18.0.tgz#3d8656dffd57260346c6cfd2b9d98a81e0f0c1d3"
+  integrity sha512-oz/7hD6U4RovIZVKK0dDx1/Z8SOoayv7Y7ojfi8p4WsX0Ib1DJH2Hp9d9lybBSKdSOrmGP4TNPd6SFqTXaJjlA==
+  dependencies:
+    "@huma-shan/types" "0.39.0"
+    tslib "2.3.1"
+
 "@huma-shan/payment-detection@0.38.0":
   version "0.38.0"
   resolved "https://registry.yarnpkg.com/@huma-shan/payment-detection/-/payment-detection-0.38.0.tgz#827aabae6a6aa0cc24f8c4b59c0247c118ffbc83"
@@ -2184,6 +2222,24 @@
     "@huma-shan/smart-contracts" "0.31.0"
     "@huma-shan/types" "0.38.0"
     "@huma-shan/utils" "0.38.0"
+    axios "0.27.2"
+    ethers "5.5.1"
+    graphql "15.5.1"
+    graphql-request "3.4.0"
+    graphql-tag "2.12.4"
+    lodash "4.17.21"
+    satoshi-bitcoin "1.0.4"
+    tslib "2.3.1"
+
+"@huma-shan/payment-detection@0.39.0":
+  version "0.39.0"
+  resolved "https://registry.yarnpkg.com/@huma-shan/payment-detection/-/payment-detection-0.39.0.tgz#b354ddd4d703a4bd12b9736598c059907641879f"
+  integrity sha512-bfN3RsBNlLfFM4MvaE2qYqdj0gH8m7rkl9HLyi9JiGdQIxzja5/2y5nkfNHcK1/35h7V0rnebknIN+2iNtqoOA==
+  dependencies:
+    "@huma-shan/currency" "0.12.0"
+    "@huma-shan/smart-contracts" "0.32.0"
+    "@huma-shan/types" "0.39.0"
+    "@huma-shan/utils" "0.39.0"
     axios "0.27.2"
     ethers "5.5.1"
     graphql "15.5.1"
@@ -2204,6 +2260,23 @@
     "@huma-shan/smart-contracts" "0.31.0"
     "@huma-shan/types" "0.38.0"
     "@huma-shan/utils" "0.38.0"
+    "@openzeppelin/contracts" "4.7.3"
+    "@superfluid-finance/sdk-core" "0.3.2"
+    ethers "5.5.1"
+    near-api-js "1.1.0"
+    tslib "2.3.1"
+
+"@huma-shan/payment-processor@0.41.0":
+  version "0.41.0"
+  resolved "https://registry.yarnpkg.com/@huma-shan/payment-processor/-/payment-processor-0.41.0.tgz#0053b9c4970db4b462d0eb227e3ecff52c9bd41d"
+  integrity sha512-q9F3NOAQbDlCBrDCuZ0KbH0GxWZFm4ifQXsAAPUHD5SnG15mduFiSN8dQBDS5ctipoCwE/+O9JBG8eoFMoX4tA==
+  dependencies:
+    "@huma-shan/currency" "0.12.0"
+    "@huma-shan/multi-format" "0.18.0"
+    "@huma-shan/payment-detection" "0.39.0"
+    "@huma-shan/smart-contracts" "0.32.0"
+    "@huma-shan/types" "0.39.0"
+    "@huma-shan/utils" "0.39.0"
     "@openzeppelin/contracts" "4.7.3"
     "@superfluid-finance/sdk-core" "0.3.2"
     ethers "5.5.1"
@@ -2254,6 +2327,13 @@
   dependencies:
     tslib "2.3.1"
 
+"@huma-shan/smart-contracts@0.32.0":
+  version "0.32.0"
+  resolved "https://registry.yarnpkg.com/@huma-shan/smart-contracts/-/smart-contracts-0.32.0.tgz#47bf3572f46c3eef9e90e4921f056dcf7030028f"
+  integrity sha512-E666OBm6U0eMTZPbPC/NYFa89Rnj7rW5qxxQ33u0v+zwU4vqFj3Lhgn7uNpBVPBCpWAScp81x7o0ZxtG44c/og==
+  dependencies:
+    tslib "2.3.1"
+
 "@huma-shan/transaction-manager@0.29.0":
   version "0.29.0"
   resolved "https://registry.yarnpkg.com/@huma-shan/transaction-manager/-/transaction-manager-0.29.0.tgz#56b4c573b4c8321fd17aacdc88bdf01794a5f86e"
@@ -2272,12 +2352,32 @@
     ethers "5.5.1"
     events "3.2.0"
 
+"@huma-shan/types@0.39.0":
+  version "0.39.0"
+  resolved "https://registry.yarnpkg.com/@huma-shan/types/-/types-0.39.0.tgz#98079559b4995ec12ad1b2db1509fef1ec66de43"
+  integrity sha512-AbStqBxoM5fCg/ipfmTD9kJ10HZFs+j6tjsNGO8wguH8vL10yS9RMrJxS0PMXtSFoeZoSwMEw5iAbF7rh9gwpw==
+  dependencies:
+    ethers "5.5.1"
+    events "3.2.0"
+
 "@huma-shan/utils@0.38.0":
   version "0.38.0"
   resolved "https://registry.yarnpkg.com/@huma-shan/utils/-/utils-0.38.0.tgz#da4ed7b028771e53c20d74bd90e9fcee45150a14"
   integrity sha512-LAGvcKcipWSw0MrqVQQUfUZ1+z4lUmK26MqBn2BmYgUw4v5P9ql9VfvxvGaipDWzqf7oq7XChonYsmnf6oBVGA==
   dependencies:
     "@huma-shan/types" "0.38.0"
+    eccrypto "1.1.6"
+    eip1559-fee-suggestions-ethers "1.3.3"
+    ethers "5.5.1"
+    secp256k1 "4.0.2"
+    tslib "2.3.1"
+
+"@huma-shan/utils@0.39.0":
+  version "0.39.0"
+  resolved "https://registry.yarnpkg.com/@huma-shan/utils/-/utils-0.39.0.tgz#2e7133c0aa0c9026bdb4fc44cf9c458163ed6bd6"
+  integrity sha512-iAh4CRT5KUSHk/7BRtZ2zYfcOgWVzZNh1LSa0TYiXf/WWEAgfw+aAf1NVWiqkgCqiofYOgyZe3kkCGP05rTG1w==
+  dependencies:
+    "@huma-shan/types" "0.39.0"
     eccrypto "1.1.6"
     eip1559-fee-suggestions-ethers "1.3.3"
     ethers "5.5.1"
@@ -2789,7 +2889,19 @@
   dependencies:
     "@types/yoga-layout" "^1.9.3"
 
-"@requestnetwork/currency@0.9.1-next.1862", "@requestnetwork/currency@0.9.1-next.18627":
+"@requestnetwork/currency@0.9.0":
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/@requestnetwork/currency/-/currency-0.9.0.tgz#4be7a1c5506ffe35c909f13166ba18ee59a37975"
+  integrity sha512-lRS7YE/rt20BnScWgp0ZPOfapbGZOG/vABdQQR4iR4q6gloHdW738Msp07z2vcyRK8aY1FA9NVgy1xBUwCPlKQ==
+  dependencies:
+    "@metamask/contract-metadata" "1.31.0"
+    "@requestnetwork/types" "0.36.0"
+    "@requestnetwork/utils" "0.36.0"
+    multicoin-address-validator "0.5.2"
+    node-dijkstra "2.5.0"
+    tslib "2.3.1"
+
+"@requestnetwork/currency@0.9.1-next.1862":
   version "0.9.1-next.1862"
   resolved "https://registry.yarnpkg.com/@requestnetwork/currency/-/currency-0.9.1-next.1862.tgz#f7475ef0e5c05e01406141147dcdf5594ccef4b6"
   integrity sha512-05Gmg0GZu4BCliXwhChIrQvBDOMraWBGLGWpJGEO2GZVluhZ+sug1/a++IdGPzzcv9NCOxytK9kJEpRfhjUnCg==
@@ -2801,10 +2913,25 @@
     node-dijkstra "2.5.0"
     tslib "2.3.1"
 
+"@requestnetwork/smart-contracts@0.29.0":
+  version "0.29.0"
+  resolved "https://registry.yarnpkg.com/@requestnetwork/smart-contracts/-/smart-contracts-0.29.0.tgz#f7a9ce4a47953298af50655f1539ffafdaff85d8"
+  integrity sha512-UxkahYZM+kC7fr1ke9Yg7CMilB8UhzBLNfB1GhCorksN/aen1fhb8LkSE9iucQ/nzCoLtsonowpO8lElXAH84g==
+  dependencies:
+    tslib "2.3.1"
+
 "@requestnetwork/types@0.35.1-next.1787+ce9990f7":
   version "0.35.1-next.1787"
   resolved "https://registry.yarnpkg.com/@requestnetwork/types/-/types-0.35.1-next.1787.tgz#4a66644343caaeea66c80aceea3af835aa6c309d"
   integrity sha512-K8ts8emyDtfMhQfQfTGT3BP2TBfx279j9SxGN+dBtcA8XtFmxfZXd9ernAwDvHj6l0xJ7llehADK6d2RkV7FIw==
+  dependencies:
+    ethers "5.5.1"
+    events "3.2.0"
+
+"@requestnetwork/types@0.36.0":
+  version "0.36.0"
+  resolved "https://registry.yarnpkg.com/@requestnetwork/types/-/types-0.36.0.tgz#f20708ecc16907c390a801529c6bf8e4aabf4365"
+  integrity sha512-0H9Ti5qAFklf62YjdjveejUVEBL7GRPNvThz4Dqq8tlC2t4d1RTJt2Hpt1keileczef6QuNbcE0/aD8AMIiNIQ==
   dependencies:
     ethers "5.5.1"
     events "3.2.0"
@@ -2823,6 +2950,17 @@
   integrity sha512-SZp7/WYFRSpwfa8Kix/ehcDudrwH17eap6BFRnHLo/Q1lZRSwxZjE+Wb16A3U/yxsN+Hx/M1CINLG065P/feRw==
   dependencies:
     "@requestnetwork/types" "0.35.1-next.1787+ce9990f7"
+    eccrypto "1.1.6"
+    ethers "5.5.1"
+    secp256k1 "4.0.2"
+    tslib "2.3.1"
+
+"@requestnetwork/utils@0.36.0":
+  version "0.36.0"
+  resolved "https://registry.yarnpkg.com/@requestnetwork/utils/-/utils-0.36.0.tgz#35ebbefdf4c62d9f4e7ad0ced3fcd8732d801570"
+  integrity sha512-8Am6Z4gvlPfFjcjzvdQJmp6r+JDt7MsyiNapPAESMNBG1/F5MlcEnh+7PYnX4dBkZ0SHIp5qxfJ0TelErCM31g==
+  dependencies:
+    "@requestnetwork/types" "0.36.0"
     eccrypto "1.1.6"
     ethers "5.5.1"
     secp256k1 "4.0.2"

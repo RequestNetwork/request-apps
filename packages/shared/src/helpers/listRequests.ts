@@ -8,6 +8,8 @@ import { IParsedRequest } from "../";
 import { ICurrencyManager } from "@requestnetwork/currency";
 import { useCurrency } from "../contexts/CurrencyContext";
 import { getRequestClient } from "./client";
+import { useWeb3React } from "@web3-react/core";
+import { providers } from "ethers";
 
 interface IBalanceEvents {
   finished: () => void;
@@ -29,12 +31,15 @@ export class BalanceEventEmitter extends EventEmitter {
 
 export const useListRequests = () => {
   const { currencyManager } = useCurrency();
+  const { library } = useWeb3React();
+
   return useCallback(
     (
       account: string,
       network: string | number,
       isSmartContract: boolean = false
-    ) => listRequests(account, network, isSmartContract, currencyManager),
+    ) =>
+      listRequests(account, network, isSmartContract, currencyManager, library),
     [currencyManager]
   );
 };
@@ -43,7 +48,8 @@ export const listRequests = async (
   account: string,
   network: string | number,
   isSmartContract: boolean = false,
-  currencyManager: ICurrencyManager
+  currencyManager: ICurrencyManager,
+  provider: providers.Web3Provider
 ) => {
   network = chainIdToName(network);
   if (!account) {
@@ -76,6 +82,7 @@ export const listRequests = async (
         network: network as string,
         pending: false,
         currencyManager,
+        provider,
       });
       parsedRequest.loaded = false;
       list.push(parsedRequest);
@@ -100,7 +107,8 @@ export const listRequests = async (
         sorted,
         network as string,
         emitter,
-        currencyManager
+        currencyManager,
+        provider
       ),
     on: emitter.on,
   };
@@ -111,7 +119,8 @@ const loadBalances = async (
   sortedRequests: IParsedRequest[],
   network: string,
   emitter: BalanceEventEmitter,
-  currencyManager: ICurrencyManager
+  currencyManager: ICurrencyManager,
+  provider: providers.Web3Provider
 ) => {
   let i = 0;
   // update balances by batches of 10.
@@ -120,14 +129,14 @@ const loadBalances = async (
     for (let j = i; j < Math.min(i + 10, sortedRequests.length); j++) {
       const parsedRequest = sortedRequests[j];
       const request = requests.find(
-        x => x.requestId === parsedRequest.requestId
+        (x) => x.requestId === parsedRequest.requestId
       );
       if (!request) {
         continue;
       }
-      const promise = loadBalance(request, network, currencyManager);
+      const promise = loadBalance(request, network, currencyManager, provider);
 
-      promise.then(req => req && emitter.emit("update", req));
+      promise.then((req) => req && emitter.emit("update", req));
       promises.push(promise);
     }
 
@@ -140,7 +149,8 @@ const loadBalances = async (
 const loadBalance = async (
   request: Request,
   network: string,
-  currencyManager: ICurrencyManager
+  currencyManager: ICurrencyManager,
+  provider: providers.Web3Provider
 ) => {
   try {
     await request.refreshBalance();
@@ -153,6 +163,7 @@ const loadBalance = async (
     network,
     pending: false,
     currencyManager,
+    provider,
   });
   newParsedRequest.loaded = true;
   return newParsedRequest;

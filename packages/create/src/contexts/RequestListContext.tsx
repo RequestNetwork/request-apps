@@ -19,9 +19,13 @@ const applyFilter = (
   if (!requests) return undefined;
   if (filter === "all") return requests;
   if (filter === "outstanding")
-    return requests.filter(x => x.status === "open");
+    return requests.filter(
+      (x) => x.status === "open" || x.status === "receivablePending"
+    );
   if (filter === "paid")
-    return requests.filter(x => x.status === "paid" || x.status === "overpaid");
+    return requests.filter(
+      (x) => x.status === "paid" || x.status === "overpaid"
+    );
 };
 
 export const RequestListProvider: React.FC = ({ children }) => {
@@ -45,12 +49,12 @@ export const RequestListProvider: React.FC = ({ children }) => {
     let canceled = false;
     if (chainId && account) {
       setRequests(undefined);
-      listRequests(account, chainId).then(result => {
+      listRequests(account, chainId).then((result) => {
         if (!canceled) {
           setRequests(result.requests);
-          result.on("update", newRequest => {
-            setRequests(prevRequests =>
-              prevRequests?.map(request =>
+          result.on("update", (newRequest) => {
+            setRequests((prevRequests) =>
+              prevRequests?.map((request) =>
                 request.requestId === newRequest.requestId
                   ? newRequest
                   : request

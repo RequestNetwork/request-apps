@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
+import { useWeb3React } from "@web3-react/core";
 
 import { Request } from "@huma-shan/request-client.js";
 import { CurrencyDefinition } from "@requestnetwork/currency";
@@ -66,6 +67,7 @@ export const RequestProvider: React.FC<{ chainId?: string | number }> = ({
   chainId,
 }) => {
   const { currencyManager } = useCurrency();
+  const { library } = useWeb3React();
 
   const { id } = useParams<{ id?: string }>();
   const [loading, setLoading] = useState(true);
@@ -98,6 +100,7 @@ export const RequestProvider: React.FC<{ chainId?: string | number }> = ({
         network: result.network,
         pending,
         currencyManager,
+        provider: library,
       });
       parseResult.loaded = true;
       setParsedRequest(parseResult);

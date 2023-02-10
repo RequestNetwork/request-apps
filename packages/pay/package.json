@@ -7,7 +7,7 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.46",
     "@requestnetwork/currency": "0.9.1-next.1862",
-    "@huma-shan/payment-processor": "0.40.0",
+    "@huma-shan/payment-processor": "0.41.0",
     "@huma-shan/request-client.js": "0.42.0",
     "@huma-shan/types": "0.38.0",
     "@web3-react/core": "^6.0.7",

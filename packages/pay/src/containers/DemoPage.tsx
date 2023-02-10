@@ -68,9 +68,9 @@ const currencies: Record<
 
 const paymentNetwork: Record<Types.RequestLogic.CURRENCY, string> = {
   [Types.RequestLogic.CURRENCY.ERC20]:
-    Types.Payment.PAYMENT_NETWORK_ID.ERC20_PROXY_CONTRACT,
+    Types.Extension.PAYMENT_NETWORK_ID.ERC20_PROXY_CONTRACT,
   [Types.RequestLogic.CURRENCY.ETH]:
-    Types.Payment.PAYMENT_NETWORK_ID.ETH_INPUT_DATA,
+    Types.Extension.PAYMENT_NETWORK_ID.ETH_INPUT_DATA,
   [Types.RequestLogic.CURRENCY.BTC]: "",
   [Types.RequestLogic.CURRENCY.ISO4217]: "",
   [Types.RequestLogic.CURRENCY.ERC777]: "",

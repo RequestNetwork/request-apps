@@ -9,11 +9,13 @@ import { useWeb3React } from "@web3-react/core";
 import { CreateRequestForm, IFormData } from "../components/CreateRequest";
 import { useConnectedUser } from "../contexts/UserContext";
 import { ethers } from "ethers";
+import { ExtensionTypes } from "@huma-shan/types";
+import { mintErc20TransferrableReceivable } from "@huma-shan/payment-processor";
 
 const CreatePage = () => {
   const history = useHistory();
   const [error, setError] = useState<string>();
-  const { account, chainId } = useWeb3React();
+  const { account, chainId, library } = useWeb3React();
   const { loading: web3Loading, name } = useConnectedUser();
   const { report } = useErrorReporter();
   const createRequest = useCreateRequest();
@@ -40,6 +42,15 @@ const CreatePage = () => {
       }
       values.payer = addressFromEns!;
     }
+    if (!ethers.utils.isAddress(values.paymentAddress!)) {
+      const paymentAddressFromEns = await provider.resolveName(
+        values.paymentAddress!
+      );
+      if (!ethers.utils.isAddress(paymentAddressFromEns!)) {
+        throw new Error("paymentAddress not valid");
+      }
+      values.paymentAddress = paymentAddressFromEns!;
+    }
 
     try {
       const request = await createRequest(
@@ -57,8 +68,23 @@ const CreatePage = () => {
         account,
         chainId
       );
-      // await request.waitForConfirmation();
-      history.push(`/${request.requestId}`);
+
+      const data = request.getData();
+      const paymentNetwork = Object.values(data.extensions).find(
+        (x) => x.type === "payment-network"
+      )?.id;
+
+      if (
+        paymentNetwork ===
+        ExtensionTypes.PAYMENT_NETWORK_ID.ERC20_TRANSFERRABLE_RECEIVABLE
+      ) {
+        await request.waitForConfirmation();
+        const mintTx = await mintErc20TransferrableReceivable(data, library);
+        await mintTx.wait(1);
+        history.push(`/${request.requestId}`);
+      } else {
+        history.push(`/${request.requestId}`);
+      }
     } catch (e) {
       if (!isCancelError(e)) {
         setError(e.message);

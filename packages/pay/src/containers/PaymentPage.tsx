@@ -93,9 +93,10 @@ export const ErrorContainer = () => {
 
   return (
     <Box className={classes.container}>
-      {request?.status === "open" && error && showErrorAtTop && (
-        <ErrorMessage error={error} request={request} />
-      )}
+      {(request?.status === "open" ||
+        request?.status === "receivablePending") &&
+        error &&
+        showErrorAtTop && <ErrorMessage error={error} request={request} />}
       <RContainer>
         <Spacer size={15} xs={5} />
         <TestnetWarning chainId={request?.network} />

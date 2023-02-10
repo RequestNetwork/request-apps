@@ -1,5 +1,9 @@
 import { CurrencyDefinition } from "@requestnetwork/currency";
-import { RequestLogicTypes, ClientTypes } from "@huma-shan/types";
+import {
+  RequestLogicTypes,
+  ClientTypes,
+  ExtensionTypes,
+} from "@huma-shan/types";
 import { providers, utils } from "ethers";
 export type RequestStatus =
   | "paid"
@@ -7,7 +11,8 @@ export type RequestStatus =
   | "pending"
   | "canceled"
   | "overpaid"
-  | "unknown";
+  | "unknown"
+  | "receivablePending";
 
 /** Formatted request */
 export interface IParsedRequest {
@@ -33,6 +38,8 @@ export interface IParsedRequest {
   raw: ClientTypes.IRequestData;
   network: string;
   loaded?: boolean;
+  paymentNetwork?: ExtensionTypes.ID;
+  receivableMinted?: boolean;
 }
 
 export * from "./contexts/RequestContext";
@@ -128,4 +135,4 @@ export const addEthereumChain = (
   ]);
 };
 
-Object.values(chainInfos).forEach(val => (chainInfos[val.chainId] = val));
+Object.values(chainInfos).forEach((val) => (chainInfos[val.chainId] = val));

@@ -7,7 +7,10 @@ import { useWeb3React } from "@web3-react/core";
 import { useConnector } from "../contexts/ConnectorContext";
 import { Typography, Box, makeStyles, Link } from "@material-ui/core";
 import { Types } from "@huma-shan/request-client.js";
-import { getBtcPaymentUrl } from "@huma-shan/payment-processor";
+import {
+  getBtcPaymentUrl,
+  mintErc20TransferrableReceivable,
+} from "@huma-shan/payment-processor";
 import {
   useMobile,
   ReceiptLink,
@@ -15,6 +18,7 @@ import {
   RButton,
   RIcon,
   RSpinner,
+  RAlert,
 } from "request-ui";
 import QRCode from "qrcode.react";
 import RequestIconDark from "../assets/img/Request_icon_dark.svg";
@@ -52,7 +56,7 @@ const PayAction = ({
     </RButton>
   );
 };
-const useApproveStyles = makeStyles(theme => ({
+const useApproveStyles = makeStyles((theme) => ({
   square: {
     borderRadius: 0,
     [theme.breakpoints.up("sm")]: {
@@ -189,7 +193,7 @@ const coinbaseShare = async (requestId: string) => {
 
 const PaymentActions = () => {
   const { request, counterValue, counterCurrency } = useRequest();
-  const { active, error } = useWeb3React();
+  const { account, library, active, error } = useWeb3React();
   const {
     error: paymentError,
     pay,
@@ -266,7 +270,7 @@ const PaymentActions = () => {
     return (
       <ConnectAction
         activate={() => activateConnector("injected")}
-        mobileRedirect={async name => {
+        mobileRedirect={async (name) => {
           let url;
           if (name === "coinbase") {
             url = await coinbaseShare(request.requestId);
@@ -284,6 +288,33 @@ const PaymentActions = () => {
 
   if (paymentError instanceof RequiresApprovalError) {
     return <ApproveAction approve={approve} />;
+  }
+
+  if (request.status === "receivablePending") {
+    let isPayee = account?.toLowerCase() === request.payee.toLowerCase();
+
+    return (
+      <RAlert
+        severity="error"
+        message={
+          isPayee
+            ? "You must mint the receivable in order to receive payments."
+            : "This request cannot be paid until the payee mints the receivable."
+        }
+        actions={
+          isPayee ? (
+            <RButton
+              color="default"
+              onClick={async () => {
+                await mintErc20TransferrableReceivable(request.raw, library);
+              }}
+            >
+              <Typography variant="h4">Mint Receivable</Typography>
+            </RButton>
+          ) : undefined
+        }
+      />
+    );
   }
 
   return (

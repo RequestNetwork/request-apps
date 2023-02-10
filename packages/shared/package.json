@@ -14,7 +14,7 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@requestnetwork/currency": "0.9.1-next.18627",
+    "@requestnetwork/currency": "0.9.0",
     "@huma-shan/request-client.js": "0.42.0",
     "@huma-shan/types": "0.38.0",
     "@requestnetwork/web3-signature": "0.4.36-next.1787",

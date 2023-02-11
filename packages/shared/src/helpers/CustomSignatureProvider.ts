@@ -4,10 +4,11 @@ import {
   IdentityTypes,
   SignatureProviderTypes,
   SignatureTypes,
-} from "@huma-shan/types";
+} from "@frinkly/types";
 
 export class CustomSignatureProvider
-  implements SignatureProviderTypes.ISignatureProvider {
+  implements SignatureProviderTypes.ISignatureProvider
+{
   constructor(private signer: providers.JsonRpcSigner) {}
   /** list of supported signing method */
   public supportedMethods: SignatureTypes.METHOD[] = [

@@ -1,5 +1,5 @@
 import { chainIdToName } from "./chainIdToName";
-import { IdentityTypes } from "@huma-shan/types";
+import { IdentityTypes } from "@frinkly/types";
 import { providers } from "ethers";
 
 import { CustomSignatureProvider } from "./CustomSignatureProvider";
@@ -29,5 +29,5 @@ export const cancelRequest = async (
     type: IdentityTypes.TYPE.ETHEREUM_ADDRESS,
     value: account,
   });
-  await new Promise(resolve => cancellation.on("confirmed", resolve));
+  await new Promise((resolve) => cancellation.on("confirmed", resolve));
 };

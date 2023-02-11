@@ -15,8 +15,8 @@
   },
   "dependencies": {
     "@requestnetwork/currency": "0.9.0",
-    "@huma-shan/request-client.js": "0.42.0",
-    "@huma-shan/types": "0.38.0",
+    "@frinkly/request-client.js": "0.40.7",
+    "@frinkly/types": "0.36.1",
     "@requestnetwork/web3-signature": "0.4.36-next.1787",
     "ethers": "5.5.1",
     "wallet-address-validator": "^0.2.4"

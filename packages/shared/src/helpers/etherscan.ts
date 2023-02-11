@@ -1,4 +1,4 @@
-import { ClientTypes } from "@huma-shan/types";
+import { ClientTypes } from "@frinkly/types";
 import { IParsedRequest } from "../";
 
 const etherscanDomain: Record<string, string> = {

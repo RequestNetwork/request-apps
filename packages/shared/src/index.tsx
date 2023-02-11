@@ -1,9 +1,5 @@
 import { CurrencyDefinition } from "@requestnetwork/currency";
-import {
-  RequestLogicTypes,
-  ClientTypes,
-  ExtensionTypes,
-} from "@huma-shan/types";
+import { RequestLogicTypes, ClientTypes, ExtensionTypes } from "@frinkly/types";
 import { providers, utils } from "ethers";
 export type RequestStatus =
   | "paid"

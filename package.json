@@ -5,5 +5,8 @@
     "packages": [
       "packages/*"
     ]
+  },
+  "resolutions": {
+    "@types/react": "17.0.40"
   }
 }

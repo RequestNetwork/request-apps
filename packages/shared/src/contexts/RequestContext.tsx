@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { useWeb3React } from "@web3-react/core";
 
-import { Request } from "@huma-shan/request-client.js";
+import { Request } from "@frinkly/request-client.js";
 import { CurrencyDefinition } from "@requestnetwork/currency";
 
 import { useRate } from "../hooks/useRate";

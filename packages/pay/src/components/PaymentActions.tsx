@@ -6,11 +6,11 @@ import { useWeb3React } from "@web3-react/core";
 
 import { useConnector } from "../contexts/ConnectorContext";
 import { Typography, Box, makeStyles, Link } from "@material-ui/core";
-import { Types } from "@huma-shan/request-client.js";
+import { Types } from "@frinkly/request-client.js";
 import {
   getBtcPaymentUrl,
   mintErc20TransferrableReceivable,
-} from "@huma-shan/payment-processor";
+} from "@frinkly/payment-processor";
 import {
   useMobile,
   ReceiptLink,

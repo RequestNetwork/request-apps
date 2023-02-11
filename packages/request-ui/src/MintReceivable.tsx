@@ -3,10 +3,10 @@ import { RButton } from './RButton';
 import React from 'react';
 import { IParsedRequest } from 'request-shared';
 import { RAlert } from './RAlert';
-import { mintErc20TransferrableReceivable } from '@huma-shan/payment-processor';
+import { mintErc20TransferrableReceivable } from '@frinkly/payment-processor';
 import { Typography } from '@material-ui/core';
 import { Spacer } from './Spacer';
-import { ExtensionTypes } from '@huma-shan/types';
+import { ExtensionTypes } from '@frinkly/types';
 
 interface IProps {
   request: IParsedRequest;

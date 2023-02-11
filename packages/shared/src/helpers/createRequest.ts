@@ -1,6 +1,6 @@
-import { Request } from "@huma-shan/request-client.js";
-import { IdentityTypes, RequestLogicTypes } from "@huma-shan/types";
-import { PAYMENT_NETWORK_ID } from "@huma-shan/types/dist/extension-types";
+import { Request } from "@frinkly/request-client.js";
+import { IdentityTypes, RequestLogicTypes } from "@frinkly/types";
+import { PAYMENT_NETWORK_ID } from "@frinkly/types/dist/extension-types";
 import { CurrencyManager } from "@requestnetwork/currency";
 import { getDefaultProvider, providers, utils } from "ethers";
 import WalletAddressValidator from "wallet-address-validator";

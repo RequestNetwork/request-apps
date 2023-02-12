@@ -4,7 +4,7 @@ import {
   IdentityTypes,
   SignatureProviderTypes,
   SignatureTypes,
-} from "@frinkly/types";
+} from "@huma-shan/types";
 
 export class CustomSignatureProvider
   implements SignatureProviderTypes.ISignatureProvider

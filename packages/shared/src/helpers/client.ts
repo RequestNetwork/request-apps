@@ -1,6 +1,6 @@
 //@ts-nocheck
 import { CurrencyDefinition } from "@requestnetwork/currency";
-import { RequestNetwork, Types } from "@frinkly/request-client.js";
+import { RequestNetwork, Types } from "@huma-shan/request-client.js";
 import { useCurrency } from "../contexts/CurrencyContext";
 
 export const useRequestClient = (

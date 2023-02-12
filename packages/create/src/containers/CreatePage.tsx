@@ -9,8 +9,8 @@ import { useWeb3React } from "@web3-react/core";
 import { CreateRequestForm, IFormData } from "../components/CreateRequest";
 import { useConnectedUser } from "../contexts/UserContext";
 import { ethers } from "ethers";
-import { ExtensionTypes } from "@frinkly/types";
-import { mintErc20TransferrableReceivable } from "@frinkly/payment-processor";
+import { ExtensionTypes } from "@huma-shan/types";
+import { mintErc20TransferrableReceivable } from "@huma-shan/payment-processor";
 
 const CreatePage = () => {
   const history = useHistory();

@@ -3,4 +3,4 @@ export const getPayUrl = (requestId: string) =>
     ? `http://localhost:3001/${requestId}`
     : window.location.hostname.startsWith("baguette")
     ? `https://baguette-pay.request.network/${requestId}`
-    : `https://huma-request-apps-pay.netlify.app//${requestId}`;
+    : `https://huma-request-apps-pay.netlify.app/${requestId}`;

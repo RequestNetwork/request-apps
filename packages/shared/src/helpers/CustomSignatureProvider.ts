@@ -1,10 +1,14 @@
-import Utils from "@requestnetwork/utils";
+import {
+  normalize,
+  areEqualIdentities,
+  recoverSigner,
+} from "@requestnetwork/utils";
 import { providers } from "ethers";
 import {
   IdentityTypes,
   SignatureProviderTypes,
   SignatureTypes,
-} from "@huma-shan/types";
+} from "@requestnetwork/types";
 
 export class CustomSignatureProvider
   implements SignatureProviderTypes.ISignatureProvider
@@ -23,7 +27,7 @@ export class CustomSignatureProvider
     data: any,
     signer: IdentityTypes.IIdentity
   ): Promise<SignatureTypes.ISignedData> {
-    const normalizedData = Utils.crypto.normalize(data);
+    const normalizedData = normalize(data);
     const signatureValue = await this.signer.signMessage(
       Buffer.from(normalizedData)
     );
@@ -61,7 +65,7 @@ export class CustomSignatureProvider
         value,
       },
     };
-    if (Utils.identity.areEqual(Utils.signature.recover(signedData), signer)) {
+    if (areEqualIdentities(recoverSigner(signedData), signer)) {
       return signedData;
     }
     return null;

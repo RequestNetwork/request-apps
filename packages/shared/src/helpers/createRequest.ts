@@ -1,6 +1,6 @@
-import { Request } from "@huma-shan/request-client.js";
-import { IdentityTypes, RequestLogicTypes } from "@huma-shan/types";
-import { PAYMENT_NETWORK_ID } from "@huma-shan/types/dist/extension-types";
+import { Request } from "@requestnetwork/request-client.js";
+import { IdentityTypes, RequestLogicTypes } from "@requestnetwork/types";
+import { PAYMENT_NETWORK_ID } from "@requestnetwork/types/dist/extension-types";
 import { CurrencyManager } from "@requestnetwork/currency";
 import { getDefaultProvider, providers, utils, constants } from "ethers";
 import WalletAddressValidator from "wallet-address-validator";
@@ -65,11 +65,11 @@ export const useCreateRequest = () => {
           parameters: { paymentAddress },
         }
       : {
-          id: PAYMENT_NETWORK_ID.ERC20_TRANSFERRABLE_RECEIVABLE,
+          id: PAYMENT_NETWORK_ID.ERC20_TRANSFERABLE_RECEIVABLE,
           parameters: {
             paymentAddress,
             feeAddress: constants.AddressZero,
-            feeAmount: 0,
+            feeAmount: "0",
           },
         };
 

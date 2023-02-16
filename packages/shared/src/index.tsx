@@ -3,7 +3,7 @@ import {
   RequestLogicTypes,
   ClientTypes,
   ExtensionTypes,
-} from "@huma-shan/types";
+} from "@requestnetwork/types";
 import { providers, utils } from "ethers";
 export type RequestStatus =
   | "paid"

@@ -9,8 +9,8 @@ import { useWeb3React } from "@web3-react/core";
 import { CreateRequestForm, IFormData } from "../components/CreateRequest";
 import { useConnectedUser } from "../contexts/UserContext";
 import { ethers } from "ethers";
-import { ExtensionTypes } from "@huma-shan/types";
-import { mintErc20TransferrableReceivable } from "@huma-shan/payment-processor";
+import { ExtensionTypes } from "@requestnetwork/types";
+import { mintErc20TransferableReceivable } from "@requestnetwork/payment-processor";
 
 const CreatePage = () => {
   const history = useHistory();
@@ -76,10 +76,10 @@ const CreatePage = () => {
 
       if (
         paymentNetwork ===
-        ExtensionTypes.PAYMENT_NETWORK_ID.ERC20_TRANSFERRABLE_RECEIVABLE
+        ExtensionTypes.PAYMENT_NETWORK_ID.ERC20_TRANSFERABLE_RECEIVABLE
       ) {
         await request.waitForConfirmation();
-        const mintTx = await mintErc20TransferrableReceivable(data, library);
+        const mintTx = await mintErc20TransferableReceivable(data, library);
         await mintTx.wait(1);
         history.push(`/${request.requestId}`);
       } else {

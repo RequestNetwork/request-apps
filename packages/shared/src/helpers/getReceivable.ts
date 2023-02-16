@@ -1,6 +1,6 @@
 import { providers } from "ethers";
-import { hasReceivableForRequest } from "@huma-shan/payment-processor";
-import { IRequestData } from "@huma-shan/types/dist/client-types";
+import { hasReceivableForRequest } from "@requestnetwork/payment-processor";
+import { IRequestData } from "@requestnetwork/types/dist/client-types";
 
 export const fetchReceivableMinted = async (
   request: IRequestData,

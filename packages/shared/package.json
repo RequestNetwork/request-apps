@@ -14,10 +14,10 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@requestnetwork/currency": "0.9.0",
-    "@huma-shan/request-client.js": "0.44.0",
-    "@huma-shan/types": "0.40.0",
-    "@requestnetwork/web3-signature": "0.4.36-next.1787",
+    "@requestnetwork/currency": "0.9.1-next.1869",
+    "@requestnetwork/request-client.js": "0.40.1-next.1869",
+    "@requestnetwork/types": "0.36.1-next.1869",
+    "@requestnetwork/web3-signature": "0.4.37-next.1869",
     "ethers": "5.5.1",
     "wallet-address-validator": "^0.2.4"
   }

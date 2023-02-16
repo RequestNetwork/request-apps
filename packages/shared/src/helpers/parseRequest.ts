@@ -1,10 +1,10 @@
 import { utils, BigNumber, providers } from "ethers";
 
-import { Types } from "@huma-shan/request-client.js";
+import { Types } from "@requestnetwork/request-client.js";
 import { ICurrencyManager } from "@requestnetwork/currency";
 
 import { fetchReceivableMinted, IParsedRequest } from "../";
-import { ExtensionTypes } from "@huma-shan/types";
+import { ExtensionTypes } from "@requestnetwork/types";
 
 const getStatus = (
   state: Types.RequestLogic.STATE,
@@ -61,7 +61,7 @@ export const parseRequest = async ({
   let receivableMinted;
   if (
     paymentNetwork ===
-      ExtensionTypes.PAYMENT_NETWORK_ID.ERC20_TRANSFERRABLE_RECEIVABLE &&
+      ExtensionTypes.PAYMENT_NETWORK_ID.ERC20_TRANSFERABLE_RECEIVABLE &&
     provider
   ) {
     receivableMinted = await fetchReceivableMinted(data, provider);

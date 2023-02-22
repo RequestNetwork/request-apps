@@ -1,5 +1,5 @@
 import { chainIdToName } from "./chainIdToName";
-import { IdentityTypes } from "@frinkly/types";
+import { IdentityTypes } from "@requestnetwork/types";
 import { providers } from "ethers";
 
 import { CustomSignatureProvider } from "./CustomSignatureProvider";

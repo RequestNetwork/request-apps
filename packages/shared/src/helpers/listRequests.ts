@@ -1,6 +1,6 @@
 import { useCallback } from "react";
-import { Request } from "@frinkly/request-client.js";
-import { IdentityTypes } from "@frinkly/types";
+import { Request } from "@requestnetwork/request-client.js";
+import { IdentityTypes } from "@requestnetwork/types";
 import { EventEmitter } from "events";
 import { parseRequest } from "./parseRequest";
 import { chainIdToName } from "./chainIdToName";

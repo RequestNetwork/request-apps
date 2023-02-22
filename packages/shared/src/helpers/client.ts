@@ -1,6 +1,6 @@
 //@ts-nocheck
 import { CurrencyDefinition } from "@requestnetwork/currency";
-import { RequestNetwork, Types } from "@frinkly/request-client.js";
+import { RequestNetwork, Types } from "@requestnetwork/request-client.js";
 import { useCurrency } from "../contexts/CurrencyContext";
 
 export const useRequestClient = (
@@ -23,7 +23,8 @@ export const getRequestClient = (
   const networkName = networkMap[network] ?? network;
   const requestNetwork = new RequestNetwork({
     nodeConnectionConfig: {
-      baseURL: `https://${networkName}.rn.huma.finance/`,
+      baseURL: `https://goerli.gateway.request.network/`,
+      // baseURL: `https://${networkName}.rn.huma.finance/`,
       // baseURL: `http://localhost:3000`,
     },
     signatureProvider,

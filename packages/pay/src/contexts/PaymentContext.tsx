@@ -3,14 +3,14 @@ import {
   getErc20Balance,
   hasErc20Approval,
   approveErc20,
-} from "@frinkly/payment-processor";
+} from "@requestnetwork/payment-processor";
 import { useCallback, useEffect, useState } from "react";
 
 import { useWeb3React } from "@web3-react/core";
 
 import { useRequest } from "request-shared";
 import { Web3Provider, TransactionResponse } from "@ethersproject/providers";
-import { Types } from "@frinkly/request-client.js";
+import { Types } from "@requestnetwork/request-client.js";
 import React from "react";
 import { ethers, BigNumber } from "ethers";
 import axios from "axios";
@@ -223,7 +223,7 @@ export const PaymentProvider: React.FC = ({ children }) => {
 
     payRequest(request.raw, library as any, undefined, {
       // gasPrice: ethers.utils.parseUnits(gasPrice.toString(), "gwei") as any,
-      gasLimit: 100000,
+      gasLimit: 1000000,
     })
       .then(txCallback)
       .catch((e) => {

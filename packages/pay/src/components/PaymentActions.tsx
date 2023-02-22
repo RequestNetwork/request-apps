@@ -6,11 +6,11 @@ import { useWeb3React } from "@web3-react/core";
 
 import { useConnector } from "../contexts/ConnectorContext";
 import { Typography, Box, makeStyles, Link } from "@material-ui/core";
-import { Types } from "@frinkly/request-client.js";
+import { Types } from "@requestnetwork/request-client.js";
 import {
   getBtcPaymentUrl,
-  mintErc20TransferrableReceivable,
-} from "@frinkly/payment-processor";
+  mintErc20TransferableReceivable,
+} from "@requestnetwork/payment-processor";
 import {
   useMobile,
   ReceiptLink,
@@ -306,7 +306,7 @@ const PaymentActions = () => {
             <RButton
               color="default"
               onClick={async () => {
-                await mintErc20TransferrableReceivable(request.raw, library);
+                await mintErc20TransferableReceivable(request.raw, library);
               }}
             >
               <Typography variant="h4">Mint Receivable</Typography>

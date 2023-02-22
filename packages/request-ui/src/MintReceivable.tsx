@@ -3,10 +3,10 @@ import { RButton } from './RButton';
 import React from 'react';
 import { IParsedRequest } from 'request-shared';
 import { RAlert } from './RAlert';
-import { mintErc20TransferrableReceivable } from '@frinkly/payment-processor';
+import { mintErc20TransferableReceivable } from '@requestnetwork/payment-processor';
 import { Typography } from '@material-ui/core';
 import { Spacer } from './Spacer';
-import { ExtensionTypes } from '@frinkly/types';
+import { ExtensionTypes } from '@requestnetwork/types';
 
 interface IProps {
   request: IParsedRequest;
@@ -20,7 +20,7 @@ export const MintReceivable = (props: IProps) => {
   if (
     request.status !== 'receivablePending' ||
     request.paymentNetwork !==
-      ExtensionTypes.PAYMENT_NETWORK_ID.ERC20_TRANSFERRABLE_RECEIVABLE
+      ExtensionTypes.PAYMENT_NETWORK_ID.ERC20_TRANSFERABLE_RECEIVABLE
   ) {
     return null;
   }
@@ -41,7 +41,7 @@ export const MintReceivable = (props: IProps) => {
             <RButton
               color="default"
               onClick={async () => {
-                await mintErc20TransferrableReceivable(request.raw, library);
+                await mintErc20TransferableReceivable(request.raw, library);
               }}
             >
               <Typography variant="h4">Mint Receivable</Typography>

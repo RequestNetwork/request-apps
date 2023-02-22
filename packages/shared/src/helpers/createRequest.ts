@@ -1,8 +1,8 @@
-import { Request } from "@frinkly/request-client.js";
-import { IdentityTypes, RequestLogicTypes } from "@frinkly/types";
-import { PAYMENT_NETWORK_ID } from "@frinkly/types/dist/extension-types";
+import { Request } from "@requestnetwork/request-client.js";
+import { IdentityTypes, RequestLogicTypes } from "@requestnetwork/types";
+import { PAYMENT_NETWORK_ID } from "@requestnetwork/types/dist/extension-types";
 import { CurrencyManager } from "@requestnetwork/currency";
-import { getDefaultProvider, providers, utils } from "ethers";
+import { getDefaultProvider, providers, utils, constants } from "ethers";
 import WalletAddressValidator from "wallet-address-validator";
 
 import { useCurrency } from "../contexts/CurrencyContext";
@@ -65,8 +65,12 @@ export const useCreateRequest = () => {
           parameters: { paymentAddress },
         }
       : {
-          id: PAYMENT_NETWORK_ID.ERC20_TRANSFERRABLE_RECEIVABLE,
-          parameters: { paymentAddress },
+          id: PAYMENT_NETWORK_ID.ERC20_TRANSFERABLE_RECEIVABLE,
+          parameters: {
+            paymentAddress,
+            feeAddress: constants.AddressZero,
+            feeAmount: "0",
+          },
         };
 
     if (payer) {

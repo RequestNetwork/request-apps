@@ -1,6 +1,6 @@
 // import { CurrencyInput, CurrencyManager } from "@requestnetwork/currency";
 import { CurrencyInput } from "@requestnetwork/currency";
-import { RequestLogicTypes } from "@frinkly/types";
+import { RequestLogicTypes } from "@requestnetwork/types";
 
 // const defaultCurrencies = CurrencyManager.getDefaultList();
 export const getCurrencies = (): CurrencyInput[] => [

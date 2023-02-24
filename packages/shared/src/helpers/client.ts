@@ -22,8 +22,8 @@ export const getRequestClient = (
   const networkName = networkMap[network] ?? network;
   const requestNetwork = new RequestNetwork({
     nodeConnectionConfig: {
-      baseURL: `https://${networkName}.gateway.request.network/`,
-      // baseURL: `https://${networkName}.rn.huma.finance/`,
+      // baseURL: `https://${networkName}.gateway.request.network/`,
+      baseURL: `https://${networkName}.v2.rn.huma.finance/`,
       // baseURL: `http://localhost:3000`,
     },
     signatureProvider,

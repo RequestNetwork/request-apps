@@ -21,6 +21,10 @@ export const getRequestClient = (
     },
     signatureProvider,
     currencies: currencyList,
+    httpConfig: {
+      getConfirmationRetryDelay: 0,
+      getConfirmationExponentialBackoffDelay: 1000,
+    },
   });
 
   return requestNetwork;

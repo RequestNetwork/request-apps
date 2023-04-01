@@ -31,8 +31,6 @@ import Dot from "./Dot";
 import { useWeb3React } from "@web3-react/core";
 import { ChangeChainLink } from "./ChangeChainLink";
 
-export type PaymentChain = "mainnet" | "xdai" | "matic" | "rinkeby";
-
 export interface IFormData {
   amount?: number;
   payer?: string;
@@ -53,7 +51,7 @@ export interface IProps {
   loading: boolean;
 }
 
-const useHeaderStyles = makeStyles(theme => ({
+const useHeaderStyles = makeStyles((theme) => ({
   container: {
     height: 124,
     width: "100%",
@@ -135,7 +133,7 @@ const Header = ({
   );
 };
 
-const useBodyStyles = makeStyles(theme => ({
+const useBodyStyles = makeStyles((theme) => ({
   container: {
     minHeight: 290,
     width: "100%",
@@ -192,7 +190,7 @@ const CurrencyPicker = ({ className }: { className?: string }) => {
       error={Boolean(meta.error)}
       helperText={Boolean(meta.error) ? meta.error : " "}
       SelectProps={{
-        renderValue: val => {
+        renderValue: (val) => {
           const currency = currencyManager.fromId(val as string)!;
           return (
             <CurrencyPickerItem
@@ -208,7 +206,7 @@ const CurrencyPicker = ({ className }: { className?: string }) => {
       }}
     >
       {getCurrenciesForPicker({
-        currencyFilter: ({ network }) => chainId === 4 || network !== "rinkeby",
+        currencyFilter: ({ network }) => chainId === 5 || network !== "goerli",
       })}
     </TextField>
   );
@@ -309,9 +307,8 @@ const Footer = ({
   account?: string;
   disabled?: boolean;
 }) => {
-  const { submitForm, isValid, values, isSubmitting } = useFormikContext<
-    IFormData
-  >();
+  const { submitForm, isValid, values, isSubmitting } =
+    useFormikContext<IFormData>();
   return (
     <>
       <Hidden xsDown>
@@ -344,7 +341,7 @@ export const schema = Yup.object().shape<IFormData>({
   payer: Yup.string().test(
     "is-valid-recipient",
     "Please enter a valid ENS or ETH address",
-    async function(value: string) {
+    async function (value: string) {
       return (
         !value ||
         CurrencyManager.validateAddress(value, { type: "ETH" } as any) ||
@@ -356,14 +353,14 @@ export const schema = Yup.object().shape<IFormData>({
   reason: Yup.string().test(
     "is-valid-reason",
     "Reason contains unsupported characters or symbols.",
-    val => {
+    (val) => {
       return !val || isSimpleAscii(val);
     }
   ),
   paymentAddress: Yup.string().required("Required"),
 });
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   container: {
     width: "100%",
     background: "white",
@@ -409,7 +406,7 @@ export const CreateRequestForm = ({
         onSubmit={onSubmit}
         enableReinitialize
         initialValues={{
-          currency: !network || network === 4 ? "FAU-rinkeby" : "DAI-mainnet",
+          currency: !network || network === 5 ? "FAU-goerli" : "DAI-mainnet",
           amount: "" as any,
           payer: "",
           reason: "",

@@ -73,5 +73,5 @@ export const chainIcons: Record<string, typeof SvgIcon> = {
   mainnet: Ethereum,
   matic: Polygon,
   xdai: XDAI,
-  rinkeby: Ethereum,
+  goerli: Ethereum,
 };

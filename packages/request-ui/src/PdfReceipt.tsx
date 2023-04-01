@@ -32,7 +32,7 @@ interface IProps {
   counterValue?: string;
 }
 
-const downloadFile = (function() {
+const downloadFile = (function () {
   var a = document.createElement('a');
   document.body.appendChild(a);
   (a as any).style = 'display: none';
@@ -219,11 +219,11 @@ export const PdfReceipt = ({
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        {request.network === 'rinkeby' && (
+        {request.network === 'goerli' && (
           <View style={styles.testNetwork}>
             <View style={styles.testNetworkBanner} />
             <View style={styles.testNetworkText}>
-              <Text>Rinkeby Test Network</Text>
+              <Text>Goerli Test Network</Text>
             </View>
           </View>
         )}

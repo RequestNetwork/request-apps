@@ -11,7 +11,7 @@ const getStatus = (
   balance: BigNumber | undefined,
   pending: boolean
 ) => {
-  if (!balance) return "unknown";
+  if (!balance) return "waiting";
   if (state === Types.RequestLogic.STATE.CANCELED) return "canceled";
 
   if (balance?.eq(expectedAmount)) return "paid";

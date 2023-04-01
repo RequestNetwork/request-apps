@@ -295,7 +295,7 @@ const PaymentActions = () => {
         !paymentReady ||
         !!error ||
         !!paymentError ||
-        request.status === "unknown"
+        request.status === "waiting"
       }
     />
   );

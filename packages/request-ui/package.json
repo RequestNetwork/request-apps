@@ -50,7 +50,7 @@
     "@material-ui/lab": "^4.0.0-alpha.46",
     "@react-pdf/renderer": "^1.6.8",
     "classnames": "^2.2.6",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "react-ga": "^2.7.0",
     "react-moment": "^0.9.7",
     "stackdriver-errors-js": "^0.8.0",

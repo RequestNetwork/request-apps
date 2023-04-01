@@ -1,6 +1,6 @@
 const chains: Record<number, string> = {
   [1]: "mainnet",
-  [4]: "rinkeby",
+  [5]: "goerli",
   [100]: "xdai",
 };
 export const chainIdToName = (chainId: number | string) => {

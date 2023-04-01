@@ -7,7 +7,7 @@ export type RequestStatus =
   | "pending"
   | "canceled"
   | "overpaid"
-  | "unknown";
+  | "waiting";
 
 /** Formatted request */
 export interface IParsedRequest {
@@ -62,13 +62,13 @@ export const chainInfos: Record<string | number, ChainInfo> = {
     color: "#48a900",
     chainId: 100,
     name: "xDAI Chain",
-    rpcUrls: ["https://rpc.xdaichain.com"],
+    rpcUrls: ["https://gnosischain-rpc.gateway.pokt.network/"],
     nativeCurrency: {
       name: "xDAI",
       symbol: "xDAI",
       decimals: 18,
     },
-    blockExplorerUrls: ["https://blockscout.com/poa/xdai"],
+    blockExplorerUrls: ["https://gnosischain.io/"],
   },
   matic: {
     id: "matic",
@@ -82,11 +82,17 @@ export const chainInfos: Record<string | number, ChainInfo> = {
     },
     rpcUrls: ["https://rpc-mainnet.matic.network/"],
   },
-  rinkeby: {
-    id: "rinkeby",
-    name: "Rinkeby",
-    chainId: 4,
+  goerli: {
+    id: "goerli",
+    name: "Goerli",
+    chainId: 5,
     color: "#FFB95F",
+    blockExplorerUrls: ["https://goerli.etherscan.io/"],
+    nativeCurrency: {
+      name: "ETH-goerli",
+      symbol: "ETH",
+      decimals: 18,
+    },
   },
 };
 
@@ -99,15 +105,27 @@ export const addEthereumChain = (
   if (!library) {
     library = new providers.Web3Provider((window as any).ethereum);
   }
+
+  // first attempt to switch to that chain
+  try {
+    return library.send("wallet_switchEthereumChain", [
+      { chainId: utils.hexValue(chainId) },
+    ]);
+  } catch {}
+
+  if (!rpcUrls || rpcUrls.length === 0) {
+    return null;
+  }
+
   return library.send("wallet_addEthereumChain", [
     {
-      chainId: utils.hexlify(chainId),
+      chainId: utils.hexValue(chainId),
       chainName: name,
       blockExplorerUrls,
-      rpcUrls,
+      rpcUrls: rpcUrls ? rpcUrls : [],
       nativeCurrency,
     },
   ]);
 };
 
-Object.values(chainInfos).forEach(val => (chainInfos[val.chainId] = val));
+Object.values(chainInfos).forEach((val) => (chainInfos[val.chainId] = val));

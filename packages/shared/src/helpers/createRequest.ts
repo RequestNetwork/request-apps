@@ -1,5 +1,6 @@
 import {
   IdentityTypes,
+  ExtensionTypes,
   PaymentTypes,
   RequestLogicTypes,
 } from "@requestnetwork/types";
@@ -64,13 +65,13 @@ export const useCreateRequest = () => {
     const currency = currencyManager.fromId(currencyId)!;
 
     const isEth = currency.type === RequestLogicTypes.CURRENCY.ETH;
-    const paymentNetwork: PaymentTypes.IPaymentNetworkCreateParameters = isEth
+    const paymentNetwork: PaymentTypes.PaymentNetworkCreateParameters = isEth
       ? {
-          id: PaymentTypes.PAYMENT_NETWORK_ID.ETH_INPUT_DATA,
+          id: ExtensionTypes.PAYMENT_NETWORK_ID.ETH_INPUT_DATA,
           parameters: { paymentAddress },
         }
       : {
-          id: PaymentTypes.PAYMENT_NETWORK_ID.ERC20_FEE_PROXY_CONTRACT,
+          id: ExtensionTypes.PAYMENT_NETWORK_ID.ERC20_FEE_PROXY_CONTRACT,
           parameters: {
             paymentAddress,
             feeAmount: "0",
@@ -81,7 +82,7 @@ export const useCreateRequest = () => {
     if (payer) {
       if (isValidEns(payer)) {
         const provider = getDefaultProvider(
-          chainName === "rinkeby" ? "rinkeby" : "mainnet"
+          chainName === "goerli" ? "goerli" : "mainnet"
         );
         payer = await new ENS(payer, provider).addr();
       } else if (!WalletAddressValidator.validate(payer, "ethereum")) {

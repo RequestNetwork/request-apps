@@ -4,15 +4,11 @@ import { RequestLogicTypes } from "@requestnetwork/types";
 const defaultCurrencies = CurrencyManager.getDefaultList();
 export const getCurrencies = (): CurrencyInput[] => [
   ...defaultCurrencies.filter(
-    x =>
+    (x) =>
       x.type === RequestLogicTypes.CURRENCY.ETH ||
-      [
-        "DAI-mainnet",
-        "USDC-mainnet",
-        "USDT-mainnet",
-        "FAU-rinkeby",
-        "CTBK-rinkeby",
-      ].includes(x.id)
+      ["DAI-mainnet", "USDC-mainnet", "USDT-mainnet", "FAU-goerli"].includes(
+        x.id
+      )
   ),
   {
     address: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",

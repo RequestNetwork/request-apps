@@ -1,6 +1,5 @@
 import { providers } from "ethers";
 import * as React from "react";
-import Intercom from "react-intercom";
 
 import { Box, makeStyles } from "@material-ui/core";
 import { Web3ReactProvider, useWeb3React } from "@web3-react/core";
@@ -260,11 +259,6 @@ const PaymentPage = () => {
               <FeedbackContainer />
               <ErrorContainer />
               <PaymentPageInner />
-              <Intercom
-                appID="mmdbekc3"
-                custom_launcher_selector="#intercom-trigger"
-                hide_default_launcher={isMobile}
-              />
             </PaymentProvider>
           </ConnectorProvider>
         </Web3ReactProvider>

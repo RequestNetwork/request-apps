@@ -164,11 +164,6 @@ export const RequestAppBar = ({
       >
         <Typography variant="h4">Create a request</Typography>
       </NavLink>
-      <Hidden smUp>
-        <Link id="intercom-trigger">
-          <Typography variant="h4">Get Help</Typography>
-        </Link>
-      </Hidden>
     </>
   );
 

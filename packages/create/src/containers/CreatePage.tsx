@@ -47,7 +47,6 @@ const CreatePage = () => {
         chainId
       );
       // await request.waitForConfirmation();
-      console.log("request created", request);
       history.push(`/${request.requestId}`);
     } catch (e) {
       if (!isCancelError(e)) {

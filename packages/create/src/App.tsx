@@ -1,7 +1,6 @@
 import { providers } from "ethers";
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import Intercom from "react-intercom";
 import { ErrorBoundary, theme, RAlert, useMobile, Analytics } from "request-ui";
 
 import {
@@ -49,11 +48,6 @@ const AppInner: React.FC = () => {
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
-        <Intercom
-          appID="mmdbekc3"
-          custom_launcher_selector="#intercom-trigger"
-          hide_default_launcher={isMobile}
-        />
         <CssBaseline />
         <RequestAppBar
           network={chainId}

@@ -61,6 +61,7 @@ export const listRequests = async (
       disablePaymentDetection: true,
     }
   );
+  // console.error("requests", requests);
 
   if (isSmartContract) {
     // TODO @VRO

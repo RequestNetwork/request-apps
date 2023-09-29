@@ -84,9 +84,17 @@ const RequestPageInner = () => {
     request,
     loading,
     update,
+    setOnConfirmation,
     counterCurrency,
     counterValue,
   } = useRequest();
+
+  useEffect(() => {
+    if (request?.status === 'waiting') {
+      setOnConfirmation(update);
+    }
+    // eslint-disable-next-line
+  }, [request]); // not including update and setOnConfirmation here because they won't change
 
   const cancel = async () => {
     if (!request || !account || !chainId) {

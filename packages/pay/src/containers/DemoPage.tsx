@@ -530,7 +530,8 @@ const DemoPage = () => {
             counterValue: "1.00",
             request,
             loading: !request,
-            setPending: () => {},
+            setOnConfirmation: () => { },
+            setPending: () => { },
             update: () => Promise.resolve(),
           }}
         >

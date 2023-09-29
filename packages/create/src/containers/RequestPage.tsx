@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { makeStyles, Typography } from "@material-ui/core";
 import { useWeb3React } from "@web3-react/core";
 import {

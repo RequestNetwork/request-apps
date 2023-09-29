@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { makeStyles, Typography } from "@material-ui/core";
 import { useWeb3React } from "@web3-react/core";
 import {
@@ -84,9 +84,17 @@ const RequestPageInner = () => {
     request,
     loading,
     update,
+    setOnConfirmation,
     counterCurrency,
     counterValue,
   } = useRequest();
+
+  useEffect(() => {
+    if (request?.status === 'waiting') {
+      setOnConfirmation(update);
+    }
+    // eslint-disable-next-line
+  }, [request]); // not including update and setOnConfirmation here because they won't change
 
   const cancel = async () => {
     if (!request || !account || !chainId) {

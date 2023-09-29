@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { RLogo } from "request-ui";
-import { Link, Hidden } from "@material-ui/core";
 
 import {
   AppBar,

@@ -20,6 +20,7 @@ interface IContext {
   counterCurrency: CurrencyDefinition;
   /** the request's expected amount in counter currency */
   counterValue?: string;
+  setOnConfirmation: (onConfirmation: () => void) => void;
   /**
    * set the pending status for UX purposes
    * Pending means the payment is being processed and takes a long time.
@@ -72,6 +73,7 @@ export const RequestProvider: React.FC<{ chainId?: string | number }> = ({
   const counterCurrency = currencyManager.from("USD")!;
   const [counterValue, setCounterValue] = useState<string>("");
   const [pending, setPending] = useState(false);
+  const [onConfirmation, setOnConfirmation] = useState<() => void>();
 
   // gets counter currency rate
   const rate = useRate(parsedRequest?.currency, counterCurrency);
@@ -100,6 +102,9 @@ export const RequestProvider: React.FC<{ chainId?: string | number }> = ({
       });
       parseResult.loaded = true;
       setParsedRequest(parseResult);
+      if (onConfirmation) {
+        result.request.waitForConfirmation().then(onConfirmation);
+      }
     }
   };
 
@@ -125,6 +130,7 @@ export const RequestProvider: React.FC<{ chainId?: string | number }> = ({
         counterCurrency,
         counterValue,
         setPending,
+        setOnConfirmation,
         update: useCallback(
           () => fetchRequest(id, chainId, pending),
           [id, chainId, pending]

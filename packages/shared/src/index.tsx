@@ -96,7 +96,7 @@ export const chainInfos: Record<string | number, ChainInfo> = {
   },
 };
 
-export const addEthereumChain = (
+export const addEthereumChain = async (
   chain: string | number,
   library?: providers.Web3Provider
 ) => {
@@ -108,16 +108,16 @@ export const addEthereumChain = (
 
   // first attempt to switch to that chain
   try {
-    return library.send("wallet_switchEthereumChain", [
+    return await library.send("wallet_switchEthereumChain", [
       { chainId: utils.hexValue(chainId) },
     ]);
-  } catch {}
+  } catch { }
 
   if (!rpcUrls || rpcUrls.length === 0) {
     return null;
   }
 
-  return library.send("wallet_addEthereumChain", [
+  return await library.send("wallet_addEthereumChain", [
     {
       chainId: utils.hexValue(chainId),
       chainName: name,
